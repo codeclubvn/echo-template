@@ -1,0 +1,17 @@
+/.idea
+/.vscode
+
+/[Ll]ogs
+*.log
+
+*.exe
+*.exe~
+run-local.sh
+
+.env
+.env.*
+
+deploy.*
+docker-compose.yml
+
+/.docker
