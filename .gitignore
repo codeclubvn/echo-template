@@ -15,3 +15,5 @@ deploy.*
 docker-compose.yml
 
 /.docker
+config.dev.yml
+config.yml
