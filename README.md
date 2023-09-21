@@ -26,6 +26,9 @@ Copy file config.example.yml to config.yml to config for local environment
 Write unit test for function in service layer has complex logic or should be tested
 Unit test: run `go test ./test`
 
+## Database
+![Database design](database.png)
+
 ## Project structure
 
 ```
