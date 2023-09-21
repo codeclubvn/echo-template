@@ -2,14 +2,16 @@ package models
 
 type User struct {
 	BaseModel
-	Name         string `gorm:"type:varchar(255);not null" json:"name"`
-	Avatar       string `gorm:"type:varchar(255)" json:"avatar"`
-	Thumbnail    string `gorm:"type:varchar(255)" json:"thumbnail"`
-	Bio          string `gorm:"type:text" json:"bio"`
-	Domain       string `gorm:"type:varchar(255);unique" json:"domain"`
-	BusinessType string `gorm:"type:varchar(255)" json:"business_type"`
-	OpendAt      string `gorm:"type:varchar(255)" json:"opend_at"`
-	ClosedAt     string `gorm:"type:varchar(255)" json:"closed_at"`
-	Phone        string `gorm:"type:varchar(255)" json:"phone"`
-	Location     string `gorm:"type:varchar(255)" json:"location"`
+	Name     string `gorm:"type:varchar(255);not null" json:"name"`
+	UserName string `gorm:"type:varchar(100);not null" json:"user_name"`
+	Password string `gorm:"type:varchar(255);not null" json:"password"`
+	Email    string `gorm:"type:varchar(100);not null" json:"email"`
+	Avatar   string `gorm:"type:varchar(255);" json:"avatar"`
+	Social   string `gorm:"type:varchar(255);" json:"social"`
+	SocialId string `gorm:"type:varchar(255);" json:"social_id"`
+	Post     []Post `gorm:"foreignKey:UserId" json:"post"`
+}
+
+func (User) TableName() string {
+	return "users"
 }
