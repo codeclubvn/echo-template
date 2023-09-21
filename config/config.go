@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
-	"trail_backend/constants"
+	"trail_backend/utils/constants"
 
 	"github.com/spf13/viper"
 )

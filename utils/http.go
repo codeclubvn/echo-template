@@ -3,7 +3,8 @@ package utils
 import (
 	"context"
 	"errors"
-	"trail_backend/api_errors"
+	"github.com/labstack/echo/v4"
+	"trail_backend/api/api_errors"
 
 	uuid "github.com/satori/go.uuid"
 )
@@ -33,4 +34,12 @@ func GetPageCount(total int64, limit int64) int64 {
 	}
 
 	return total / limit
+}
+
+func ParseStringIDFromUri(c echo.Context) string {
+	id := c.Param("id")
+	if len(id) == 0 {
+		return ""
+	}
+	return id
 }

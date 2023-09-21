@@ -6,20 +6,20 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/zap"
+	"trail_backend/api/middlewares"
 	"trail_backend/config"
 	"trail_backend/infrastructure"
-	"trail_backend/middlewares"
 
 	"go.uber.org/fx"
 )
 
 type Handler struct {
-	*echo.Echo
+	Echo *echo.Group
 }
 
-func NewServerGroup(instance *echo.Echo) *Handler {
+func NewServerGroupV1(instance *echo.Echo) *Handler {
 	return &Handler{
-		instance,
+		instance.Group("/v1/api"),
 	}
 }
 

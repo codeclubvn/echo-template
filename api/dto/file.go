@@ -4,36 +4,47 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type CreateUserRequest struct {
+type CreateFileRequest struct {
 	UserId      string  `json:"user_id"`
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Image       string  `json:"image"`
 	Price       float64 `json:"price"`
 	Status      bool    `json:"status"`
-	NumberUser  int     `json:"number_product"`
+	NumberFile  int     `json:"number_product"`
 }
 
-type UpdateUserRequest struct {
+type UpdateFileRequest struct {
 	ID string `json:"id"`
-	CreateUserRequest
+	CreateFileRequest
 }
 
-type UserResponse struct {
+type FileResponse struct {
 	ID          uuid.UUID `json:"id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
 	Image       string    `json:"image"`
 	Price       float64   `json:"price"`
 	Status      bool      `json:"status"`
-	NumberUser  int       `json:"number_product"`
+	NumberFile  int       `json:"number_product"`
 }
 
-type UsersResponse struct {
-	Data []*UserResponse        `json:"data"`
+type ListFileResponse struct {
+	Data []*FileResponse        `json:"data"`
 	Meta map[string]interface{} `json:"meta"`
 }
 
-type ListUserRequest struct {
+type GetListFileRequest struct {
+	UserId string `json:"user_id"`
 	PageOptions
+}
+
+type DeleteFileRequest struct {
+	Id     string `json:"id"`
+	UserId string `json:"user_id"`
+}
+
+type GetOneFileRequest struct {
+	Id     string `json:"id"`
+	UserId string `json:"user_id"`
 }

@@ -3,8 +3,8 @@ package controller
 import (
 	"github.com/go-playground/validator/v10"
 	"net/http"
-	"trail_backend/api_errors"
-	"trail_backend/dto"
+	"trail_backend/api/api_errors"
+	"trail_backend/api/dto"
 	"trail_backend/utils"
 
 	"github.com/pkg/errors"

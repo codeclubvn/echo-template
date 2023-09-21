@@ -2,7 +2,9 @@ package repository
 
 import (
 	"context"
-	"trail_backend/dto"
+	"time"
+	"trail_backend/api/api_errors"
+	"trail_backend/api/dto"
 	"trail_backend/infrastructure"
 	"trail_backend/models"
 	"trail_backend/utils"
@@ -12,11 +14,12 @@ import (
 )
 
 type UserRepository interface {
-	Create(ctx context.Context, user *models.User) (*models.User, error)
-	Update(tx *TX, ctx context.Context, user *models.User) (*models.User, error)
-	FindByID(ctx context.Context, id string) (*models.User, error)
-	List(ctx context.Context, search string, o dto.PageOptions, userID string) ([]*models.User, *int64, error)
-	DeleteByID(tx *TX, ctx context.Context, id string) error
+	Create(ctx context.Context, product *models.User) (err error)
+	Update(ctx context.Context, product *models.User) (err error)
+	GetList(ctx context.Context, req dto.GetListUserRequest) (res *dto.ListUserResponse, err error)
+	GetOneById(ctx context.Context, req dto.GetOneUserRequest) (res *models.User, err error)
+	DeleteById(ctx context.Context, req dto.DeleteUserRequest) (err error)
+	GetByEmail(ctx context.Context, email string) (res *models.User, err error)
 }
 
 type userRepository struct {
@@ -31,74 +34,57 @@ func NewUserRepository(db *infrastructure.Database, logger *zap.Logger) UserRepo
 	}
 }
 
-func (p *userRepository) Create(ctx context.Context, user *models.User) (*models.User, error) {
-	currentUID, err := utils.GetUserUUIDFromContext(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	user.UpdaterID = currentUID
-
-	if err := p.db.WithContext(ctx).Create(user).Error; err != nil {
-		return nil, errors.Wrap(err, "Create user failed")
-	}
-
-	return user, nil
+func (r *userRepository) Create(ctx context.Context, product *models.User) (err error) {
+	err = r.db.Create(&product).Error
+	return errors.Wrap(err, "create product failed")
 }
 
-func (p *userRepository) Update(tx *TX, ctx context.Context, user *models.User) (*models.User, error) {
-	currentUID, err := utils.GetUserUUIDFromContext(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if tx == nil {
-		tx = &TX{db: *p.db}
-	}
-
-	user.UpdaterID = currentUID
-	if err := tx.db.WithContext(ctx).Save(user).Error; err != nil {
-		return nil, errors.Wrap(err, "Update user failed")
-	}
-
-	return user, nil
+func (r *userRepository) Update(ctx context.Context, product *models.User) (err error) {
+	err = r.db.Updates(&product).Error
+	return errors.Wrap(err, "update product failed")
 }
 
-func (p *userRepository) FindByID(ctx context.Context, id string) (*models.User, error) {
+func (r *userRepository) GetOneById(ctx context.Context, req dto.GetOneUserRequest) (res *models.User, err error) {
 	var user models.User
-	if err := p.db.WithContext(ctx).Where("id = ?", id).First(&user).Error; err != nil {
+	if err := r.db.WithContext(ctx).Where("id = ?", req.Id).First(&user).Error; err != nil {
 		return nil, errors.Wrap(err, "Find user failed")
 	}
 
 	return &user, nil
 }
 
-func (p *userRepository) List(ctx context.Context, search string, o dto.PageOptions, userID string) ([]*models.User, *int64, error) {
-	var users []*models.User
+func (r *userRepository) GetList(ctx context.Context, req dto.GetListUserRequest) (res *dto.ListUserResponse, err error) {
 	var total int64 = 0
 
-	q := p.db.WithContext(ctx).Model(&models.User{})
-
-	if search != "" {
-		q = q.Where("name LIKE ?", "%"+search+"%")
+	query := r.db.Model(&models.User{})
+	if req.Search != "" {
+		query = query.Where("name like ?", "%"+req.Search+"%")
 	}
 
-	q.Order("created_at DESC")
-
-	if err := utils.QueryPagination(p.db, o, &users).Count(&total).Error(); err != nil {
-		return nil, nil, errors.WithStack(err)
+	switch req.Sort {
+	default:
+		query = query.Order(req.Sort)
 	}
 
-	return users, &total, nil
+	if err = utils.QueryPagination(r.db, req.PageOptions, &res.Data).Count(&total).Error(); err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	return res, err
 }
 
-func (p *userRepository) DeleteByID(tx *TX, ctx context.Context, id string) error {
-	if tx == nil {
-		tx = &TX{db: *p.db}
-	}
+func (r *userRepository) DeleteById(ctx context.Context, req dto.DeleteUserRequest) (err error) {
+	err = r.db.Where("id = ?", req.Id).Updates(map[string]interface{}{"deleted_at": time.Time{}, "updater_id": req.UserId}).Error
+	return errors.Wrap(err, "delete product failed")
+}
 
-	if err := tx.db.WithContext(ctx).Where("id = ?", id).Delete(&models.User{}).Error; err != nil {
-		return errors.Wrap(err, "Delete user failed")
+func (u *userRepository) GetByEmail(ctx context.Context, email string) (res *models.User, err error) {
+	err = u.db.WithContext(ctx).Where("email = ?", email).First(&res).Error
+	if err != nil {
+		if utils.ErrNoRows(err) {
+			return nil, errors.New(api_errors.ErrUserNotFound)
+		}
+		return nil, err
 	}
-
-	return nil
+	return
 }

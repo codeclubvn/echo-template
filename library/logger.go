@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 	"trail_backend/config"
-	"trail_backend/constants"
+	"trail_backend/utils/constants"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

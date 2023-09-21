@@ -1,11 +1,11 @@
 package bootstrap
 
 import (
+	"trail_backend/api/controller"
+	"trail_backend/api/middlewares"
 	"trail_backend/config"
-	"trail_backend/controller"
 	"trail_backend/infrastructure"
 	"trail_backend/library"
-	"trail_backend/middlewares"
 	"trail_backend/repository"
 	"trail_backend/route"
 	"trail_backend/service"

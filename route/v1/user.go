@@ -1,7 +1,7 @@
-package route
+package v1
 
 import (
-	"trail_backend/controller"
+	"trail_backend/api/controller"
 	"trail_backend/library"
 )
 
@@ -10,12 +10,13 @@ type UsersRoutes struct {
 }
 
 func NewUserRoutes(handler *library.Handler, c *controller.UserController) *UsersRoutes {
-	g := handler.Group("/users")
+	g := handler.Echo.Group("/users")
 
 	g.POST("", c.Create)
 	g.PUT("", c.Update)
-	g.GET("", c.List)
-	g.DELETE("", c.Delete)
+	g.GET("", c.GetList)
+	g.GET("/:id", c.GetOne)
+	g.DELETE("/:id", c.Delete)
 
 	return &UsersRoutes{
 		handler: handler,

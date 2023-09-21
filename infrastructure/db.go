@@ -85,6 +85,8 @@ func getDatabaseInstance(config *config.Config) (db *gorm.DB, err error) {
 func (d Database) RegisterTables() {
 	err := d.DB.AutoMigrate(
 		models.User{},
+		models.Post{},
+		models.File{},
 	)
 
 	if err != nil {
