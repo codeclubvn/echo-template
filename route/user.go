@@ -9,13 +9,13 @@ type UsersRoutes struct {
 	handler *library.Handler
 }
 
-func NewUserRoutes(handler *library.Handler, userController controller.UserController) *UsersRoutes {
+func NewUserRoutes(handler *library.Handler, c *controller.UserController) *UsersRoutes {
 	g := handler.Group("/users")
 
-	g.POST("", userController.Create)
-	g.PUT("", userController.Update)
-	g.GET("", userController.List)
-	g.DELETE("", userController.Delete)
+	g.POST("", c.Create)
+	g.PUT("", c.Update)
+	g.GET("", c.List)
+	g.DELETE("", c.Delete)
 
 	return &UsersRoutes{
 		handler: handler,

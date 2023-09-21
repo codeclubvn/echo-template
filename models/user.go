@@ -1,6 +1,6 @@
 package models
 
-type Store struct {
+type User struct {
 	BaseModel
 	Name         string `gorm:"type:varchar(255);not null" json:"name"`
 	Avatar       string `gorm:"type:varchar(255)" json:"avatar"`

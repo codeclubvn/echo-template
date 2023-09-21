@@ -1,80 +1,75 @@
-package handler
+package controller
 
 import (
 	"net/http"
+	"trail_backend/dto"
 	"trail_backend/utils"
 
 	"github.com/labstack/echo/v4"
 	"trail_backend/service"
 )
 
-type UserHandler struct {
+type UserController struct {
 	BaseController
 	userService service.UserService
 }
 
-func NewUsersController(storeService service.UserService) *UserHandler {
-	return &UserHandler{
-		userService: storeService,
+func NewUserController(userService service.UserService) *UserController {
+	return &UserController{
+		userService: userService,
 	}
 }
 
-func (p *UserHandler) CreateUser(c *echo.Context) {
-	var req trail_backend.CreateUserRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		p.ResponseValidationError(c, err)
-		return
+func (p *UserController) Create(c echo.Context) error {
+	var req dto.CreateUserRequest
+	if err := c.Bind(&req); err != nil {
+		return p.ResponseValidationError(c, err)
 	}
 
-	store, err := p.userService.CreateUserAndAssignOwner(c.Request.Context(), req)
+	user, err := p.userService.Create(c.Request().Context(), req)
 	if err != nil {
-		p.ResponseError(c, err)
-		return
+		return p.ResponseError(c, err)
 	}
 
-	p.Response(c, http.StatusCreated, "Success", store.ID)
+	return p.Response(c, http.StatusCreated, "Success", user.ID)
 }
 
-func (p *UserHandler) UpdateUser(c *echo.Context) {
-	var req trail_backend.UpdateUserRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		p.ResponseValidationError(c, err)
-		return
+func (p *UserController) Update(c echo.Context) error {
+	var req dto.UpdateUserRequest
+	if err := c.Bind(&req); err != nil {
+		return p.ResponseValidationError(c, err)
 	}
 
-	storeID := utils.GetUserIDFromContext(c.Request.Context())
-	_, err := p.userService.UpdateUser(c.Request.Context(), storeID, req)
+	userID := utils.GetUserStringIDFromContext(c.Request().Context())
+	_, err := p.userService.UpdateUser(c.Request().Context(), userID, req)
 	if err != nil {
-		p.ResponseError(c, err)
-		return
+		return p.ResponseError(c, err)
+
 	}
 
-	p.Response(c, http.StatusOK, "Success", nil)
+	return p.Response(c, http.StatusOK, "Success", nil)
 }
 
-func (p *UserHandler) ListUser(c *echo.Context) {
-	var req trail_backend.ListUserRequest
-	if err := c.ShouldBindQuery(&req); err != nil {
-		p.ResponseValidationError(c, err)
-		return
+func (p *UserController) List(c echo.Context) error {
+	var req dto.ListUserRequest
+	if err := c.Bind(&req); err != nil {
+		return p.ResponseValidationError(c, err)
 	}
 
-	stores, total, err := p.userService.ListUser(c.Request.Context(), req)
+	users, total, err := p.userService.ListUser(c.Request().Context(), req)
 	if err != nil {
-		p.ResponseError(c, err)
-		return
+		return p.ResponseError(c, err)
 	}
 
-	p.ResponseList(c, "Success", total, stores)
+	return p.ResponseList(c, "Success", total, users)
 }
 
-func (p *UserHandler) DeleteUser(c *echo.Context) {
-	storeID := utils.GetUserIDFromContext(c.Request.Context())
-	err := p.userService.DeleteUser(c.Request.Context(), storeID)
+func (p *UserController) Delete(c echo.Context) error {
+	userID := utils.GetUserStringIDFromContext(c.Request().Context())
+	err := p.userService.DeleteUser(c.Request().Context(), userID)
 	if err != nil {
-		p.ResponseError(c, err)
-		return
+		return p.ResponseError(c, err)
 	}
 
-	p.Response(c, http.StatusOK, "Success", nil)
+	return p.Response(c, http.StatusOK, "Success", nil)
 }

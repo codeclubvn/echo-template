@@ -15,7 +15,7 @@ database:
   port: 5432
   username: 'postgres'
   password: 'password'
-  name: 'dev'
+  name: 'postgres'
   sslmode: 'disable'
   timezone: 'Asia/Ho_Chi_Minh'
   maxOpenConnections: 10

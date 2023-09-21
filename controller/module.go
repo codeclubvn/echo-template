@@ -1,5 +1,5 @@
-package handler
+package controller
 
 import "go.uber.org/fx"
 
-var Module = fx.Options(fx.Provide(NewUsersController))
+var Module = fx.Options(fx.Provide(NewUserController))
