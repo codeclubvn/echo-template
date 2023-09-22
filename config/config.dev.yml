@@ -24,7 +24,21 @@ database:
 
 jwt:
   secret: 'hgG6T23XD25N'
-  accessTokenExpiresIn: 3600
-  refreshTokenExpiresIn: 86400
+  accessTokenExpiresIn: 691200 # 8 days
+  refreshTokenExpiresIn: 2592000 # 30 days
 logger:
   level: 'debug'
+
+cloudinary:
+  cloudName: 'dsr2xnaj7'
+  apiKey: 'oZ47iHrgrFQq4fe7ksKKlo7tg4A'
+  apiSecret: '991793784142871'
+  publicId: 'trail_be'
+
+googleOAuth:
+  redirectURL: 'http://localhost:8000/v1/api/auth/google/callback'
+  clientID: '555161563716-820tf0ghjucnn9mirti5imlvkai8t6kv.apps.googleusercontent.com'
+  clientSecret: "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"
+  scopes:
+    - "https://www.googleapis.com/auth/userinfo.email"
+    - "https://www.googleapis.com/auth/userinfo.profile"

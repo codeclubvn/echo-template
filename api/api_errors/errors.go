@@ -18,6 +18,7 @@ var (
 	ErrMissingXStoreID      = "10012"
 	ErrPermissionDenied     = "10013"
 	ErrInvalidPassword      = "10014"
+	CannotParseToken        = "10015"
 )
 
 type MessageAndStatus struct {
@@ -41,4 +42,5 @@ var MapErrorCodeMessage = map[string]MessageAndStatus{
 	ErrMissingXStoreID:      {"Missing x-store-id", http.StatusBadRequest},
 	ErrPermissionDenied:     {"Permission Denied", http.StatusForbidden},
 	ErrInvalidPassword:      {"Invalid Password", http.StatusBadRequest},
+	CannotParseToken:        {"Cannot Parse Token", http.StatusUnauthorized},
 }

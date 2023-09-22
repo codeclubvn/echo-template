@@ -5,13 +5,11 @@ import (
 )
 
 type CreatePostRequest struct {
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Image       string  `json:"image"`
-	Price       float64 `json:"price"`
-	Status      bool    `json:"status"`
-	NumberPost  int     `json:"number_product"`
-	UserId      string  `json:"user_id"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
+	Slug    string `json:"slug"`
+	Image   string `json:"image"`
+	UserId  string `json:"user_id"`
 }
 
 type UpdatePostRequest struct {
@@ -20,13 +18,12 @@ type UpdatePostRequest struct {
 }
 
 type PostResponse struct {
-	ID          uuid.UUID `json:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Image       string    `json:"image"`
-	Price       float64   `json:"price"`
-	Status      bool      `json:"status"`
-	NumberPost  int       `json:"number_product"`
+	ID      uuid.UUID `json:"id"`
+	Title   string    `json:"title"`
+	Content string    `json:"content"`
+	Slug    string    `json:"slug"`
+	Image   string    `json:"image"`
+	UserId  uuid.UUID `json:"user_id"`
 }
 
 type GetListPostRequest struct {

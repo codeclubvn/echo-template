@@ -21,19 +21,22 @@ type UserService interface {
 	Delete(ctx context.Context, req dto.DeleteUserRequest) error
 	GetOne(ctx context.Context, req dto.GetOneUserRequest) (*models.User, error)
 	GetByEmail(ctx context.Context, email string) (*models.User, error)
+	GetBySocialId(ctx context.Context, socialId string) (*models.User, error)
 }
 
 type userService struct {
-	userRepository repository.UserRepository
-	db             *infrastructure.Database
-	logger         *zap.Logger
+	userRepository       repository.UserRepository
+	cloudinaryRepository repository.CloudinaryRepository
+	db                   *infrastructure.Database
+	logger               *zap.Logger
 }
 
-func NewUserService(userRepo repository.UserRepository, db *infrastructure.Database, logger *zap.Logger) UserService {
+func NewUserService(userRepo repository.UserRepository, cloudinaryRepository repository.CloudinaryRepository, db *infrastructure.Database, logger *zap.Logger) UserService {
 	return &userService{
-		userRepository: userRepo,
-		db:             db,
-		logger:         logger,
+		userRepository:       userRepo,
+		cloudinaryRepository: cloudinaryRepository,
+		db:                   db,
+		logger:               logger,
 	}
 }
 
@@ -44,18 +47,18 @@ func (s *userService) Create(ctx context.Context, req dto.CreateUserRequest) (*m
 	if err = utils.Copy(user, req); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	user.UpdaterID = uuid.FromStringOrNil(req.UserId)
 
 	if err = s.userRepository.Create(ctx, user); err != nil {
 		return nil, err
 	}
-
 	return user, err
 }
 
 func (s *userService) Update(ctx context.Context, req dto.UpdateUserRequest) (*models.User, error) {
-	user := &models.User{}
-	var err error
+	user, err := s.userRepository.GetOneById(ctx, dto.GetOneUserRequest{Id: req.UserId})
+	if err != nil {
+		return nil, err
+	}
 
 	if err = utils.Copy(user, req); err != nil {
 		return nil, err
@@ -99,4 +102,12 @@ func (s *userService) GetByEmail(ctx context.Context, email string) (*models.Use
 		return nil, err
 	}
 	return user, err
+}
+
+func (s *userService) GetBySocialId(ctx context.Context, socialId string) (*models.User, error) {
+	user, err := s.userRepository.GetBySocialId(ctx, socialId)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }

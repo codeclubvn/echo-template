@@ -4,19 +4,15 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type CreateFileRequest struct {
-	UserId      string  `json:"user_id"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Image       string  `json:"image"`
-	Price       float64 `json:"price"`
-	Status      bool    `json:"status"`
-	NumberFile  int     `json:"number_product"`
+type UploadFileRequest struct {
+	FileName string `json:"file_name"`
+	Size     int64  `json:"size"`
+	UserId   string `json:"user_id"`
 }
 
 type UpdateFileRequest struct {
 	ID string `json:"id"`
-	CreateFileRequest
+	UploadFileRequest
 }
 
 type FileResponse struct {

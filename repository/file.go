@@ -13,8 +13,8 @@ import (
 )
 
 type FileRepository interface {
-	Create(ctx context.Context, product *models.File) (err error)
-	Update(ctx context.Context, product *models.File) (err error)
+	Create(ctx context.Context, file *models.File) (err error)
+	Update(ctx context.Context, file *models.File) (err error)
 	GetList(ctx context.Context, req dto.GetListFileRequest) (res *dto.ListFileResponse, err error)
 	GetOneById(ctx context.Context, req dto.GetOneFileRequest) (res *models.File, err error)
 	DeleteById(ctx context.Context, req dto.DeleteFileRequest) (err error)
@@ -32,14 +32,14 @@ func NewFileRepository(db *infrastructure.Database, logger *zap.Logger) FileRepo
 	}
 }
 
-func (r *fileRepository) Create(ctx context.Context, product *models.File) (err error) {
-	err = r.db.Create(&product).Error
-	return errors.Wrap(err, "create product failed")
+func (r *fileRepository) Create(ctx context.Context, file *models.File) (err error) {
+	err = r.db.Create(&file).Error
+	return errors.Wrap(err, "create file failed")
 }
 
-func (r *fileRepository) Update(ctx context.Context, product *models.File) (err error) {
-	err = r.db.Updates(&product).Error
-	return errors.Wrap(err, "update product failed")
+func (r *fileRepository) Update(ctx context.Context, file *models.File) (err error) {
+	err = r.db.Updates(&file).Error
+	return errors.Wrap(err, "update file failed")
 }
 
 func (r *fileRepository) GetOneById(ctx context.Context, req dto.GetOneFileRequest) (res *models.File, err error) {
@@ -73,5 +73,5 @@ func (r *fileRepository) GetList(ctx context.Context, req dto.GetListFileRequest
 
 func (r *fileRepository) DeleteById(ctx context.Context, req dto.DeleteFileRequest) (err error) {
 	err = r.db.Where("id = ?", req.Id).Updates(map[string]interface{}{"deleted_at": time.Time{}, "updater_id": req.UserId}).Error
-	return errors.Wrap(err, "delete product failed")
+	return errors.Wrap(err, "delete file failed")
 }

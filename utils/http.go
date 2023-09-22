@@ -9,8 +9,8 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-func GetUserStringIDFromContext(ctx context.Context) string {
-	return ctx.Value("x-user-id").(string)
+func GetUserStringIDFromContext(ctx echo.Context) string {
+	return ctx.Request().Header.Get("x-user-id")
 }
 
 func GetUserUUIDFromContext(ctx context.Context) (uuid.UUID, error) {

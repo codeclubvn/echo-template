@@ -17,13 +17,15 @@ var (
 
 type (
 	Config struct {
-		Debug          bool     `mapstructure:"debug"`
-		ContextTimeout int      `mapstructure:"contextTimeout"`
-		Server         Server   `mapstructure:"server"`
-		Services       Services `mapstructure:"services"`
-		Database       Database `mapstructure:"database"`
-		Logger         Logger   `mapstructure:"logger"`
-		Jwt            Jwt      `mapstructure:"jwt"`
+		Debug          bool        `mapstructure:"debug"`
+		ContextTimeout int         `mapstructure:"contextTimeout"`
+		Server         Server      `mapstructure:"server"`
+		Services       Services    `mapstructure:"services"`
+		Database       Database    `mapstructure:"database"`
+		Logger         Logger      `mapstructure:"logger"`
+		Jwt            Jwt         `mapstructure:"jwt"`
+		Cloudinary     Cloudinary  `mapstructure:"cloudinary"`
+		GoogleOAuth    GoogleOAuth `mapstructure:"googleOAuth"`
 	}
 
 	Server struct {
@@ -57,6 +59,27 @@ type (
 	}
 
 	Services struct {
+	}
+
+	Cloudinary struct {
+		CloudName string `mapstructure:"cloudName"`
+		ApiKey    string `mapstructure:"apiKey"`
+		ApiSecret string `mapstructure:"apiSecret"`
+		PublicId  string `mapstructure:"publicId"`
+	}
+
+	GoogleOAuth struct {
+		RedirectURL  string   `mapstructure:"redirectURL"`
+		ClientID     string   `mapstructure:"clientID"`
+		ClientSecret string   `mapstructure:"clientSecret"`
+		Scopes       []string `mapstructure:"scopes"`
+	}
+
+	FacebookOAuth struct {
+		RedirectURL string `mapstructure:"redirectURL"`
+		AppID       string `mapstructure:"appID"`
+		AppSecret   string `mapstructure:"appSecret"`
+		GraphAPIURL string `mapstructure:"graphAPIURL"`
 	}
 )
 

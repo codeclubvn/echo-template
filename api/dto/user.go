@@ -5,19 +5,16 @@ import (
 )
 
 type CreateUserRequest struct {
-	UserId      string  `json:"user_id"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Image       string  `json:"image"`
-	Price       float64 `json:"price"`
-	Status      bool    `json:"status"`
-	NumberUser  int     `json:"number_product"`
-	Email       string  `json:"email"`
-	Password    string  `json:"password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	UserName string `json:"user_name"`
+	Avatar   string `json:"avatar"`
+	Social   string `json:"social"`
+	SocialId string `json:"social_id"`
 }
 
 type UpdateUserRequest struct {
-	ID string `json:"id"`
+	UserId string `json:"user_id"`
 	CreateUserRequest
 }
 

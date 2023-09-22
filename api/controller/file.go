@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"trail_backend/api/dto"
 	"trail_backend/utils"
+	"trail_backend/utils/constants"
 
 	"github.com/labstack/echo/v4"
 	"trail_backend/service"
@@ -21,10 +22,8 @@ func NewFileController(fileService service.FileService) *FileController {
 }
 
 func (h *FileController) Create(c echo.Context) error {
-	var req dto.CreateFileRequest
-	if err := c.Bind(&req); err != nil {
-		return h.ResponseValidationError(c, err)
-	}
+	var req dto.UploadFileRequest
+	err := utils.GetFile(c, &req, constants.FolderUpload)
 
 	file, err := h.fileService.Create(c.Request().Context(), req)
 	if err != nil {
@@ -40,7 +39,7 @@ func (h *FileController) Update(c echo.Context) error {
 		return h.ResponseValidationError(c, err)
 	}
 
-	userId := utils.GetUserStringIDFromContext(c.Request().Context())
+	userId := utils.GetUserStringIDFromContext(c)
 	req.UserId = userId
 
 	_, err := h.fileService.Update(c.Request().Context(), req)
@@ -58,7 +57,7 @@ func (h *FileController) GetList(c echo.Context) error {
 		return h.ResponseValidationError(c, err)
 	}
 
-	userId := utils.GetUserStringIDFromContext(c.Request().Context())
+	userId := utils.GetUserStringIDFromContext(c)
 	req.UserId = userId
 
 	files, err := h.fileService.GetList(c.Request().Context(), req)
@@ -72,7 +71,7 @@ func (h *FileController) GetList(c echo.Context) error {
 func (h *FileController) Delete(c echo.Context) error {
 	var req dto.DeleteFileRequest
 	req.Id = utils.ParseStringIDFromUri(c)
-	req.UserId = utils.GetUserStringIDFromContext(c.Request().Context())
+	req.UserId = utils.GetUserStringIDFromContext(c)
 
 	err := h.fileService.Delete(c.Request().Context(), req)
 	if err != nil {
@@ -82,7 +81,7 @@ func (h *FileController) Delete(c echo.Context) error {
 	return h.Response(c, http.StatusOK, "Success", nil)
 }
 
-func (h *FileController) GetOne(c echo.Context) error {
+func (h *FileController) Download(c echo.Context) error {
 	var req dto.GetOneFileRequest
 	req.Id = utils.ParseStringIDFromUri(c)
 

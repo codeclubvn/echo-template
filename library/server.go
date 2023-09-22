@@ -27,11 +27,16 @@ func NewServer(lifecycle fx.Lifecycle, zap *zap.Logger, config *config.Config, d
 	instance := echo.New()
 
 	instance.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"https://labstack.com", "https://labstack.net"},
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
+		ExposeHeaders:    []string{"Content-Length", "Content-Type"},
+		AllowHeaders:     []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowCredentials: false,
+		MaxAge:           12 * 3600,
 	}))
 	instance.Use(middleware.Logger())
 	instance.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
+	instance.Pre(middleware.RemoveTrailingSlash())
 	//instance.Use(middlewares.ErrorHandler)
 	// instance.Use(middlewares.JWT(config, db))
 

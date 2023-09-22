@@ -40,16 +40,16 @@ func (h *UserController) Update(c echo.Context) error {
 		return h.ResponseValidationError(c, err)
 	}
 
-	userId := utils.GetUserStringIDFromContext(c.Request().Context())
+	userId := utils.GetUserStringIDFromContext(c)
 	req.UserId = userId
 
-	_, err := h.userService.Update(c.Request().Context(), req)
+	res, err := h.userService.Update(c.Request().Context(), req)
 	if err != nil {
 		return h.ResponseError(c, err)
 
 	}
 
-	return h.Response(c, http.StatusOK, "Success", nil)
+	return h.Response(c, http.StatusOK, "Success", res)
 }
 
 func (h *UserController) GetList(c echo.Context) error {
@@ -58,7 +58,7 @@ func (h *UserController) GetList(c echo.Context) error {
 		return h.ResponseValidationError(c, err)
 	}
 
-	userId := utils.GetUserStringIDFromContext(c.Request().Context())
+	userId := utils.GetUserStringIDFromContext(c)
 	req.UserId = userId
 
 	users, err := h.userService.GetList(c.Request().Context(), req)
@@ -72,7 +72,7 @@ func (h *UserController) GetList(c echo.Context) error {
 func (h *UserController) Delete(c echo.Context) error {
 	var req dto.DeleteUserRequest
 	req.Id = utils.ParseStringIDFromUri(c)
-	req.UserId = utils.GetUserStringIDFromContext(c.Request().Context())
+	req.UserId = utils.GetUserStringIDFromContext(c)
 
 	err := h.userService.Delete(c.Request().Context(), req)
 	if err != nil {

@@ -13,7 +13,7 @@ import (
 
 type (
 	FileService interface {
-		Create(ctx context.Context, req dto.CreateFileRequest) (*models.File, error)
+		Create(ctx context.Context, req dto.UploadFileRequest) (*models.File, error)
 		Update(ctx context.Context, req dto.UpdateFileRequest) (*models.File, error)
 		Delete(ctx context.Context, req dto.DeleteFileRequest) error
 		GetOne(ctx context.Context, req dto.GetOneFileRequest) (*models.File, error)
@@ -32,36 +32,36 @@ func NewFileService(itemRepo repository.FileRepository, config *config.Config) F
 	}
 }
 
-func (s *fileService) Create(ctx context.Context, req dto.CreateFileRequest) (*models.File, error) {
-	post := &models.File{}
+func (s *fileService) Create(ctx context.Context, req dto.UploadFileRequest) (*models.File, error) {
+	file := &models.File{}
 	var err error
 
-	if err = utils.Copy(post, req); err != nil {
+	if err = utils.Copy(file, req); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	post.UpdaterID = uuid.FromStringOrNil(req.UserId)
+	file.UpdaterID = uuid.FromStringOrNil(req.UserId)
 
-	if err = s.fileRepository.Create(ctx, post); err != nil {
+	if err = s.fileRepository.Create(ctx, file); err != nil {
 		return nil, err
 	}
 
-	return post, err
+	return file, err
 }
 
 func (s *fileService) Update(ctx context.Context, req dto.UpdateFileRequest) (*models.File, error) {
-	post := &models.File{}
+	file := &models.File{}
 	var err error
 
-	if err = utils.Copy(post, req); err != nil {
+	if err = utils.Copy(file, req); err != nil {
 		return nil, err
 	}
-	post.UpdaterID = uuid.FromStringOrNil(req.UserId)
+	file.UpdaterID = uuid.FromStringOrNil(req.UserId)
 
-	if err = s.fileRepository.Update(ctx, post); err != nil {
+	if err = s.fileRepository.Update(ctx, file); err != nil {
 		return nil, err
 	}
 
-	return post, err
+	return file, err
 }
 
 func (s *fileService) Delete(ctx context.Context, req dto.DeleteFileRequest) error {
@@ -70,11 +70,11 @@ func (s *fileService) Delete(ctx context.Context, req dto.DeleteFileRequest) err
 }
 
 func (s *fileService) GetOne(ctx context.Context, req dto.GetOneFileRequest) (*models.File, error) {
-	post := &models.File{}
+	file := &models.File{}
 	var err error
 
-	post, err = s.fileRepository.GetOneById(ctx, req)
-	return post, err
+	file, err = s.fileRepository.GetOneById(ctx, req)
+	return file, err
 }
 
 func (s *fileService) GetList(ctx context.Context, req dto.GetListFileRequest) (*dto.ListFileResponse, error) {

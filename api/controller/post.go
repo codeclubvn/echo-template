@@ -31,7 +31,7 @@ func (h *PostController) Create(c echo.Context) error {
 		return h.ResponseError(c, err)
 	}
 
-	return h.Response(c, http.StatusCreated, "Success", post.ID)
+	return h.Response(c, http.StatusCreated, "Success", post)
 }
 
 func (h *PostController) Update(c echo.Context) error {
@@ -40,7 +40,7 @@ func (h *PostController) Update(c echo.Context) error {
 		return h.ResponseValidationError(c, err)
 	}
 
-	userId := utils.GetUserStringIDFromContext(c.Request().Context())
+	userId := utils.GetUserStringIDFromContext(c)
 	req.UserId = userId
 
 	_, err := h.postService.Update(c.Request().Context(), req)
@@ -58,7 +58,7 @@ func (h *PostController) GetList(c echo.Context) error {
 		return h.ResponseValidationError(c, err)
 	}
 
-	userId := utils.GetUserStringIDFromContext(c.Request().Context())
+	userId := utils.GetUserStringIDFromContext(c)
 	req.UserId = userId
 
 	posts, err := h.postService.GetList(c.Request().Context(), req)
@@ -72,7 +72,7 @@ func (h *PostController) GetList(c echo.Context) error {
 func (h *PostController) Delete(c echo.Context) error {
 	var req dto.DeletePostRequest
 	req.Id = utils.ParseStringIDFromUri(c)
-	req.UserId = utils.GetUserStringIDFromContext(c.Request().Context())
+	req.UserId = utils.GetUserStringIDFromContext(c)
 
 	err := h.postService.Delete(c.Request().Context(), req)
 	if err != nil {

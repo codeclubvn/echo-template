@@ -13,6 +13,8 @@ func NewAuthRoutes(handler *library.Handler, controller *controller.AuthControll
 	g := handler.Echo.Group("/auth")
 	g.POST("/register", controller.Register)
 	g.POST("/login", controller.Login)
+	g.POST("/google/login", controller.GoogleLogin)
+	g.POST("/google/callback", controller.GoogleCallback)
 	return &AuthRoutes{
 		handler: handler,
 	}

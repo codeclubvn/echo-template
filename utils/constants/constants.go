@@ -23,3 +23,13 @@ const (
 	VerifyToken        TokenType = "verify_token"
 	ResetPasswordToken TokenType = "reset_password_token"
 )
+
+const (
+	Google   string = "goole" // default role other role in database
+	Facebook string = "facebook"
+)
+
+const (
+	FolderUpload = "./upload/"
+	FolderTmp    = "./tmp/"
+)

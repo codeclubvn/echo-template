@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/go-playground/validator/v10"
 	"net/http"
 	"trail_backend/api/api_errors"
@@ -53,7 +54,7 @@ func (b *BaseController) ResponseList(c echo.Context, message string, total *int
 }
 
 func (b *BaseController) ResponseError(c echo.Context, err error) error {
-
+	fmt.Println(err.Error())
 	mas, ok := api_errors.MapErrorCodeMessage[err.Error()]
 	status := mas.Status
 	if !ok {

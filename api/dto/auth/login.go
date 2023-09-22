@@ -20,9 +20,13 @@ type TokenResponse struct {
 }
 
 type UserResponse struct {
-	ID        string     `json:"id"`
-	FirstName string     `json:"first_name"`
-	LastName  string     `json:"last_name"`
-	Email     string     `json:"email"`
-	RoleID    *uuid.UUID `json:"role_id,omitempty"`
+	ID       string     `json:"id"`
+	UserName string     `json:"user_name"`
+	Email    string     `json:"email"`
+	RoleID   *uuid.UUID `json:"role_id,omitempty"`
+}
+
+type LoginByGoogleRequest struct {
+	Email    string `json:"email" binding:"required" validate:"email"`
+	GoogleId string `json:"google_id" binding:"required"`
 }
