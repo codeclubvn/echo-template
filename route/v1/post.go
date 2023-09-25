@@ -7,10 +7,10 @@ import (
 )
 
 type PostRoutes struct {
-	handler *lib.Handler
+	handler *lib.ServerGroupV1
 }
 
-func NewPostRoutes(handler *lib.Handler, c *controller.PostController, middleware *middlewares.Middleware) *PostRoutes {
+func NewPostRoutes(handler *lib.ServerGroupV1, c *controller.PostController, middleware *middlewares.Middleware) *PostRoutes {
 	g := handler.Echo.Group("/posts")
 
 	g.POST("", c.Create, middleware.Auth(true))

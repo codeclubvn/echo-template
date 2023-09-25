@@ -6,10 +6,10 @@ import (
 )
 
 type AuthRoutes struct {
-	handler *lib.Handler
+	handler *lib.ServerGroupV1
 }
 
-func NewAuthRoutes(handler *lib.Handler, controller *controller.AuthController) *AuthRoutes {
+func NewAuthRoutes(handler *lib.ServerGroupV1, controller *controller.AuthController) *AuthRoutes {
 	g := handler.Echo.Group("/auth")
 	g.POST("/register", controller.Register)
 	g.POST("/login", controller.Login)

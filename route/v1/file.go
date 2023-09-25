@@ -7,10 +7,10 @@ import (
 )
 
 type FileRoutes struct {
-	handler *lib.Handler
+	handler *lib.ServerGroupV1
 }
 
-func NewFileRoutes(handler *lib.Handler, c *controller.FileController, middleware *middlewares.Middleware) *FileRoutes {
+func NewFileRoutes(handler *lib.ServerGroupV1, c *controller.FileController, middleware *middlewares.Middleware) *FileRoutes {
 	g := handler.Echo.Group("/files")
 
 	g.POST("", c.Upload, middleware.Auth(true))

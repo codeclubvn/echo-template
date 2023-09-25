@@ -5,12 +5,12 @@ import (
 	_ "trail_backend/docs"
 )
 
-type Handler struct {
+type ServerGroupV1 struct {
 	Echo *echo.Group
 }
 
-func NewServerGroupV1(instance *echo.Echo) *Handler {
-	return &Handler{
-		instance.Group("/v1/api"),
+func NewServerGroupV1(instance *Server) *ServerGroupV1 {
+	return &ServerGroupV1{
+		instance.Echo.Group("/v1/api"),
 	}
 }

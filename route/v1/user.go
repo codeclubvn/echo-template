@@ -7,10 +7,10 @@ import (
 )
 
 type UsersRoutes struct {
-	handler *lib.Handler
+	handler *lib.ServerGroupV1
 }
 
-func NewUserRoutes(handler *lib.Handler, c *controller.UserController, middleware *middlewares.Middleware) *UsersRoutes {
+func NewUserRoutes(handler *lib.ServerGroupV1, c *controller.UserController, middleware *middlewares.Middleware) *UsersRoutes {
 	g := handler.Echo.Group("/users")
 
 	g.POST("", c.Create, middleware.Auth(true))

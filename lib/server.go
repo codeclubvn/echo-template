@@ -13,7 +13,11 @@ import (
 	"go.uber.org/fx"
 )
 
-func NewServer(lifecycle fx.Lifecycle, zap *zap.Logger, config *config.Config, db *infrastructure.Database, middlewares *middlewares.Middleware) *echo.Echo {
+type Server struct {
+	Echo *echo.Echo
+}
+
+func NewServer(lifecycle fx.Lifecycle, zap *zap.Logger, config *config.Config, db *infrastructure.Database, middlewares *middlewares.Middleware) *Server {
 	instance := echo.New()
 
 	instance.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -48,5 +52,7 @@ func NewServer(lifecycle fx.Lifecycle, zap *zap.Logger, config *config.Config, d
 		},
 	})
 
-	return instance
+	return &Server{
+		instance,
+	}
 }
