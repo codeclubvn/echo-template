@@ -1,0 +1,425 @@
+definitions:
+  dto.LoginResponse:
+    properties:
+      token:
+        $ref: '#/definitions/dto.TokenResponse'
+      user:
+        $ref: '#/definitions/trail_backend_api_dto_auth.UserResponse'
+    type: object
+  dto.SimpleResponse:
+    properties:
+      data: {}
+      message:
+        description: Code    int         `json:"code"`
+        type: string
+    type: object
+  dto.TokenResponse:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+      refresh_token:
+        type: string
+    type: object
+  trail_backend_api_dto_auth.UserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      role_id:
+        type: string
+      user_name:
+        type: string
+    type: object
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is Trail Backend API docs
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Trail Backend API
+  version: "2.0"
+paths:
+  /v1/api/auth/call-back:
+    post:
+      consumes:
+      - application/json
+      description: GoogleCallback
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: GoogleCallback
+      tags:
+      - Auth
+  /v1/api/auth/google/login:
+    post:
+      consumes:
+      - application/json
+      description: GoogleLogin
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "302":
+          description: Found
+          schema:
+            type: string
+      summary: GoogleLogin
+      tags:
+      - Auth
+  /v1/api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.LoginResponse'
+      summary: Login
+      tags:
+      - Auth
+  /v1/api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Register
+      tags:
+      - Auth
+  /v1/api/file:
+    delete:
+      consumes:
+      - application/json
+      description: Delete
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Delete
+      tags:
+      - Auth
+    post:
+      consumes:
+      - application/json
+      description: Upload
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Upload
+      tags:
+      - Auth
+    put:
+      consumes:
+      - application/json
+      description: Update
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Update
+      tags:
+      - Auth
+  /v1/api/file/download/:id:
+    get:
+      consumes:
+      - application/json
+      description: Download
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Download
+      tags:
+      - Auth
+  /v1/api/image/upload:
+    post:
+      consumes:
+      - application/json
+      description: Upload
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Upload
+      tags:
+      - Auth
+  /v1/api/post:
+    get:
+      consumes:
+      - application/json
+      description: GetList
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: GetList
+      tags:
+      - Auth
+    put:
+      consumes:
+      - application/json
+      description: Update
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Update
+      tags:
+      - Auth
+  /v1/api/post/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Delete
+      tags:
+      - Auth
+    get:
+      consumes:
+      - application/json
+      description: GetOne
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: GetOne
+      tags:
+      - Auth
+  /v1/api/users:
+    get:
+      consumes:
+      - application/json
+      description: GetList
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: GetList
+      tags:
+      - Auth
+    post:
+      consumes:
+      - application/json
+      description: Create
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Create
+      tags:
+      - Auth
+    put:
+      consumes:
+      - application/json
+      description: Update
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Update
+      tags:
+      - Auth
+  /v1/api/users/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: Delete
+      tags:
+      - Auth
+    get:
+      consumes:
+      - application/json
+      description: GetOne
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/dto.SimpleResponse'
+      summary: GetOne
+      tags:
+      - Auth
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

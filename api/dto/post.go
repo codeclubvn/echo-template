@@ -23,7 +23,6 @@ type PostResponse struct {
 	Content string    `json:"content"`
 	Slug    string    `json:"slug"`
 	Image   string    `json:"image"`
-	UserId  uuid.UUID `json:"user_id"`
 }
 
 type GetListPostRequest struct {

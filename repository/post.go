@@ -13,9 +13,9 @@ import (
 )
 
 type PostRepository interface {
-	Create(ctx context.Context, product *models.Post) (err error)
-	Update(ctx context.Context, product *models.Post) (err error)
-	GetList(ctx context.Context, req dto.GetListPostRequest) (res *dto.ListPostResponse, err error)
+	Create(ctx context.Context, post *models.Post) (err error)
+	Update(ctx context.Context, post *models.Post) (err error)
+	GetList(ctx context.Context, req dto.GetListPostRequest) (res []*models.Post, total *int64, err error)
 	GetOneById(ctx context.Context, req dto.GetOnePostRequest) (res *models.Post, err error)
 	DeleteById(ctx context.Context, req dto.DeletePostRequest) (err error)
 }
@@ -32,14 +32,14 @@ func NewPostRepository(db *infrastructure.Database, logger *zap.Logger) PostRepo
 	}
 }
 
-func (r *postRepository) Create(ctx context.Context, product *models.Post) (err error) {
-	err = r.db.Create(&product).Error
-	return errors.Wrap(err, "create product failed")
+func (r *postRepository) Create(ctx context.Context, post *models.Post) (err error) {
+	err = r.db.Create(&post).Error
+	return errors.Wrap(err, "create post failed")
 }
 
-func (r *postRepository) Update(ctx context.Context, product *models.Post) (err error) {
-	err = r.db.Updates(&product).Error
-	return errors.Wrap(err, "update product failed")
+func (r *postRepository) Update(ctx context.Context, post *models.Post) (err error) {
+	err = r.db.Updates(&post).Error
+	return errors.Wrap(err, "update post failed")
 }
 
 func (r *postRepository) GetOneById(ctx context.Context, req dto.GetOnePostRequest) (res *models.Post, err error) {
@@ -51,9 +51,7 @@ func (r *postRepository) GetOneById(ctx context.Context, req dto.GetOnePostReque
 	return &post, nil
 }
 
-func (r *postRepository) GetList(ctx context.Context, req dto.GetListPostRequest) (res *dto.ListPostResponse, err error) {
-	var total int64 = 0
-
+func (r *postRepository) GetList(ctx context.Context, req dto.GetListPostRequest) (res []*models.Post, total *int64, err error) {
 	query := r.db.Model(&models.Post{})
 	if req.Search != "" {
 		query = query.Where("name like ?", "%"+req.Search+"%")
@@ -64,13 +62,17 @@ func (r *postRepository) GetList(ctx context.Context, req dto.GetListPostRequest
 		query = query.Order(req.Sort)
 	}
 
-	if err = utils.QueryPagination(r.db, req.PageOptions, &res.Data).Count(&total).Error(); err != nil {
-		return nil, errors.WithStack(err)
+	if err = utils.QueryPagination(query, req.PageOptions, &res); err != nil {
+		return nil, nil, errors.WithStack(err)
 	}
 
-	return res, err
+	if err = query.Count(total).Error; err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+
+	return res, total, err
 }
 func (r *postRepository) DeleteById(ctx context.Context, req dto.DeletePostRequest) (err error) {
 	err = r.db.Where("id = ?", req.Id).Updates(map[string]interface{}{"deleted_at": time.Time{}, "updater_id": req.UserId}).Error
-	return errors.Wrap(err, "delete product failed")
+	return errors.Wrap(err, "delete post failed")
 }

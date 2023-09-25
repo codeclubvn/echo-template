@@ -17,7 +17,7 @@ import (
 type UserService interface {
 	Create(ctx context.Context, req dto.CreateUserRequest) (*models.User, error)
 	Update(ctx context.Context, req dto.UpdateUserRequest) (*models.User, error)
-	GetList(ctx context.Context, req dto.GetListUserRequest) (*dto.ListUserResponse, error)
+	GetList(ctx context.Context, req dto.GetListUserRequest) (*dto.ListUserResponse, *int64, error)
 	Delete(ctx context.Context, req dto.DeleteUserRequest) error
 	GetOne(ctx context.Context, req dto.GetOneUserRequest) (*models.User, error)
 	GetByEmail(ctx context.Context, email string) (*models.User, error)
@@ -72,12 +72,8 @@ func (s *userService) Update(ctx context.Context, req dto.UpdateUserRequest) (*m
 	return user, err
 }
 
-func (s *userService) GetList(ctx context.Context, req dto.GetListUserRequest) (*dto.ListUserResponse, error) {
-	res := &dto.ListUserResponse{}
-	var err error
-
-	res, err = s.userRepository.GetList(ctx, req)
-	return res, err
+func (s *userService) GetList(ctx context.Context, req dto.GetListUserRequest) (*dto.ListUserResponse, *int64, error) {
+	return s.userRepository.GetList(ctx, req)
 }
 
 func (s *userService) Delete(ctx context.Context, req dto.DeleteUserRequest) error {

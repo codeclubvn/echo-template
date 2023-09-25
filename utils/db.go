@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"trail_backend/api/dto"
 	"trail_backend/infrastructure"
 
@@ -22,13 +21,7 @@ type QueryPaginationBuilder[E any] struct {
 	db *infrastructure.Database
 }
 
-func QueryPagination[E any](db *infrastructure.Database, o dto.PageOptions, data *[]*E) *QueryPaginationBuilder[E] {
-	MustHaveDb(db)
-	copyDB := &infrastructure.Database{}
-	*copyDB = *db
-	q := &QueryPaginationBuilder[E]{
-		db: copyDB,
-	}
+func QueryPagination[E any](db *gorm.DB, o dto.PageOptions, data *[]*E) error {
 	if o.Page == 0 {
 		o.Page = 1
 	}
@@ -37,10 +30,10 @@ func QueryPagination[E any](db *infrastructure.Database, o dto.PageOptions, data
 	}
 	offset := (o.Page - 1) * o.Limit
 
-	q.db.DB = q.db.Debug().Offset(int(offset)).Limit(int(o.Limit)).Find(&data)
-
-	fmt.Println(data)
-	return q
+	if err := db.Debug().Offset(int(offset)).Limit(int(o.Limit)).Find(&data).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (q *QueryPaginationBuilder[E]) Count(total *int64) *QueryPaginationBuilder[E] {

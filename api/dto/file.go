@@ -1,13 +1,23 @@
 package dto
 
 import (
+	"encoding/json"
 	uuid "github.com/satori/go.uuid"
+	"mime/multipart"
 )
 
 type UploadFileRequest struct {
-	FileName string `json:"file_name"`
-	Size     int64  `json:"size"`
-	UserId   string `json:"user_id"`
+	UserId   string                `json:"user_id"`
+	File     *multipart.FileHeader `json:"file"`
+	FileName string                `json:"file_name"`
+	Size     int64                 `json:"size"`
+	Path     string                `json:"path"`
+	Type     string                `json:"type"`
+	Data     json.RawMessage       `json:"data"`
+}
+
+type UploadFileResponse struct {
+	URL string `json:"url"`
 }
 
 type UpdateFileRequest struct {
@@ -41,6 +51,11 @@ type DeleteFileRequest struct {
 }
 
 type GetOneFileRequest struct {
+	Id     string `json:"id"`
+	UserId string `json:"user_id"`
+}
+
+type DownloadFileRequest struct {
 	Id     string `json:"id"`
 	UserId string `json:"user_id"`
 }

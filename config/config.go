@@ -29,10 +29,11 @@ type (
 	}
 
 	Server struct {
-		Host     string `mapstructure:"host"`
-		Env      string `mapstructure:"env"`
-		UseRedis bool   `mapstructure:"useRedis"`
-		Port     int    `mapstructure:"port"`
+		Host       string `mapstructure:"host"`
+		Env        string `mapstructure:"env"`
+		UseRedis   bool   `mapstructure:"useRedis"`
+		Port       int    `mapstructure:"port"`
+		UploadPath string `mapstructure:"uploadPath"`
 	}
 
 	Database struct {

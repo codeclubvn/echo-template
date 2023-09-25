@@ -2,21 +2,18 @@ package repository
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
 	"time"
 	"trail_backend/api/dto"
 	"trail_backend/infrastructure"
 	"trail_backend/models"
-	"trail_backend/utils"
-
-	"github.com/pkg/errors"
-	"go.uber.org/zap"
 )
 
 type FileRepository interface {
 	Create(ctx context.Context, file *models.File) (err error)
 	Update(ctx context.Context, file *models.File) (err error)
-	GetList(ctx context.Context, req dto.GetListFileRequest) (res *dto.ListFileResponse, err error)
-	GetOneById(ctx context.Context, req dto.GetOneFileRequest) (res *models.File, err error)
+	GetOneById(ctx context.Context, id string) (res *models.File, err error)
 	DeleteById(ctx context.Context, req dto.DeleteFileRequest) (err error)
 }
 
@@ -42,33 +39,13 @@ func (r *fileRepository) Update(ctx context.Context, file *models.File) (err err
 	return errors.Wrap(err, "update file failed")
 }
 
-func (r *fileRepository) GetOneById(ctx context.Context, req dto.GetOneFileRequest) (res *models.File, err error) {
+func (r *fileRepository) GetOneById(ctx context.Context, id string) (res *models.File, err error) {
 	var post models.File
-	if err := r.db.WithContext(ctx).Where("id = ?", req.Id).First(&post).Error; err != nil {
+	if err := r.db.WithContext(ctx).Where("id = ?", id).First(&post).Error; err != nil {
 		return nil, errors.Wrap(err, "Find post failed")
 	}
 
 	return &post, nil
-}
-
-func (r *fileRepository) GetList(ctx context.Context, req dto.GetListFileRequest) (res *dto.ListFileResponse, err error) {
-	var total int64 = 0
-
-	query := r.db.Model(&models.File{})
-	if req.Search != "" {
-		query = query.Where("name like ?", "%"+req.Search+"%")
-	}
-
-	switch req.Sort {
-	default:
-		query = query.Order(req.Sort)
-	}
-
-	if err = utils.QueryPagination(r.db, req.PageOptions, &res.Data).Count(&total).Error(); err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	return res, err
 }
 
 func (r *fileRepository) DeleteById(ctx context.Context, req dto.DeleteFileRequest) (err error) {

@@ -32,6 +32,15 @@ func NewAuthController(authService service.AuthService, logger *zap.Logger, conf
 	return controller
 }
 
+// Register
+// @Summary		Register
+// @Description	Register
+// @Tags		Auth
+// @Accept		json
+// @Produce		json
+// @Param		Authorization	header		string								true	"authorization token"
+// @Success		200				{object}	dto.SimpleResponse	"success"
+// @Router		/v1/api/auth/register [Post]
 func (h *AuthController) Register(c echo.Context) error {
 	var req dtoAuth.RegisterRequest
 
@@ -47,6 +56,15 @@ func (h *AuthController) Register(c echo.Context) error {
 	return h.Response(c, http.StatusOK, "success", nil)
 }
 
+// Login
+// @Summary		Login
+// @Description	Login
+// @Tags		Auth
+// @Accept		json
+// @Produce		json
+// @Param		Authorization	header		string								true	"authorization token"
+// @Success		200				{object}	dto.LoginResponse	"success"
+// @Router		/v1/api/auth/login [Post]
 func (h *AuthController) Login(c echo.Context) error {
 	var req dtoAuth.LoginRequest
 
@@ -63,6 +81,15 @@ func (h *AuthController) Login(c echo.Context) error {
 	return h.Response(c, http.StatusOK, "success", res)
 }
 
+// GoogleLogin
+// @Summary		GoogleLogin
+// @Description	GoogleLogin
+// @Tags		Auth
+// @Accept		json
+// @Produce		json
+// @Param		Authorization	header		string								true	"authorization token"
+// @Success		302				{object}	string
+// @Router		/v1/api/auth/google/login [Post]
 func (h *AuthController) GoogleLogin(c echo.Context) error {
 	authConfig := h.getGoogleOAuthConfig()
 	url := authConfig.AuthCodeURL("", oauth2.AccessTypeOffline)
@@ -79,6 +106,15 @@ func (h *AuthController) getGoogleOAuthConfig() oauth2.Config {
 	}
 }
 
+// GoogleCallback
+// @Summary		GoogleCallback
+// @Description	GoogleCallback
+// @Tags		Auth
+// @Accept		json
+// @Produce		json
+// @Param		Authorization	header		string								true	"authorization token"
+// @Success		200				{object}	dto.SimpleResponse	"success"
+// @Router		/v1/api/auth/call-back [Post]
 func (h *AuthController) GoogleCallback(c echo.Context) error {
 	code := c.QueryParam("code")
 	authConfig := h.getGoogleOAuthConfig()
