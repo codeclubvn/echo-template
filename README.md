@@ -27,7 +27,7 @@ Write unit test for function in service layer has complex logic or should be tes
 Unit test: run `go test ./test`
 
 ## Database
-![Database design](database.png)
+![Database design](deploy/database.png)
 
 ## Project structure
 

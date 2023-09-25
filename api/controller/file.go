@@ -1,13 +1,11 @@
 package controller
 
 import (
+	"github.com/labstack/echo/v4"
 	"net/http"
 	"trail_backend/dto"
-	"trail_backend/utils"
-	"trail_backend/utils/constants"
-
-	"github.com/labstack/echo/v4"
 	"trail_backend/service"
+	"trail_backend/utils"
 )
 
 type FileController struct {
@@ -21,18 +19,37 @@ func NewFileController(fileService service.FileService) *FileController {
 	}
 }
 
-func (h *FileController) Create(c echo.Context) error {
+// Upload
+// @Summary		Upload
+// @Description	Upload
+// @Tags		File
+// @Accept		json
+// @Produce		json
+// @Param		Authorization	header		string								true	"authorization token"
+// @Success		200				{object}	dto.SimpleResponse	"success"
+// @Router		/v1/api/file [Post]
+func (h *FileController) Upload(c echo.Context) error {
 	var req dto.UploadFileRequest
-	err := utils.GetFile(c, &req, constants.FolderUpload)
+	file, err := c.FormFile("file")
+	req.File = file
 
-	file, err := h.fileService.Create(c.Request().Context(), req)
+	data, err := h.fileService.Upload(c.Request().Context(), req)
 	if err != nil {
 		return h.ResponseError(c, err)
 	}
 
-	return h.Response(c, http.StatusCreated, "Success", file.ID)
+	return h.Response(c, http.StatusCreated, "Success", data)
 }
 
+// Update
+// @Summary		Update
+// @Description	Update
+// @Tags		File
+// @Accept		json
+// @Produce		json
+// @Param		Authorization	header		string								true	"authorization token"
+// @Success		200				{object}	dto.SimpleResponse	"success"
+// @Router		/v1/api/file [Put]
 func (h *FileController) Update(c echo.Context) error {
 	var req dto.UpdateFileRequest
 	if err := c.Bind(&req); err != nil {
@@ -51,23 +68,15 @@ func (h *FileController) Update(c echo.Context) error {
 	return h.Response(c, http.StatusOK, "Success", nil)
 }
 
-func (h *FileController) GetList(c echo.Context) error {
-	var req dto.GetListFileRequest
-	if err := c.Bind(&req); err != nil {
-		return h.ResponseValidationError(c, err)
-	}
-
-	userId := utils.GetUserStringIDFromContext(c)
-	req.UserId = userId
-
-	files, err := h.fileService.GetList(c.Request().Context(), req)
-	if err != nil {
-		return h.ResponseError(c, err)
-	}
-
-	return h.Response(c, http.StatusOK, "Success", files)
-}
-
+// Delete
+// @Summary		Delete
+// @Description	Delete
+// @Tags		File
+// @Accept		json
+// @Produce		json
+// @Param		Authorization	header		string								true	"authorization token"
+// @Success		200				{object}	dto.SimpleResponse	"success"
+// @Router		/v1/api/file [Delete]
 func (h *FileController) Delete(c echo.Context) error {
 	var req dto.DeleteFileRequest
 	req.Id = utils.ParseStringIDFromUri(c)
@@ -81,7 +90,16 @@ func (h *FileController) Delete(c echo.Context) error {
 	return h.Response(c, http.StatusOK, "Success", nil)
 }
 
-func (h *FileController) Download(c echo.Context) error {
+// GetOne
+// @Summary		GetOne
+// @Description	GetOne
+// @Tags		File
+// @Accept		json
+// @Produce		json
+// @Param		Authorization	header		string								true	"authorization token"
+// @Success		200				{object}	dto.SimpleResponse	"success"
+// @Router		/v1/api/file/download/:id [GET]
+func (h *FileController) GetOne(c echo.Context) error {
 	var req dto.GetOneFileRequest
 	req.Id = utils.ParseStringIDFromUri(c)
 
@@ -91,4 +109,26 @@ func (h *FileController) Download(c echo.Context) error {
 	}
 
 	return h.Response(c, http.StatusOK, "Success", res)
+}
+
+// Download
+// @Summary		Download
+// @Description	Download
+// @Tags		File
+// @Accept		json
+// @Produce		json
+// @Param		Authorization	header		string								true	"authorization token"
+// @Success		200				{object}	dto.SimpleResponse	"success"
+// @Router		/v1/api/file/download/:id [GET]
+func (h *FileController) Download(c echo.Context) error {
+	var req dto.DownloadFileRequest
+	req.Id = utils.ParseStringIDFromUri(c)
+
+	data, err := h.fileService.Download(c.Request().Context(), req)
+	if err != nil {
+		return h.ResponseError(c, err)
+	}
+	res := data.Path + data.ID.String() + "." + data.ExtensionName
+
+	return c.File(res)
 }

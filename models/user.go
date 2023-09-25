@@ -8,7 +8,7 @@ type User struct {
 	Avatar   string `gorm:"type:varchar(255);" json:"avatar"`
 	Social   string `gorm:"type:varchar(255);" json:"social"`
 	SocialId string `gorm:"type:varchar(255);" json:"social_id"`
-	Post     []Post
+	Post     Posts
 }
 
 func (User) TableName() string {

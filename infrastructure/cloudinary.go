@@ -21,6 +21,8 @@ func credentials() (*cloudinary.Cloudinary, context.Context) {
 	// Secure=true to return "https" URLs, and create a context
 	//===================
 	cld, _ := cloudinary.New()
+	// CLOUDINARY_URL=cloudinary://API-Key:API-Secret@Cloud-name
+	// CLOUDINARY_URL=cloudinary://oZ47iHrgrFQq4fe7ksKKlo7tg4A:991793784142871@dsr2xnaj7
 	cld.Config.URL.Secure = true
 	ctx := context.Background()
 	return cld, ctx

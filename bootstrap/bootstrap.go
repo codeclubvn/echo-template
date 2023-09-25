@@ -5,7 +5,7 @@ import (
 	"trail_backend/api/middlewares"
 	"trail_backend/config"
 	"trail_backend/infrastructure"
-	"trail_backend/library"
+	"trail_backend/lib"
 	"trail_backend/repository"
 	"trail_backend/route"
 	"trail_backend/service"
@@ -27,7 +27,7 @@ func inject() fx.Option {
 			utils.NewTimeoutContext,
 		),
 		route.Module,
-		library.Module,
+		lib.Module,
 		repository.Module,
 		service.Module,
 		controller.Module,

@@ -3,14 +3,14 @@ package v1
 import (
 	"trail_backend/api/controller"
 	"trail_backend/api/middlewares"
-	"trail_backend/library"
+	"trail_backend/lib"
 )
 
 type UsersRoutes struct {
-	handler *library.Handler
+	handler *lib.Handler
 }
 
-func NewUserRoutes(handler *library.Handler, c *controller.UserController, middleware *middlewares.Middleware) *UsersRoutes {
+func NewUserRoutes(handler *lib.Handler, c *controller.UserController, middleware *middlewares.Middleware) *UsersRoutes {
 	g := handler.Echo.Group("/users")
 
 	g.POST("", c.Create, middleware.Auth(true))

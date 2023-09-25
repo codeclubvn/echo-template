@@ -16,7 +16,7 @@ import (
 type UserRepository interface {
 	Create(ctx context.Context, user *models.User) (err error)
 	Update(ctx context.Context, user *models.User) (err error)
-	GetList(ctx context.Context, req dto.GetListUserRequest) (res *dto.ListUserResponse, err error)
+	GetList(ctx context.Context, req dto.GetListUserRequest) (res *dto.ListUserResponse, total *int64, err error)
 	GetOneById(ctx context.Context, req dto.GetOneUserRequest) (res *models.User, err error)
 	DeleteById(ctx context.Context, req dto.DeleteUserRequest) (err error)
 	GetByEmail(ctx context.Context, email string) (res *models.User, err error)
@@ -54,9 +54,7 @@ func (r *userRepository) GetOneById(ctx context.Context, req dto.GetOneUserReque
 	return &user, nil
 }
 
-func (r *userRepository) GetList(ctx context.Context, req dto.GetListUserRequest) (res *dto.ListUserResponse, err error) {
-	var total int64 = 0
-
+func (r *userRepository) GetList(ctx context.Context, req dto.GetListUserRequest) (res *dto.ListUserResponse, total *int64, err error) {
 	query := r.db.Model(&models.User{})
 	if req.Search != "" {
 		query = query.Where("name like ?", "%"+req.Search+"%")
@@ -67,11 +65,15 @@ func (r *userRepository) GetList(ctx context.Context, req dto.GetListUserRequest
 		query = query.Order(req.Sort)
 	}
 
-	if err = utils.QueryPagination(r.db, req.PageOptions, &res.Data).Count(&total).Error(); err != nil {
-		return nil, errors.WithStack(err)
+	if err = utils.QueryPagination(query, req.PageOptions, &res.Data); err != nil {
+		return nil, nil, errors.WithStack(err)
 	}
 
-	return res, err
+	if err = query.Count(total).Error; err != nil {
+		return nil, nil, errors.WithStack(err)
+	}
+
+	return res, total, err
 }
 
 func (r *userRepository) DeleteById(ctx context.Context, req dto.DeleteUserRequest) (err error) {

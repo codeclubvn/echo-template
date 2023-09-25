@@ -2,10 +2,11 @@ debug: true
 contextTimeout: 5
 
 server:
-  port: '8000'
+  port: '8010'
   host: '127.0.0.1'
   env: 'local'
   useRedis: false
+  uploadPath: './uploads'
 
 services:
 
@@ -37,8 +38,11 @@ cloudinary:
 
 googleOAuth:
   redirectURL: 'http://localhost:8000/v1/api/auth/google/callback'
-  clientID: '555161563716-820tf0ghjucnn9mirti5imlvkai8t6kv.apps.googleusercontent.com'
-  clientSecret: "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"
+  clientID: '421930772152-rfjol0k3l1rjaloh8pmk5q0ljcluv3d2.apps.googleusercontent.com'
+  clientSecret: "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"
+  apiKey: 'AIzaSyBIY0Vc9qIkVDoWEXsapBMyjTVHIR-4f8Q'
   scopes:
     - "https://www.googleapis.com/auth/userinfo.email"
     - "https://www.googleapis.com/auth/userinfo.profile"
+
+

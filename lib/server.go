@@ -1,4 +1,4 @@
-package library
+package lib
 
 import (
 	"context"
@@ -12,16 +12,6 @@ import (
 
 	"go.uber.org/fx"
 )
-
-type Handler struct {
-	Echo *echo.Group
-}
-
-func NewServerGroupV1(instance *echo.Echo) *Handler {
-	return &Handler{
-		instance.Group("/v1/api"),
-	}
-}
 
 func NewServer(lifecycle fx.Lifecycle, zap *zap.Logger, config *config.Config, db *infrastructure.Database, middlewares *middlewares.Middleware) *echo.Echo {
 	instance := echo.New()

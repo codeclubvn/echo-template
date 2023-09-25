@@ -17,7 +17,7 @@ type (
 		Update(ctx context.Context, req dto.UpdatePostRequest) (*models.Post, error)
 		Delete(ctx context.Context, req dto.DeletePostRequest) error
 		GetOne(ctx context.Context, req dto.GetOnePostRequest) (*models.Post, error)
-		GetList(ctx context.Context, req dto.GetListPostRequest) (*dto.ListPostResponse, error)
+		GetList(ctx context.Context, req dto.GetListPostRequest) ([]*models.Post, *int64, error)
 	}
 	postService struct {
 		postRepository repository.PostRepository
@@ -77,10 +77,6 @@ func (s *postService) GetOne(ctx context.Context, req dto.GetOnePostRequest) (*m
 	return post, err
 }
 
-func (s *postService) GetList(ctx context.Context, req dto.GetListPostRequest) (*dto.ListPostResponse, error) {
-	res := &dto.ListPostResponse{}
-	var err error
-
-	res, err = s.postRepository.GetList(ctx, req)
-	return res, err
+func (s *postService) GetList(ctx context.Context, req dto.GetListPostRequest) ([]*models.Post, *int64, error) {
+	return s.postRepository.GetList(ctx, req)
 }

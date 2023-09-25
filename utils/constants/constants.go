@@ -30,6 +30,6 @@ const (
 )
 
 const (
-	FolderUpload = "./upload/"
+	FolderUpload = "./uploads/"
 	FolderTmp    = "./tmp/"
 )
