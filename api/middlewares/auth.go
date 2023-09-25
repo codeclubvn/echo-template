@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 	"trail_backend/api/api_errors"
-	"trail_backend/api/dto"
-	dtoAuth "trail_backend/api/dto/auth"
+	"trail_backend/dto"
+	dtoAuth "trail_backend/dto/auth"
 
 	"github.com/pkg/errors"
 

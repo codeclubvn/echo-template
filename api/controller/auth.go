@@ -8,8 +8,8 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"net/http"
-	dtoAuth "trail_backend/api/dto/auth"
 	"trail_backend/config"
+	"trail_backend/dto/auth"
 	"trail_backend/service"
 	"trail_backend/utils"
 
@@ -33,7 +33,7 @@ func NewAuthController(authService service.AuthService, logger *zap.Logger, conf
 }
 
 func (h *AuthController) Register(c echo.Context) error {
-	var req dtoAuth.RegisterRequest
+	var req dto.RegisterRequest
 
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidationError(c, err)
@@ -48,7 +48,7 @@ func (h *AuthController) Register(c echo.Context) error {
 }
 
 func (h *AuthController) Login(c echo.Context) error {
-	var req dtoAuth.LoginRequest
+	var req dto.LoginRequest
 
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidationError(c, err)
@@ -106,14 +106,14 @@ func (h *AuthController) GoogleCallback(c echo.Context) error {
 		return h.Response(c, http.StatusInternalServerError, "Cannot login by google", nil)
 	}
 	fmt.Println(data)
-	var response dtoAuth.UserGoogleRequest
+	var response dto.UserGoogleRequest
 	if err := mapstructure.Decode(data, &response); err != nil {
 		// Handle JSON unmarshaling error
 		h.logger.Error(fmt.Sprintf("Cannot unmarshal JSON response: %+v", err))
 		return h.Response(c, http.StatusInternalServerError, "Cannot login by google", nil)
 	}
 
-	var req dtoAuth.UserGoogleRequest
+	var req dto.UserGoogleRequest
 
 	err = utils.Copy(&response, &req)
 	if err != nil {
@@ -122,7 +122,7 @@ func (h *AuthController) GoogleCallback(c echo.Context) error {
 	}
 	_, err = h.authService.RegisterByGoogle(c.Request().Context(), req)
 	if err != nil {
-		res, err := h.authService.LoginByGoogle(c.Request().Context(), dtoAuth.LoginByGoogleRequest{
+		res, err := h.authService.LoginByGoogle(c.Request().Context(), dto.LoginByGoogleRequest{
 			Email:    req.Email,
 			GoogleId: req.GoogleID,
 		})

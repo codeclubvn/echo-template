@@ -2,7 +2,7 @@ package controller
 
 import (
 	"net/http"
-	"trail_backend/api/dto"
+	"trail_backend/dto"
 	"trail_backend/utils"
 
 	"github.com/labstack/echo/v4"

@@ -5,7 +5,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"net/http"
 	"trail_backend/api/api_errors"
-	"trail_backend/api/dto"
+	dto2 "trail_backend/dto"
 	"trail_backend/utils"
 
 	"github.com/pkg/errors"
@@ -17,14 +17,14 @@ type BaseController struct {
 }
 
 func (b *BaseController) Response(c echo.Context, statusCode int, message string, data interface{}) error {
-	return c.JSON(statusCode, dto.SimpleResponse{
+	return c.JSON(statusCode, dto2.SimpleResponse{
 		Data:    data,
 		Message: message,
 	})
 }
 
 func (b *BaseController) ResponseList(c echo.Context, message string, total *int64, data interface{}) error {
-	var o dto.PageOptions
+	var o dto2.PageOptions
 	if err := c.Bind(&o); err != nil {
 		return b.ResponseValidationError(c, err)
 	}
@@ -38,10 +38,10 @@ func (b *BaseController) ResponseList(c echo.Context, message string, total *int
 	}
 
 	pageCount := utils.GetPageCount(*total, o.Limit)
-	return c.JSON(http.StatusOK, dto.SimpleResponseList{
+	return c.JSON(http.StatusOK, dto2.SimpleResponseList{
 		Message: message,
 		Data:    data,
-		Meta: dto.Meta{
+		Meta: dto2.Meta{
 			Total:       total,
 			Page:        o.Page,
 			Limit:       o.Limit,
@@ -63,7 +63,7 @@ func (b *BaseController) ResponseError(c echo.Context, err error) error {
 		err = errors.New(api_errors.ErrInternalServerError)
 	}
 
-	return c.JSON(status, dto.ResponseError{
+	return c.JSON(status, dto2.ResponseError{
 		Code:    err.Error(),
 		Message: mas.Message,
 	})
@@ -75,7 +75,7 @@ func (b *BaseController) ResponseValidationError(c echo.Context, err error) erro
 		err = errors.New(utils.StructPascalToSnakeCase(ve[0].Field()) + " is " + ve[0].Tag())
 	}
 
-	return c.JSON(http.StatusUnprocessableEntity, dto.ResponseError{
+	return c.JSON(http.StatusUnprocessableEntity, dto2.ResponseError{
 		Code:    api_errors.ErrValidation,
 		Message: err.Error(),
 	})

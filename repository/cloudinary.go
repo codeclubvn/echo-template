@@ -7,8 +7,8 @@ import (
 	"github.com/cloudinary/cloudinary-go/v2/api/admin"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"go.uber.org/zap"
-	"trail_backend/api/dto"
 	"trail_backend/config"
+	"trail_backend/dto"
 	"trail_backend/infrastructure"
 )
 

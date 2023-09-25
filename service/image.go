@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
-	"trail_backend/api/dto"
 	"trail_backend/config"
+	"trail_backend/dto"
 	"trail_backend/repository"
 )
 

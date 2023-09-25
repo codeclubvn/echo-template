@@ -5,7 +5,7 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"trail_backend/api/dto"
+	"trail_backend/dto"
 	"trail_backend/infrastructure"
 	"trail_backend/models"
 	"trail_backend/repository"

@@ -3,8 +3,8 @@ package service
 import (
 	"time"
 	"trail_backend/api/api_errors"
-	dto "trail_backend/api/dto/auth"
 	"trail_backend/config"
+	"trail_backend/dto/auth"
 	"trail_backend/utils/constants"
 
 	"github.com/golang-jwt/jwt"

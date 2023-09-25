@@ -2,7 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"trail_backend/api/dto"
+	"trail_backend/dto"
 	"trail_backend/infrastructure"
 
 	"gorm.io/gorm"

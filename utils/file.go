@@ -4,7 +4,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"io"
 	"os"
-	"trail_backend/api/dto"
+	"trail_backend/dto"
 )
 
 func GetFile(c echo.Context, req *dto.UploadFileRequest, folder string) error {

@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"time"
-	"trail_backend/api/dto"
+	"trail_backend/dto"
 	"trail_backend/infrastructure"
 	"trail_backend/models"
 	"trail_backend/utils"

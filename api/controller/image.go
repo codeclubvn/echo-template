@@ -4,7 +4,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"os"
-	"trail_backend/api/dto"
+	"trail_backend/dto"
 	"trail_backend/service"
 	"trail_backend/utils"
 	"trail_backend/utils/constants"

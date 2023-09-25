@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 	"trail_backend/api/api_errors"
-	"trail_backend/api/dto"
-	dtoAuth "trail_backend/api/dto/auth"
+	"trail_backend/dto"
+	dto2 "trail_backend/dto/auth"
 	"trail_backend/utils/constants"
 
 	"github.com/pkg/errors"
@@ -18,10 +18,10 @@ import (
 
 type (
 	AuthService interface {
-		Register(ctx context.Context, req dtoAuth.RegisterRequest) (user *models.User, err error)
-		Login(ctx context.Context, req dtoAuth.LoginRequest) (res *dtoAuth.LoginResponse, err error)
-		RegisterByGoogle(ctx context.Context, req dtoAuth.UserGoogleRequest) (user *models.User, err error)
-		LoginByGoogle(ctx context.Context, req dtoAuth.LoginByGoogleRequest) (res *dtoAuth.LoginResponse, err error)
+		Register(ctx context.Context, req dto2.RegisterRequest) (user *models.User, err error)
+		Login(ctx context.Context, req dto2.LoginRequest) (res *dto2.LoginResponse, err error)
+		RegisterByGoogle(ctx context.Context, req dto2.UserGoogleRequest) (user *models.User, err error)
+		LoginByGoogle(ctx context.Context, req dto2.LoginByGoogleRequest) (res *dto2.LoginResponse, err error)
 	}
 	authService struct {
 		userService UserService
@@ -38,7 +38,7 @@ func NewAuthService(userService UserService, config *config.Config, jwtService J
 	}
 }
 
-func (a *authService) Register(ctx context.Context, req dtoAuth.RegisterRequest) (user *models.User, err error) {
+func (a *authService) Register(ctx context.Context, req dto2.RegisterRequest) (user *models.User, err error) {
 	encryptedPassword, err := bcrypt.GenerateFromPassword(
 		[]byte(req.Password),
 		bcrypt.DefaultCost,
@@ -57,7 +57,7 @@ func (a *authService) Register(ctx context.Context, req dtoAuth.RegisterRequest)
 	return user, err
 }
 
-func (a *authService) Login(ctx context.Context, req dtoAuth.LoginRequest) (res *dtoAuth.LoginResponse, err error) {
+func (a *authService) Login(ctx context.Context, req dto2.LoginRequest) (res *dto2.LoginResponse, err error) {
 	user, err := a.userService.GetByEmail(ctx, req.Email)
 
 	if err != nil {
@@ -75,11 +75,11 @@ func (a *authService) Login(ctx context.Context, req dtoAuth.LoginRequest) (res 
 		return nil, errors.Wrap(err, "cannot generate auth tokens")
 	}
 
-	return &dtoAuth.LoginResponse{
-		User: dtoAuth.UserResponse{
+	return &dto2.LoginResponse{
+		User: dto2.UserResponse{
 			ID: user.ID.String(),
 		},
-		Token: dtoAuth.TokenResponse{
+		Token: dto2.TokenResponse{
 			AccessToken:  accessToken,
 			RefreshToken: refreshToken,
 			ExpiresIn:    a.config.Jwt.AccessTokenExpiresIn,
@@ -87,7 +87,7 @@ func (a *authService) Login(ctx context.Context, req dtoAuth.LoginRequest) (res 
 	}, nil
 }
 
-func (a *authService) RegisterByGoogle(ctx context.Context, req dtoAuth.UserGoogleRequest) (user *models.User, err error) {
+func (a *authService) RegisterByGoogle(ctx context.Context, req dto2.UserGoogleRequest) (user *models.User, err error) {
 	log.Println(fmt.Sprintf("Request info %+v", req))
 	user, err = a.userService.Create(ctx, dto.CreateUserRequest{
 		Email:    req.Email,
@@ -97,7 +97,7 @@ func (a *authService) RegisterByGoogle(ctx context.Context, req dtoAuth.UserGoog
 	return user, err
 }
 
-func (a *authService) LoginByGoogle(ctx context.Context, req dtoAuth.LoginByGoogleRequest) (res *dtoAuth.LoginResponse, err error) {
+func (a *authService) LoginByGoogle(ctx context.Context, req dto2.LoginByGoogleRequest) (res *dto2.LoginResponse, err error) {
 	user, err := a.userService.GetByEmail(ctx, req.Email)
 	if err != nil {
 		return nil, err
@@ -110,12 +110,12 @@ func (a *authService) LoginByGoogle(ctx context.Context, req dtoAuth.LoginByGoog
 	if err != nil {
 		return nil, err
 	}
-	res = &dtoAuth.LoginResponse{
-		User: dtoAuth.UserResponse{
+	res = &dto2.LoginResponse{
+		User: dto2.UserResponse{
 			ID:    user.ID.String(),
 			Email: user.Email,
 		},
-		Token: dtoAuth.TokenResponse{
+		Token: dto2.TokenResponse{
 			AccessToken:  accessToken,
 			RefreshToken: refreshToken,
 			ExpiresIn:    a.config.Jwt.AccessTokenExpiresIn,
