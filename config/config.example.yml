@@ -6,7 +6,7 @@ server:
   host: '127.0.0.1'
   env: 'local'
   useRedis: false
-  uploadPath: './uploads'
+  uploadPath: './assets'
 
 services:
 
