@@ -17,8 +17,6 @@ definitions:
     properties:
       access_token:
         type: string
-      expires_in:
-        type: integer
       refresh_token:
         type: string
     type: object
@@ -31,6 +29,79 @@ definitions:
       role_id:
         type: string
       user_name:
+        type: string
+    type: object
+  request.CreatePostRequest:
+    properties:
+      content:
+        type: string
+      image:
+        type: string
+      slug:
+        type: string
+      title:
+        type: string
+    type: object
+  request.GetListPostRequest:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      search:
+        type: string
+      sort:
+        type: string
+    type: object
+  request.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        maxLength: 20
+        minLength: 6
+        type: string
+      request_from:
+        enum:
+        - trail/
+        - web
+        - app
+        type: string
+    required:
+    - email
+    - password
+    - request_from
+    type: object
+  request.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        maxLength: 20
+        minLength: 6
+        type: string
+      request_from:
+        enum:
+        - trail/
+        - web
+        - app
+        type: string
+    required:
+    - email
+    - password
+    - request_from
+    type: object
+  request.UpdatePostRequest:
+    properties:
+      content:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      slug:
+        type: string
+      title:
         type: string
     type: object
 info:
@@ -46,6 +117,80 @@ info:
   title: Swagger Trail Backend API
   version: "2.0"
 paths:
+  /v1/api/auth/call-back:
+    post:
+      consumes:
+      - application/json
+      description: GoogleCallback
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: GoogleCallback
+      tags:
+      - Auth
+  /v1/api/auth/google/login:
+    post:
+      consumes:
+      - application/json
+      description: GoogleLogin
+      produces:
+      - application/json
+      responses:
+        "302":
+          description: Found
+          schema:
+            type: string
+      summary: GoogleLogin
+      tags:
+      - Auth
+  /v1/api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: LoginRequest
+        in: body
+        name: LoginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.LoginResponse'
+      summary: Login
+      tags:
+      - Auth
+  /v1/api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      parameters:
+      - description: RegisterRequest
+        in: body
+        name: RegisterRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Register
+      tags:
+      - Auth
   /v1/api/files:
     delete:
       consumes:
@@ -57,8 +202,11 @@ paths:
         name: Authorization
         required: true
         type: string
-      produces:
-      - application/json
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
       responses:
         "200":
           description: success
@@ -69,7 +217,7 @@ paths:
       - File
     post:
       consumes:
-      - application/json
+      - multipart/form-data
       description: Upload
       parameters:
       - description: authorization token
@@ -77,8 +225,11 @@ paths:
         name: Authorization
         required: true
         type: string
-      produces:
-      - application/json
+      - description: UploadFileRequest
+        in: formData
+        name: UploadFileRequest
+        required: true
+        type: file
       responses:
         "200":
           description: success
@@ -89,7 +240,7 @@ paths:
       - File
     put:
       consumes:
-      - application/json
+      - multipart/form-data
       description: Update
       parameters:
       - description: authorization token
@@ -97,8 +248,11 @@ paths:
         name: Authorization
         required: true
         type: string
-      produces:
-      - application/json
+      - description: UploadFileRequest
+        in: formData
+        name: UploadFileRequest
+        required: true
+        type: file
       responses:
         "200":
           description: success
@@ -107,7 +261,7 @@ paths:
       summary: Update
       tags:
       - File
-  /v1/api/files/:id:
+  /v1/api/files/{id}:
     get:
       consumes:
       - application/json
@@ -118,8 +272,11 @@ paths:
         name: Authorization
         required: true
         type: string
-      produces:
-      - application/json
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
       responses:
         "200":
           description: success
@@ -128,7 +285,7 @@ paths:
       summary: GetOne
       tags:
       - File
-  /v1/api/files/download/:id:
+  /v1/api/files/download/{id}:
     get:
       consumes:
       - application/json
@@ -139,8 +296,11 @@ paths:
         name: Authorization
         required: true
         type: string
-      produces:
-      - application/json
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
       responses:
         "200":
           description: success
@@ -154,12 +314,6 @@ paths:
       consumes:
       - application/json
       description: Health
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -167,13 +321,13 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/entity.SimpleResponse'
-      summary: Health
+      summary: Check health server
       tags:
       - Health
   /v1/api/image/upload:
     post:
       consumes:
-      - application/json
+      - multipart/form-data
       description: Upload
       parameters:
       - description: authorization token
@@ -181,6 +335,11 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: UploadFileRequest
+        in: formData
+        name: UploadFileRequest
+        required: true
+        type: file
       produces:
       - application/json
       responses:
@@ -202,6 +361,12 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: GetListPostRequest
+        in: body
+        name: GetListPostRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.GetListPostRequest'
       produces:
       - application/json
       responses:
@@ -222,6 +387,12 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: CreatePostRequest
+        in: body
+        name: CreatePostRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreatePostRequest'
       produces:
       - application/json
       responses:
@@ -242,6 +413,12 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: UpdatePostRequest
+        in: body
+        name: UpdatePostRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdatePostRequest'
       produces:
       - application/json
       responses:
@@ -252,7 +429,7 @@ paths:
       summary: Update
       tags:
       - Post
-  /v1/api/posts/:id:
+  /v1/api/posts/{id}:
     delete:
       consumes:
       - application/json
@@ -261,6 +438,11 @@ paths:
       - description: authorization token
         in: header
         name: Authorization
+        required: true
+        type: string
+      - description: id
+        in: path
+        name: id
         required: true
         type: string
       produces:
@@ -283,6 +465,11 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -293,90 +480,6 @@ paths:
       summary: GetOne
       tags:
       - Post
-  /v1/api/request/call-back:
-    post:
-      consumes:
-      - application/json
-      description: GoogleCallback
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/entity.SimpleResponse'
-      summary: GoogleCallback
-      tags:
-      - Auth
-  /v1/api/request/google/login:
-    post:
-      consumes:
-      - application/json
-      description: GoogleLogin
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "302":
-          description: Found
-          schema:
-            type: string
-      summary: GoogleLogin
-      tags:
-      - Auth
-  /v1/api/request/login:
-    post:
-      consumes:
-      - application/json
-      description: Login
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/entity.LoginResponse'
-      summary: Login
-      tags:
-      - Auth
-  /v1/api/request/register:
-    post:
-      consumes:
-      - application/json
-      description: Register
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/entity.SimpleResponse'
-      summary: Register
-      tags:
-      - Auth
   /v1/api/users:
     get:
       consumes:
@@ -398,26 +501,6 @@ paths:
       summary: GetList
       tags:
       - User
-    post:
-      consumes:
-      - application/json
-      description: Create
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/entity.SimpleResponse'
-      summary: Create
-      tags:
-      - User
     put:
       consumes:
       - application/json
@@ -438,7 +521,7 @@ paths:
       summary: Update
       tags:
       - User
-  /v1/api/users/:id:
+  /v1/api/users/{id}:
     delete:
       consumes:
       - application/json
@@ -467,6 +550,11 @@ paths:
       - description: authorization token
         in: header
         name: Authorization
+        required: true
+        type: string
+      - description: id
+        in: path
+        name: id
         required: true
         type: string
       produces:

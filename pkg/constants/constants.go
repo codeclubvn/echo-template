@@ -33,3 +33,5 @@ const (
 	FolderUpload = "./assets/"
 	FolderTmp    = "./tmp/"
 )
+
+const NumberFileNameSplit = 1

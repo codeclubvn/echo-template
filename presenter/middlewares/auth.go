@@ -8,6 +8,7 @@ import (
 	"strings"
 	"trail_backend/domain/entity"
 	"trail_backend/pkg/api_errors"
+	"trail_backend/pkg/constants"
 	"trail_backend/presenter/request"
 )
 
@@ -23,7 +24,15 @@ func (e *Middleware) Auth(authorization bool) echo.MiddlewareFunc {
 				})
 
 			}
-			jwtToken := strings.Split(auth, " ")[1]
+			jwtTokenTmp := strings.Split(auth, " ")
+			if len(jwtTokenTmp) < constants.NumberOfJWTTokenArray {
+				mas := api_errors.MapErrorCodeMessage[api_errors.ErrTokenMissing]
+				return c.JSON(mas.Status, entity.ResponseError{
+					Message: mas.Message,
+					Code:    api_errors.ErrTokenMissing,
+				})
+			}
+			jwtToken := jwtTokenTmp[1]
 
 			if jwtToken == "" {
 				mas := api_errors.MapErrorCodeMessage[api_errors.ErrTokenMissing]

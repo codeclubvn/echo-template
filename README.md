@@ -19,8 +19,8 @@ Clean Architecture is a software development architecture that has become a stan
 ## Project structure
 
 ```
-├── cmd
-│   └── main.go # entry point
+
+├── main.go # entry point
 ├── boostrap # dependencies injection modules
 ├── infra # config connecting to external services
 ├── config # config file

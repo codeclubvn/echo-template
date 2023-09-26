@@ -19,6 +19,8 @@ var (
 	ErrPermissionDenied     = "10013"
 	ErrInvalidPassword      = "10014"
 	CannotParseToken        = "10015"
+	ErrPostNotFound         = "10016"
+	ErrFileNotFound         = "10017"
 )
 
 type MessageAndStatus struct {
@@ -34,7 +36,8 @@ var MapErrorCodeMessage = map[string]MessageAndStatus{
 	ErrTokenInvalid:         {"Token Invalid", http.StatusUnauthorized},
 	ErrTokenMalformed:       {"Token Malformed", http.StatusUnauthorized},
 	ErrUserNotFound:         {"User Not Found", http.StatusNotFound},
-	ErrProductNotFound:      {"Product Not Found", http.StatusNotFound},
+	ErrPostNotFound:         {"Post Not Found", http.StatusNotFound},
+	ErrFileNotFound:         {"File Not Found", http.StatusNotFound},
 	ErrRequestTimeout:       {"Request Timeout", http.StatusRequestTimeout},
 	ErrTokenMissing:         {"Token Missing", http.StatusUnauthorized},
 	ErrValidation:           {"Validation Error", http.StatusBadRequest},

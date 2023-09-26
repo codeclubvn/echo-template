@@ -9,4 +9,7 @@ var PublicRoutes = map[string]string{
 	"/v1/api":               http.MethodPost,
 }
 
-const NumberOfPath = 3
+const (
+	NumberOfPath          = 3
+	NumberOfJWTTokenArray = 2
+)

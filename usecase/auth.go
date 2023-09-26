@@ -80,7 +80,6 @@ func (a *authService) Login(ctx context.Context, req request.LoginRequest) (res 
 		Token: entity.TokenResponse{
 			AccessToken:  accessToken,
 			RefreshToken: refreshToken,
-			ExpiresIn:    a.config.Jwt.AccessTokenExpiresIn,
 		},
 	}, nil
 }
@@ -116,7 +115,6 @@ func (a *authService) LoginByGoogle(ctx context.Context, req request.LoginByGoog
 		Token: entity.TokenResponse{
 			AccessToken:  accessToken,
 			RefreshToken: refreshToken,
-			ExpiresIn:    a.config.Jwt.AccessTokenExpiresIn,
 		},
 	}
 

@@ -6,6 +6,7 @@ import (
 	"go.uber.org/zap"
 	"trail_backend/domain/repo/model"
 	"trail_backend/infra"
+	"trail_backend/pkg/api_errors"
 	"trail_backend/pkg/utils"
 	"trail_backend/presenter/request"
 )
@@ -43,7 +44,7 @@ func (r *postRepository) Update(ctx context.Context, post *model.Post) error {
 func (r *postRepository) GetOneById(ctx context.Context, id string) (*model.Post, error) {
 	var post model.Post
 	if err := r.db.WithContext(ctx).Where("id = ?", id).First(&post).Error; err != nil {
-		return nil, errors.Wrap(err, "Find post failed")
+		return nil, errors.New(api_errors.ErrPostNotFound)
 	}
 
 	return &post, nil

@@ -16,14 +16,14 @@ func NewHealthController() *HealthController {
 }
 
 // Health
-// @Summary		Health
-// @Description	Health
-// @Tags		Health
-// @Accept		json
-// @Produce		json
-// @Param		Authorization	header		string								true	"authorization token"
-// @Success		200				{object}	entity.SimpleResponse	"success"
-// @Router		/v1/api/health [GET]
+//
+//	@Summary		Check health server
+//	@Description	Health
+//	@Tags			Health
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	entity.SimpleResponse	"success"
+//	@Router			/v1/api/health [GET]
 func (h *HealthController) Health(c echo.Context) error {
 	return h.Response(c, http.StatusOK, "success", map[string]interface{}{
 		"status": "UP",

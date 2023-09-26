@@ -11,6 +11,7 @@ import (
 	"trail_backend/config"
 	"trail_backend/domain/repo"
 	"trail_backend/domain/repo/model"
+	"trail_backend/pkg/constants"
 	"trail_backend/pkg/utils"
 	"trail_backend/presenter/request"
 )
@@ -73,7 +74,12 @@ func saveToFolder(file *multipart.FileHeader, uploadPath, id, extensionName stri
 }
 
 func getExtensionNameFromFilename(fileName string) string {
-	return strings.Split(fileName, ".")[1]
+	fileNameArr := strings.Split(fileName, ".")
+	extensionName := ""
+	if len(fileNameArr) > constants.NumberFileNameSplit {
+		extensionName = fileNameArr[1]
+	}
+	return extensionName
 }
 
 func (s *fileService) Upload(ctx context.Context, req request.UploadFileRequest) (*model.File, error) {

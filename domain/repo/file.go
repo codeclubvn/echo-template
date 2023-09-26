@@ -6,6 +6,7 @@ import (
 	"go.uber.org/zap"
 	"trail_backend/domain/repo/model"
 	"trail_backend/infra"
+	"trail_backend/pkg/api_errors"
 )
 
 type FileRepository interface {
@@ -40,7 +41,7 @@ func (r *fileRepository) Update(ctx context.Context, file *model.File) (err erro
 func (r *fileRepository) GetOneById(ctx context.Context, id string) (res *model.File, err error) {
 	var file model.File
 	if err := r.db.WithContext(ctx).Where("id = ?", id).First(&file).Error; err != nil {
-		return nil, errors.Wrap(err, "Find file failed")
+		return nil, errors.New(api_errors.ErrPostNotFound)
 	}
 	return &file, nil
 }

@@ -24,14 +24,125 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/api/files": {
-            "put": {
-                "description": "Update",
+        "/v1/api/auth/call-back": {
+            "post": {
+                "description": "GoogleCallback",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "GoogleCallback",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/entity.SimpleResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/api/auth/google/login": {
+            "post": {
+                "description": "GoogleLogin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "GoogleLogin",
+                "responses": {
+                    "302": {
+                        "description": "Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/api/auth/login": {
+            "post": {
+                "description": "Login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "LoginRequest",
+                        "name": "LoginRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/entity.LoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/api/auth/register": {
+            "post": {
+                "description": "Register",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register",
+                "parameters": [
+                    {
+                        "description": "RegisterRequest",
+                        "name": "RegisterRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/entity.SimpleResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/api/files": {
+            "put": {
+                "description": "Update",
+                "consumes": [
+                    "multipart/form-data"
                 ],
                 "tags": [
                     "File"
@@ -43,6 +154,13 @@ const docTemplate = `{
                         "description": "authorization token",
                         "name": "Authorization",
                         "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "UploadFileRequest",
+                        "name": "UploadFileRequest",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -58,10 +176,7 @@ const docTemplate = `{
             "post": {
                 "description": "Upload",
                 "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "tags": [
                     "File"
@@ -73,6 +188,13 @@ const docTemplate = `{
                         "description": "authorization token",
                         "name": "Authorization",
                         "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "UploadFileRequest",
+                        "name": "UploadFileRequest",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -90,9 +212,6 @@ const docTemplate = `{
                 "consumes": [
                     "application/json"
                 ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "File"
                 ],
@@ -103,6 +222,13 @@ const docTemplate = `{
                         "description": "authorization token",
                         "name": "Authorization",
                         "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -116,13 +242,46 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/api/files/:id": {
+        "/v1/api/files/download/{id}": {
             "get": {
-                "description": "GetOne",
+                "description": "Download",
                 "consumes": [
                     "application/json"
                 ],
-                "produces": [
+                "tags": [
+                    "File"
+                ],
+                "summary": "Download",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "authorization token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/entity.SimpleResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/api/files/{id}": {
+            "get": {
+                "description": "GetOne",
+                "consumes": [
                     "application/json"
                 ],
                 "tags": [
@@ -136,37 +295,12 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/entity.SimpleResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/api/files/download/:id": {
-            "get": {
-                "description": "Download",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "File"
-                ],
-                "summary": "Download",
-                "parameters": [
+                    },
                     {
                         "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -192,16 +326,7 @@ const docTemplate = `{
                 "tags": [
                     "Health"
                 ],
-                "summary": "Health",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
+                "summary": "Check health server",
                 "responses": {
                     "200": {
                         "description": "success",
@@ -216,7 +341,7 @@ const docTemplate = `{
             "post": {
                 "description": "Upload",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -231,6 +356,13 @@ const docTemplate = `{
                         "description": "authorization token",
                         "name": "Authorization",
                         "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "UploadFileRequest",
+                        "name": "UploadFileRequest",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -264,6 +396,15 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "description": "GetListPostRequest",
+                        "name": "GetListPostRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.GetListPostRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -294,6 +435,15 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "description": "UpdatePostRequest",
+                        "name": "UpdatePostRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdatePostRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -324,6 +474,15 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "description": "CreatePostRequest",
+                        "name": "CreatePostRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CreatePostRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -336,7 +495,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/api/posts/:id": {
+        "/v1/api/posts/{id}": {
             "get": {
                 "description": "GetOne",
                 "consumes": [
@@ -355,6 +514,13 @@ const docTemplate = `{
                         "description": "authorization token",
                         "name": "Authorization",
                         "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -386,133 +552,12 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/entity.SimpleResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/api/request/call-back": {
-            "post": {
-                "description": "GoogleCallback",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "GoogleCallback",
-                "parameters": [
+                    },
                     {
                         "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/entity.SimpleResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/api/request/google/login": {
-            "post": {
-                "description": "GoogleLogin",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "GoogleLogin",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "302": {
-                        "description": "Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/api/request/login": {
-            "post": {
-                "description": "Login",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Login",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/entity.LoginResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/api/request/register": {
-            "post": {
-                "description": "Register",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Register",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -586,39 +631,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "post": {
-                "description": "Create",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Create",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/entity.SimpleResponse"
-                        }
-                    }
-                }
             }
         },
-        "/v1/api/users/:id": {
+        "/v1/api/users/{id}": {
             "get": {
                 "description": "GetOne",
                 "consumes": [
@@ -637,6 +652,13 @@ const docTemplate = `{
                         "description": "authorization token",
                         "name": "Authorization",
                         "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -709,9 +731,6 @@ const docTemplate = `{
                 "access_token": {
                     "type": "string"
                 },
-                "expires_in": {
-                    "type": "integer"
-                },
                 "refresh_token": {
                     "type": "string"
                 }
@@ -730,6 +749,112 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.CreatePostRequest": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.GetListPostRequest": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "search": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.LoginRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "password",
+                "request_from"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 6
+                },
+                "request_from": {
+                    "type": "string",
+                    "enum": [
+                        "trail/",
+                        "web",
+                        "app"
+                    ]
+                }
+            }
+        },
+        "request.RegisterRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "password",
+                "request_from"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 6
+                },
+                "request_from": {
+                    "type": "string",
+                    "enum": [
+                        "trail/",
+                        "web",
+                        "app"
+                    ]
+                }
+            }
+        },
+        "request.UpdatePostRequest": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }

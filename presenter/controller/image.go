@@ -22,14 +22,16 @@ func NewImageController(imageService usecase.FileCloudService) *FileCloudControl
 }
 
 // Upload
-// @Summary		Upload
-// @Description	Upload
-// @Tags		Image
-// @Accept		json
-// @Produce		json
-// @Param		Authorization	header		string								true	"authorization token"
-// @Success		200				{object}	entity.SimpleResponse	"success"
-// @Router		/v1/api/image/upload [POST]
+//
+//	@Summary		Upload
+//	@Description	Upload
+//	@Tags			Image
+//	@Accept			multipart/form-data
+//	@Produce		json
+//	@Param			Authorization		header		string						true	"authorization token"
+//	@Param			UploadFileRequest	formData		file	true	"UploadFileRequest"
+//	@Success		200					{object}	entity.SimpleResponse		"success"
+//	@Router			/v1/api/image/upload [POST]
 func (h *FileCloudController) Upload(c echo.Context) error {
 	var req request.UploadFileRequest
 	if err := utils2.GetFile(c, &req, constants.FolderTmp); err != nil {
