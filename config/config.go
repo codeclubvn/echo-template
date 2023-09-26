@@ -2,30 +2,38 @@ package config
 
 import (
 	"fmt"
-	"os"
-	"trail_backend/utils/constants"
-
 	"github.com/spf13/viper"
+	"os"
+	"reflect"
+	"trail_backend/pkg/constants"
 )
 
 var (
-	ConfigDefaultFile = "config/config.dev.yml"
+	ConfigDefaultFile = "config/config.yml"
 	ConfigReleaseFile = "config/config.release.yml"
-	ConfigDevFile     = "config/config.dev.yml"
+	ConfigDevFile     = "config/config.yml"
 	configType        = "yml"
+)
+
+var (
+	configEnv     = "./config/app.env"
+	configTypeEnv = "env"
+	configEnvName = "app"
 )
 
 type (
 	Config struct {
-		Debug          bool        `mapstructure:"debug"`
-		ContextTimeout int         `mapstructure:"contextTimeout"`
-		Server         Server      `mapstructure:"server"`
-		Services       Services    `mapstructure:"services"`
-		Database       Database    `mapstructure:"database"`
-		Logger         Logger      `mapstructure:"logger"`
-		Jwt            Jwt         `mapstructure:"jwt"`
-		Cloudinary     Cloudinary  `mapstructure:"cloudinary"`
-		GoogleOAuth    GoogleOAuth `mapstructure:"googleOAuth"`
+		Env            Env        `mapstructure:"env"`
+		Cloudinary     Cloudinary `mapstructure:"cloudinary"`
+		Debug          bool       `mapstructure:"debug"`
+		ContextTimeout int        `mapstructure:"contextTimeout"`
+		Server         Server     `mapstructure:"server"`
+		Services       Services   `mapstructure:"services"`
+		Database       Database   `mapstructure:"database"`
+		Logger         Logger     `mapstructure:"logger"`
+		Jwt            Jwt        `mapstructure:"jwt"`
+		//Cloudinary     Cloudinary  `mapstructure:"cloudinary"`
+		GoogleOAuth GoogleOAuth `mapstructure:"googleOAuth"`
 	}
 
 	Server struct {
@@ -62,6 +70,11 @@ type (
 	Services struct {
 	}
 
+	Env struct {
+		Env           string `mapstructure:"ENV"`
+		CloudinaryURL string `mapstructure:"CLOUDINARY_URL"`
+	}
+
 	Cloudinary struct {
 		CloudName string `mapstructure:"cloudName"`
 		ApiKey    string `mapstructure:"apiKey"`
@@ -84,14 +97,48 @@ type (
 	}
 )
 
+func SetEnv(config *Config) {
+	v := reflect.ValueOf(config.Env)
+	for i := 0; i < v.NumField(); i++ {
+		if v.Field(i).Interface() != "" {
+			os.Setenv(v.Type().Field(i).Tag.Get("mapstructure"), v.Field(i).Interface().(string))
+		}
+	}
+}
+
+func initEnv(conf *Config) {
+	if err := LoadConfigEnv(configEnv, configTypeEnv); err != nil {
+		fmt.Printf("unable decode into config struct, %v", err)
+	}
+	if err := UnmarsharConfig(&conf.Env); err != nil {
+		fmt.Printf("unable decode into config struct, %v", err)
+	}
+	SetEnv(conf)
+}
+
 func NewConfig() *Config {
-	initConfig()
 	conf := &Config{}
-	err := viper.Unmarshal(conf)
-	if err != nil {
+	initEnv(conf)
+	initConfig()
+	if err := UnmarsharConfig(conf); err != nil {
 		fmt.Printf("unable decode into config struct, %v", err)
 	}
 	return conf
+}
+
+func LoadConfigEnv(configFile, configType string) (err error) {
+	viper.SetConfigType(configType)
+	viper.SetConfigFile(configFile)
+
+	if err = viper.ReadInConfig(); err != nil {
+		fmt.Println(err.Error())
+	}
+	return
+}
+
+func UnmarsharConfig[E any](config *E) error {
+	return viper.Unmarshal(config)
+
 }
 
 func initConfig() {
@@ -107,12 +154,8 @@ func initConfig() {
 		configFile = ConfigDefaultFile
 		fmt.Printf("config%s\n", ConfigDefaultFile)
 	}
-	viper.SetConfigType(configType)
-	viper.SetConfigFile(configFile)
 
-	err := viper.ReadInConfig()
-
-	if err != nil {
+	if err := LoadConfigEnv(configFile, configType); err != nil {
 		fmt.Println(err.Error())
 	}
 }

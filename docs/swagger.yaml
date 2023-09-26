@@ -1,19 +1,19 @@
 definitions:
-  dto.LoginResponse:
+  entity.LoginResponse:
     properties:
       token:
-        $ref: '#/definitions/dto.TokenResponse'
+        $ref: '#/definitions/entity.TokenResponse'
       user:
-        $ref: '#/definitions/dto.UserResponse'
+        $ref: '#/definitions/entity.UserResponse'
     type: object
-  dto.SimpleResponse:
+  entity.SimpleResponse:
     properties:
-      data: {}
+      domain: {}
       message:
         description: Code    int         `json:"code"`
         type: string
     type: object
-  dto.TokenResponse:
+  entity.TokenResponse:
     properties:
       access_token:
         type: string
@@ -22,7 +22,7 @@ definitions:
       refresh_token:
         type: string
     type: object
-  dto.UserResponse:
+  entity.UserResponse:
     properties:
       email:
         type: string
@@ -34,9 +34,266 @@ definitions:
         type: string
     type: object
 info:
-  contact: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is Trail Backend API docs
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Trail Backend API
+  version: "2.0"
 paths:
-  /v1/api/auth/call-back:
+  /v1/api/files:
+    delete:
+      consumes:
+      - application/json
+      description: Delete
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Delete
+      tags:
+      - File
+    post:
+      consumes:
+      - application/json
+      description: Upload
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Upload
+      tags:
+      - File
+    put:
+      consumes:
+      - application/json
+      description: Update
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Update
+      tags:
+      - File
+  /v1/api/files/:id:
+    get:
+      consumes:
+      - application/json
+      description: GetOne
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: GetOne
+      tags:
+      - File
+  /v1/api/files/download/:id:
+    get:
+      consumes:
+      - application/json
+      description: Download
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Download
+      tags:
+      - File
+  /v1/api/health:
+    get:
+      consumes:
+      - application/json
+      description: Health
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Health
+      tags:
+      - Health
+  /v1/api/image/upload:
+    post:
+      consumes:
+      - application/json
+      description: Upload
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Upload
+      tags:
+      - Image
+  /v1/api/posts:
+    get:
+      consumes:
+      - application/json
+      description: GetList
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: GetList
+      tags:
+      - Post
+    post:
+      consumes:
+      - application/json
+      description: Create
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Create
+      tags:
+      - Post
+    put:
+      consumes:
+      - application/json
+      description: Update
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Update
+      tags:
+      - Post
+  /v1/api/posts/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Delete
+      tags:
+      - Post
+    get:
+      consumes:
+      - application/json
+      description: GetOne
+      parameters:
+      - description: authorization token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: GetOne
+      tags:
+      - Post
+  /v1/api/request/call-back:
     post:
       consumes:
       - application/json
@@ -53,11 +310,11 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/dto.SimpleResponse'
+            $ref: '#/definitions/entity.SimpleResponse'
       summary: GoogleCallback
       tags:
       - Auth
-  /v1/api/auth/google/login:
+  /v1/api/request/google/login:
     post:
       consumes:
       - application/json
@@ -78,7 +335,7 @@ paths:
       summary: GoogleLogin
       tags:
       - Auth
-  /v1/api/auth/login:
+  /v1/api/request/login:
     post:
       consumes:
       - application/json
@@ -95,11 +352,11 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/dto.LoginResponse'
+            $ref: '#/definitions/entity.LoginResponse'
       summary: Login
       tags:
       - Auth
-  /v1/api/auth/register:
+  /v1/api/request/register:
     post:
       consumes:
       - application/json
@@ -116,195 +373,10 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/dto.SimpleResponse'
+            $ref: '#/definitions/entity.SimpleResponse'
       summary: Register
       tags:
       - Auth
-  /v1/api/file:
-    delete:
-      consumes:
-      - application/json
-      description: Delete
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/dto.SimpleResponse'
-      summary: Delete
-      tags:
-      - File
-    post:
-      consumes:
-      - application/json
-      description: Upload
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/dto.SimpleResponse'
-      summary: Upload
-      tags:
-      - File
-    put:
-      consumes:
-      - application/json
-      description: Update
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/dto.SimpleResponse'
-      summary: Update
-      tags:
-      - File
-  /v1/api/file/download/:id:
-    get:
-      consumes:
-      - application/json
-      description: Download
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/dto.SimpleResponse'
-      summary: Download
-      tags:
-      - File
-  /v1/api/image/upload:
-    post:
-      consumes:
-      - application/json
-      description: Upload
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/dto.SimpleResponse'
-      summary: Upload
-      tags:
-      - Image
-  /v1/api/post:
-    get:
-      consumes:
-      - application/json
-      description: GetList
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/dto.SimpleResponse'
-      summary: GetList
-      tags:
-      - Post
-    put:
-      consumes:
-      - application/json
-      description: Update
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/dto.SimpleResponse'
-      summary: Update
-      tags:
-      - Post
-  /v1/api/post/:id:
-    delete:
-      consumes:
-      - application/json
-      description: Delete
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/dto.SimpleResponse'
-      summary: Delete
-      tags:
-      - Post
-    get:
-      consumes:
-      - application/json
-      description: GetOne
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/dto.SimpleResponse'
-      summary: GetOne
-      tags:
-      - Post
   /v1/api/users:
     get:
       consumes:
@@ -322,7 +394,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/dto.SimpleResponse'
+            $ref: '#/definitions/entity.SimpleResponse'
       summary: GetList
       tags:
       - User
@@ -342,7 +414,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/dto.SimpleResponse'
+            $ref: '#/definitions/entity.SimpleResponse'
       summary: Create
       tags:
       - User
@@ -362,7 +434,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/dto.SimpleResponse'
+            $ref: '#/definitions/entity.SimpleResponse'
       summary: Update
       tags:
       - User
@@ -383,7 +455,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/dto.SimpleResponse'
+            $ref: '#/definitions/entity.SimpleResponse'
       summary: Delete
       tags:
       - User
@@ -403,7 +475,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/dto.SimpleResponse'
+            $ref: '#/definitions/entity.SimpleResponse'
       summary: GetOne
       tags:
       - User

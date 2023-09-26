@@ -8,11 +8,8 @@
 *.exe~
 run-local.sh
 
-.env
-.env.*
-
-deploy.*
-docker-compose.yml
+config/app.env
+app.env
 
 /.docker
 config.dev.yml

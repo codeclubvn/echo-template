@@ -2,11 +2,11 @@ debug: true
 contextTimeout: 5
 
 server:
-  port: '8080'
+  port: '8010'
   host: '127.0.0.1'
   env: 'local'
   useRedis: false
-  uploadPath: 'uploads'
+  uploadPath: './uploads'
 
 services:
 
@@ -14,9 +14,9 @@ database:
   driver: 'postgres'
   host: 'localhost'
   port: 5432
-  username: 'erp-dev'
-  password: 'erp-dev'
-  name: 'erp-dev'
+  username: 'postgres'
+  password: 'password'
+  name: 'trail_be'
   sslmode: 'disable'
   timezone: 'Asia/Ho_Chi_Minh'
   maxOpenConnections: 10
@@ -25,7 +25,22 @@ database:
 
 jwt:
   secret: 'hgG6T23XD25N'
-  accessTokenExpiresIn: 3600
-  refreshTokenExpiresIn: 86400
+  accessTokenExpiresIn: 691200 # 8 days
+  refreshTokenExpiresIn: 2592000 # 30 days
 logger:
   level: 'debug'
+
+cloudinary:
+  cloudName: 'dsr2xnaj7'
+  apiKey: 'oZ47iHrgrFQq4fe7ksKKlo7tg4A'
+  apiSecret: '991793784142871'
+  publicId: 'trail_be'
+
+googleOAuth:
+  redirectURL: 'http://localhost:8010/v1/api/auth/google/callback'
+  clientID: '421930772152-rfjol0k3l1rjaloh8pmk5q0ljcluv3d2.apps.googleusercontent.com'
+  clientSecret: "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"
+  apiKey: 'AIzaSyBIY0Vc9qIkVDoWEXsapBMyjTVHIR-4f8Q'
+  scopes:
+    - "https://www.googleapis.com/auth/userinfo.email"
+    - "https://www.googleapis.com/auth/userinfo.profile"

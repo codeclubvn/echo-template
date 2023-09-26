@@ -1,0 +1,16 @@
+package model
+
+import "encoding/json"
+
+type File struct {
+	BaseModel
+	FileName      string          `json:"file_name" gorm:"column:file_name;type:varchar(50);not null"`
+	Path          string          `json:"path" gorm:"column:path;type:varchar(255);not null"`
+	Size          int64           `json:"size" gorm:"column:size;type:bigint;not null"`
+	ExtensionName string          `json:"type" gorm:"column:extension_name;type:varchar(10);not null"`
+	Data          json.RawMessage `json:"domain" gorm:"column:domain;type:jsonb;"` // save domain flexibly
+}
+
+func (File) TableName() string {
+	return "files"
+}

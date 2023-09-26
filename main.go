@@ -19,7 +19,7 @@ import (
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
-// @host	localhost:8000
+// @host	localhost:8010
 // @BasePath  /v1/api
 func main() {
 	bootstrap.Run()
