@@ -31,12 +31,11 @@ Clean Architecture is a software development architecture that has become a stan
 │   ├── docs # Swagger docs
 ├── usecase # business logic
 ├── domain
-│   ├── dto # data transfer object
+│   ├── assets # save file uploaded
 │   ├── entity # database entity
-│   ├── ├──  # response.go # struct mapping model to response
+│       ├──  # response.go # struct mapping model to response
 │   ├── repo # repository interface
-│   │  ├── model # struct mapping database table
-│   ├── uploads # save file uploaded
+│       ├── model # struct mapping database table
 ├── pkg
 │   ├── api_errors # error response
 │   ├── lib # Set up external libraries.
