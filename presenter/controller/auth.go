@@ -34,17 +34,20 @@ func NewAuthController(authService usecase.AuthService, logger *zap.Logger, conf
 
 // Register
 //
-//	@Summary		Register
-//	@Description	Register
-//	@Tags			Auth
-//	@Accept			json
-//	@Produce		json
-//	@Param			RegisterRequest	body		request.RegisterRequest	true	"RegisterRequest"
-//	@Success		200				{object}	entity.SimpleResponse	"success"
-//	@Router			/v1/api/auth/register [POST]
+// @Summary     Register
+// @Description Register
+// @Tags        Auth
+// @Accept      json
+// @Produce     json
+// @Param       RegisterRequest body     request.RegisterRequest true "RegisterRequest"
+// @Success     200             {object} entity.SimpleResponse   "success"
+// @Router      /v1/api/auth/register [POST]
 func (h *AuthController) Register(c echo.Context) error {
 	var req request.RegisterRequest
 	if err := c.Bind(&req); err != nil {
+		return h.ResponseValidationError(c, err)
+	}
+	if err := c.Validate(req); err != nil {
 		return h.ResponseValidationError(c, err)
 	}
 
@@ -58,38 +61,40 @@ func (h *AuthController) Register(c echo.Context) error {
 
 // Login
 //
-//	@Summary		Login
-//	@Description	Login
-//	@Tags			Auth
-//	@Accept			json
-//	@Produce		json
-//	@Param			LoginRequest	body		request.LoginRequest	true	"LoginRequest"
-//	@Success		200				{object}	entity.LoginResponse	"success"
-//	@Router			/v1/api/auth/login [POST]
+// @Summary     Login
+// @Description Login
+// @Tags        Auth
+// @Accept      json
+// @Produce     json
+// @Param       LoginRequest body     request.LoginRequest true "LoginRequest"
+// @Success     200          {object} entity.LoginResponse "success"
+// @Router      /v1/api/auth/login [POST]
 func (h *AuthController) Login(c echo.Context) error {
 	var req request.LoginRequest
 
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidationError(c, err)
 	}
-	res, err := h.authService.Login(c.Request().Context(), req)
+	if err := c.Validate(req); err != nil {
+		return h.ResponseValidationError(c, err)
+	}
 
+	res, err := h.authService.Login(c.Request().Context(), req)
 	if err != nil {
 		return h.ResponseError(c, err)
-
 	}
 	return h.Response(c, http.StatusOK, "success", res)
 }
 
 // GoogleLogin
 //
-//	@Summary		GoogleLogin
-//	@Description	GoogleLogin
-//	@Tags			Auth
-//	@Accept			json
-//	@Produce		json
-//	@Success		302	{object}	string
-//	@Router			/v1/api/auth/google/login [POST]
+// @Summary     GoogleLogin
+// @Description GoogleLogin
+// @Tags        Auth
+// @Accept      json
+// @Produce     json
+// @Success     302 {object} string
+// @Router      /v1/api/auth/google/login [POST]
 func (h *AuthController) GoogleLogin(c echo.Context) error {
 	authConfig := h.getGoogleOAuthConfig()
 	url := authConfig.AuthCodeURL("", oauth2.AccessTypeOffline)
@@ -108,13 +113,13 @@ func (h *AuthController) getGoogleOAuthConfig() oauth2.Config {
 
 // GoogleCallback
 //
-//	@Summary		GoogleCallback
-//	@Description	GoogleCallback
-//	@Tags			Auth
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	entity.SimpleResponse	"success"
-//	@Router			/v1/api/auth/call-back [POST]
+// @Summary     GoogleCallback
+// @Description GoogleCallback
+// @Tags        Auth
+// @Accept      json
+// @Produce     json
+// @Success     200 {object} entity.SimpleResponse "success"
+// @Router      /v1/api/auth/call-back [POST]
 func (h *AuthController) GoogleCallback(c echo.Context) error {
 	code := c.QueryParam("code")
 	authConfig := h.getGoogleOAuthConfig()

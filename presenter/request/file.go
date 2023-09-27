@@ -7,13 +7,12 @@ import (
 )
 
 type UploadFileRequest struct {
-	UserId   string                `json:"user_id"`
-	File     *multipart.FileHeader `json:"file"`
+	File     *multipart.FileHeader `json:"file" swaggerignore:"true" validation:"required"`
 	FileName string                `json:"file_name"`
 	Size     int64                 `json:"size"`
 	Path     string                `json:"path"`
 	Type     string                `json:"type"`
-	Data     json.RawMessage       `json:"domain"`
+	Data     json.RawMessage       `json:"data,omitempty" swaggertype:"array,string"`
 }
 
 type UploadFileResponse struct {
@@ -21,8 +20,10 @@ type UploadFileResponse struct {
 }
 
 type UpdateFileRequest struct {
-	ID string `json:"id"`
-	UploadFileRequest
+	ID       string                `json:"id" form:"id" validate:"required"`
+	File     *multipart.FileHeader `json:"file" swaggerignore:"true"`
+	FileName string                `json:"file_name" form:"file_name"`
+	Data     json.RawMessage       `json:"data,omitempty" swaggertype:"array,string"`
 }
 
 type FileResponse struct {

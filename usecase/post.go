@@ -36,6 +36,7 @@ func (s *postService) Create(ctx context.Context, req request.CreatePostRequest)
 	if err := utils.Copy(post, req); err != nil {
 		return nil, errors.WithStack(err)
 	}
+
 	if err := s.postRepository.Create(ctx, post); err != nil {
 		return nil, err
 	}

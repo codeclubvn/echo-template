@@ -22,6 +22,7 @@ type Server struct {
 
 func NewServer(lifecycle fx.Lifecycle, zap *zap.Logger, config *config.Config, db *infra.Database, middlewares *middlewares.Middleware) *Server {
 	instance := echo.New()
+	instance.Validator = NewRequestValidator()
 
 	instance.Use(middlewares.CORS())
 	instance.Use(middleware.Logger())

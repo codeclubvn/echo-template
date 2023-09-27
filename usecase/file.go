@@ -18,7 +18,7 @@ import (
 
 type (
 	FileService interface {
-		Upload(ctx context.Context, req request.UploadFileRequest) (*model.File, error)
+		Upload(ctx context.Context, file *multipart.FileHeader) (*model.File, error)
 		Update(ctx context.Context, req request.UpdateFileRequest) (*model.File, error)
 		Delete(ctx context.Context, id string) error
 		GetOne(ctx context.Context, id string) (*model.File, error)
@@ -60,7 +60,7 @@ func saveToFolder(file *multipart.FileHeader, uploadPath, id, extensionName stri
 	defer src.Close()
 
 	// Destination
-	dst, err := os.Create(uploadPath + id + extensionName)
+	dst, err := os.Create(uploadPath + id + "." + extensionName)
 	if err != nil {
 		return err
 	}
@@ -82,25 +82,25 @@ func getExtensionNameFromFilename(fileName string) string {
 	return extensionName
 }
 
-func (s *fileService) Upload(ctx context.Context, req request.UploadFileRequest) (*model.File, error) {
-	file := &model.File{}
+func (s *fileService) Upload(ctx context.Context, req *multipart.FileHeader) (*model.File, error) {
 	var err error
 	fileId := uuid.NewV4().String()
-	extensionName := getExtensionNameFromFilename(req.FileName)
+	extensionName := getExtensionNameFromFilename(req.Filename)
 
 	uploadPath := createFolder(fileId, s.config)
-	if err = saveToFolder(req.File, uploadPath, fileId, extensionName); err != nil {
+	if err = saveToFolder(req, uploadPath, fileId, extensionName); err != nil {
 		return nil, errors.WithStack(err)
 	}
 
-	if err = utils.Copy(file, req); err != nil {
-		return nil, errors.WithStack(err)
+	file := &model.File{
+		BaseModel: model.BaseModel{
+			ID: uuid.FromStringOrNil(fileId),
+		},
+		Path:          uploadPath,
+		Size:          req.Size,
+		ExtensionName: extensionName,
+		FileName:      req.Filename,
 	}
-	file.ID = uuid.FromStringOrNil(fileId)
-	file.Path = uploadPath
-	file.Size = req.File.Size
-	file.ExtensionName = extensionName
-
 	if err = s.fileRepository.Create(ctx, file); err != nil {
 		return nil, err
 	}
@@ -109,16 +109,39 @@ func (s *fileService) Upload(ctx context.Context, req request.UploadFileRequest)
 }
 
 func (s *fileService) Update(ctx context.Context, req request.UpdateFileRequest) (*model.File, error) {
-	file := &model.File{}
-	var err error
+	// get one file
+	file, err := s.fileRepository.GetOneById(ctx, req.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	// check filePath is not in ./domain/assets
+	if !strings.Contains(file.Path, s.config.Server.UploadPath) {
+		file.Path = createFolder(file.ID.String(), s.config)
+	} else {
+		// delete old file
+		_ = os.Remove(file.Path + file.ID.String() + "." + file.ExtensionName)
+	}
 
 	if err = utils.Copy(file, req); err != nil {
 		return nil, err
 	}
+	file.ExtensionName = getExtensionNameFromFilename(req.File.Filename)
+	file.Size = req.File.Size
+
+	// create folder if not exists
+	if _, err := os.Stat(file.Path); os.IsNotExist(err) {
+		if err := os.MkdirAll(file.Path, 0755); err != nil {
+			panic(err)
+		}
+	}
+	if err := saveToFolder(req.File, file.Path, file.ID.String(), file.ExtensionName); err != nil {
+		return nil, errors.WithStack(err)
+	}
+
 	if err = s.fileRepository.Update(ctx, file); err != nil {
 		return nil, err
 	}
-
 	return file, err
 }
 

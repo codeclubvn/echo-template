@@ -21,20 +21,21 @@ func NewPostController(postService usecase.PostService) *PostController {
 
 // Create
 //
-//	@Summary		Create
-//	@Description	Create
-//	@Tags			Post
-//	@Accept			json
-//	@Produce		json
-//	@Param			Authorization		header		string						true	"authorization token"
-//	@Param			CreatePostRequest	body		request.CreatePostRequest	true	"CreatePostRequest"
-//	@Success		200					{object}	model.Post					"success"
-//	@Router			/v1/api/posts [POST]
+// @Summary     Create
+// @Description Create
+// @Tags        Post
+// @Accept      json
+// @Produce     json
+// @Param       Authorization     header   string                    true "authorization token"
+// @Param       CreatePostRequest body     request.CreatePostRequest true "CreatePostRequest"
+// @Success     200               {object} model.Post                "success"
+// @Router      /v1/api/posts [POST]
 func (h *PostController) Create(c echo.Context) error {
 	var req request.CreatePostRequest
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidationError(c, err)
 	}
+	req.UserId = utils.GetUserStringIDFromContext(c)
 
 	res, err := h.postService.Create(c.Request().Context(), req)
 	if err != nil {
@@ -46,20 +47,21 @@ func (h *PostController) Create(c echo.Context) error {
 
 // Update
 //
-//	@Summary		Update
-//	@Description	Update
-//	@Tags			Post
-//	@Accept			json
-//	@Produce		json
-//	@Param			Authorization		header		string						true	"authorization token"
-//	@Param			UpdatePostRequest	body		request.UpdatePostRequest	true	"UpdatePostRequest"
-//	@Success		200					{object}	model.Post					"success"
-//	@Router			/v1/api/posts [PUT]
+// @Summary     Update
+// @Description Update
+// @Tags        Post
+// @Accept      json
+// @Produce     json
+// @Param       Authorization     header   string                    true "authorization token"
+// @Param       UpdatePostRequest body     request.UpdatePostRequest true "UpdatePostRequest"
+// @Success     200               {object} model.Post                "success"
+// @Router      /v1/api/posts [PUT]
 func (h *PostController) Update(c echo.Context) error {
 	var req request.UpdatePostRequest
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidationError(c, err)
 	}
+	req.UserId = utils.GetUserStringIDFromContext(c)
 
 	res, err := h.postService.Update(c.Request().Context(), req)
 	if err != nil {
@@ -71,15 +73,15 @@ func (h *PostController) Update(c echo.Context) error {
 
 // GetList
 //
-//	@Summary		GetList
-//	@Description	GetList
-//	@Tags			Post
-//	@Accept			json
-//	@Produce		json
-//	@Param			Authorization		header		string						true	"authorization token"
-//	@Param			GetListPostRequest	body		request.GetListPostRequest	true	"GetListPostRequest"
-//	@Success		200					{object}	[]model.Post				"success"
-//	@Router			/v1/api/posts [GET]
+// @Summary     GetList
+// @Description GetList
+// @Tags        Post
+// @Accept      json
+// @Produce     json
+// @Param       Authorization      header   string                     true "authorization token"
+// @Param       GetListPostRequest body     request.GetListPostRequest true "GetListPostRequest"
+// @Success     200                {object} []model.Post               "success"
+// @Router      /v1/api/posts [GET]
 func (h *PostController) GetList(c echo.Context) error {
 	var req request.GetListPostRequest
 	if err := c.Bind(&req); err != nil {
@@ -96,15 +98,15 @@ func (h *PostController) GetList(c echo.Context) error {
 
 // Delete
 //
-//	@Summary		Delete
-//	@Description	Delete
-//	@Tags			Post
-//	@Accept			json
-//	@Produce		json
-//	@Param			Authorization	header		string					true	"authorization token"
-//	@Param			id				path		string					true	"id"
-//	@Success		200				{object}	entity.SimpleResponse	"success"
-//	@Router			/v1/api/posts/{id} [DELETE]
+// @Summary     Delete
+// @Description Delete
+// @Tags        Post
+// @Accept      json
+// @Produce     json
+// @Param       Authorization header   string                true "authorization token"
+// @Param       id            path     string                true "id"
+// @Success     200           {object} entity.SimpleResponse "success"
+// @Router      /v1/api/posts/{id} [DELETE]
 func (h *PostController) Delete(c echo.Context) error {
 	id := utils.ParseStringIDFromUri(c)
 	if err := h.postService.Delete(c.Request().Context(), id); err != nil {
@@ -115,15 +117,15 @@ func (h *PostController) Delete(c echo.Context) error {
 
 // GetOne
 //
-//	@Summary		GetOne
-//	@Description	GetOne
-//	@Tags			Post
-//	@Accept			json
-//	@Produce		json
-//	@Param			Authorization	header		string		true	"authorization token"
-//	@Success		200				{object}	model.Post	"success"
-//	@Param			id				path		string		true	"id"
-//	@Router			/v1/api/posts/{id} [GET]
+// @Summary     GetOne
+// @Description GetOne
+// @Tags        Post
+// @Accept      json
+// @Produce     json
+// @Param       Authorization header   string     true "authorization token"
+// @Success     200           {object} model.Post "success"
+// @Param       id            path     string     true "id"
+// @Router      /v1/api/posts/{id} [GET]
 func (h *PostController) GetOne(c echo.Context) error {
 	id := utils.ParseStringIDFromUri(c)
 	res, err := h.postService.GetOne(c.Request().Context(), id)

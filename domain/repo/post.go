@@ -75,8 +75,8 @@ func (r *postRepository) GetList(ctx context.Context, req request.GetListPostReq
 }
 
 func (r *postRepository) DeleteById(ctx context.Context, id string) error {
-	if err := r.db.WithContext(ctx).Where("id = ?", id).Delete(&model.User{}).Error; err != nil {
-		return errors.Wrap(err, "Delete store failed")
+	if err := r.db.WithContext(ctx).Where("id = ?", id).Delete(&model.File{}).Error; err != nil {
+		return errors.Wrap(err, "Delete post failed")
 	}
 	return nil
 }

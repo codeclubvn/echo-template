@@ -1,4 +1,4 @@
-# Trail backend
+# Trial backend
 
 ## Tech stack
 

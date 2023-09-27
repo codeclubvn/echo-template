@@ -6,9 +6,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"net/http"
+	"strings"
 	"trail_backend/domain/entity"
 	"trail_backend/pkg/api_errors"
-	utils2 "trail_backend/pkg/utils"
+	"trail_backend/pkg/utils"
 	"trail_backend/presenter/request"
 )
 
@@ -36,7 +37,7 @@ func (b *BaseController) ResponseList(c echo.Context, message string, total *int
 		o.Page = 1
 	}
 
-	pageCount := utils2.GetPageCount(*total, o.Limit)
+	pageCount := utils.GetPageCount(*total, o.Limit)
 	return c.JSON(http.StatusOK, entity.SimpleResponseList{
 		Message: message,
 		Data:    data,
@@ -71,7 +72,12 @@ func (b *BaseController) ResponseError(c echo.Context, err error) error {
 func (b *BaseController) ResponseValidationError(c echo.Context, err error) error {
 	var ve validator.ValidationErrors
 	if errors.As(err, &ve) {
-		err = errors.New(utils2.StructPascalToSnakeCase(ve[0].Field()) + " is " + ve[0].Tag())
+		err = errors.New(utils.StructPascalToSnakeCase(ve[0].Field()) + " is " + ve[0].Tag())
+	}
+
+	message := strings.Split(err.Error(), "Error:")
+	if len(message) > 1 {
+		err = errors.New(message[1])
 	}
 
 	return c.JSON(http.StatusUnprocessableEntity, entity.ResponseError{

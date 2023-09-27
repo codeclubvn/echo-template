@@ -41,14 +41,14 @@ func (r *fileRepository) Update(ctx context.Context, file *model.File) (err erro
 func (r *fileRepository) GetOneById(ctx context.Context, id string) (res *model.File, err error) {
 	var file model.File
 	if err := r.db.WithContext(ctx).Where("id = ?", id).First(&file).Error; err != nil {
-		return nil, errors.New(api_errors.ErrPostNotFound)
+		return nil, errors.New(api_errors.ErrFileNotFound)
 	}
 	return &file, nil
 }
 
 func (r *fileRepository) DeleteById(ctx context.Context, id string) (err error) {
-	if err := r.db.WithContext(ctx).Where("id = ?", id).Delete(&model.User{}).Error; err != nil {
-		return errors.Wrap(err, "Delete store failed")
+	if err := r.db.WithContext(ctx).Where("id = ?", id).Delete(&model.File{}).Error; err != nil {
+		return errors.Wrap(err, "Delete file failed")
 	}
 	return nil
 }

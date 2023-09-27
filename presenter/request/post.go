@@ -5,11 +5,15 @@ import (
 )
 
 type CreatePostRequest struct {
-	Title   string `json:"title"`
-	Content string `json:"content"`
-	Slug    string `json:"slug"`
-	Image   string `json:"image"`
+	UserId  string      `json:"user_id" swaggerignore:"true"`
+	Title   string      `json:"title"`
+	Content string      `json:"content"`
+	Slug    string      `json:"slug"`
+	Image   string      `json:"image"`
+	Files   FileIdSlice `json:"files" gorm:"column:files;type:uuid[]"`
 }
+
+type FileIdSlice []uuid.UUID
 
 type UpdatePostRequest struct {
 	ID string `json:"id"`

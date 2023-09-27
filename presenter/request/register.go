@@ -1,9 +1,8 @@
 package request
 
 type RegisterRequest struct {
-	Email       string `json:"email" binding:"required" validate:"email"`
-	Password    string `json:"password" binding:"required" validate:"min=6,max=20"`
-	RequestFrom string `json:"request_from" binding:"required" enums:"trail/,web,app"`
+	Email    string `json:"email" binding:"required" validate:"email"`
+	Password string `json:"password" binding:"required" validate:"min=6,max=20"`
 }
 
 type UserGoogleRequest struct {

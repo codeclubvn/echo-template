@@ -8,13 +8,13 @@ type ResponseError struct {
 type SimpleResponse struct {
 	//Code    int         `json:"code"`
 	Message string      `json:"message"`
-	Data    interface{} `json:"domain,omitempty"`
+	Data    interface{} `json:"data,omitempty"`
 }
 
 type SimpleResponseList struct {
 	//Code    int         `json:"code"`
 	Message string      `json:"message"`
-	Data    interface{} `json:"domain,omitempty"`
+	Data    interface{} `json:"data,omitempty"`
 	Meta    Meta        `json:"meta"`
 }
 

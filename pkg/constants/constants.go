@@ -25,12 +25,12 @@ const (
 )
 
 const (
-	Google   string = "goole" // default role other role in database
+	Google   string = "google" // default role other role in database
 	Facebook string = "facebook"
 )
 
 const (
-	FolderUpload = "./assets/"
+	FolderUpload = "./domain/assets/"
 	FolderTmp    = "./tmp/"
 )
 

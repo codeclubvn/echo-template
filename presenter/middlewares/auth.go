@@ -44,9 +44,8 @@ func (e *Middleware) Auth(authorization bool) echo.MiddlewareFunc {
 
 			claims, err := parseToken(jwtToken, e.config.Jwt.Secret)
 			if err != nil {
-				mas := api_errors.MapErrorCodeMessage[err.Error()]
-				return c.JSON(mas.Status, entity.ResponseError{
-					Message: mas.Message,
+				return c.JSON(http.StatusUnauthorized, entity.ResponseError{
+					Message: err.Error(),
 					Code:    api_errors.ErrTokenInvalid,
 				})
 			}
