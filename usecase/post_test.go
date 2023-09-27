@@ -480,7 +480,7 @@ func Test_fileService_Upload(t *testing.T) {
 				fileRepository: tt.fields.fileRepository,
 				config:         tt.fields.config,
 			}
-			got, err := s.Upload(tt.args.ctx, tt.args.req)
+			got, err := s.Upload(tt.args.ctx, nil)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Upload() error = %v, wantErr %v", err, tt.wantErr)
 				return
