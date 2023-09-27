@@ -60,8 +60,6 @@ Clean Architecture is a software development architecture that has become a stan
 - Clone this project
 - Create database
 - Create .env & config.yml file in config folder
-- Run ``` go mod tidy ```
-- Run ``` go run main.go ```
-- Run ``` swag init ``` to generate swagger docs
+- Run ``` make ``` to run project
 
 

@@ -5,4 +5,5 @@ swagger_init:
 	swag init -d ./cmd,./ -o ./presenter/docs
 
 run_source_code:
+	go mod tidy
 	go run ./cmd/main.go
