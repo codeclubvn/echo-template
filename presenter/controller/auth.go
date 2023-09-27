@@ -72,7 +72,6 @@ func (h *AuthController) Login(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidationError(c, err)
 	}
-
 	res, err := h.authService.Login(c.Request().Context(), req)
 
 	if err != nil {

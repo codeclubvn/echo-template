@@ -105,17 +105,7 @@ definitions:
         type: string
     type: object
 info:
-  contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
-  description: This is Trail Backend API docs
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: Swagger Trail Backend API
-  version: "2.0"
+  contact: {}
 paths:
   /v1/api/auth/call-back:
     post:
@@ -567,9 +557,4 @@ paths:
       summary: GetOne
       tags:
       - User
-securityDefinitions:
-  ApiKeyAuth:
-    in: header
-    name: Authorization
-    type: apiKey
 swagger: "2.0"
