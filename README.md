@@ -20,13 +20,16 @@ Clean Architecture is a software development architecture that has become a stan
 
 ```
 
-├── main.go # entry point
-├── boostrap # dependencies injection modules
-├── infra # config connecting to external services
-├── config # config file
-│   ├── app.env # environment variables
-│   ├── config.yaml # config file
-│   ├── config.go # load config file
+├── makefile # run makefile to run project
+├── cmd
+│   ├── main.go # entry point
+├── presenter
+│   ├── controller # To handle requests from clients and return responses
+│   ├── middleware # Middleware to handle requests before reaching the controller
+│   ├── request # Request struct
+│   ├── router # Router
+│   ├── docs # Swagger docs
+├── usecase # business logic
 ├── domain
 │   ├── dto # data transfer object
 │   ├── entity # database entity
@@ -39,13 +42,12 @@ Clean Architecture is a software development architecture that has become a stan
 │   ├── lib # Set up external libraries.
 │   ├── constants # constants
 │   ├── utils # utils
-├── presenter
-│   ├── controller # To handle requests from clients and return responses
-│   ├── middleware # Middleware to handle requests before reaching the controller
-│   ├── request # Request struct
-├── router # Router
-├── usecase # business logic
-├── docs # Swagger docs
+├── infra # config connecting to external services
+├── boostrap # dependencies injection modules
+├── config # config file
+│   ├── app.env # environment variables
+│   ├── config.yaml # config file
+│   ├── config.go # load config file
 ├── migration # Database migrations
 ```
 
