@@ -25,9 +25,9 @@ func NewFileController(fileService usecase.FileService) *FileController {
 //	@Description	Upload
 //	@Tags			File
 //	@Accept			multipart/form-data
-//	@Param			Authorization		header		string						true	"authorization token"
-//	@Param			UploadFileRequest	formData		file	true	"UploadFileRequest"
-//	@Success		200					{object}	entity.SimpleResponse		"success"
+//	@Param			Authorization		header		string		true	"authorization token"
+//	@Param			UploadFileRequest	formData	file		true	"UploadFileRequest"
+//	@Success		200					{object}	model.File	"success"
 //	@Router			/v1/api/files [Post]
 func (h *FileController) Upload(c echo.Context) error {
 	var req request.UploadFileRequest
@@ -48,9 +48,9 @@ func (h *FileController) Upload(c echo.Context) error {
 //	@Description	Update
 //	@Tags			File
 //	@Accept			multipart/form-data
-//	@Param			Authorization		header		string						true	"authorization token"
-//	@Param			UploadFileRequest	formData		file	true	"UploadFileRequest"
-//	@Success		200					{object}	entity.SimpleResponse		"success"
+//	@Param			Authorization		header		string		true	"authorization token"
+//	@Param			UploadFileRequest	formData	file		true	"UploadFileRequest"
+//	@Success		200					{object}	model.File	"success"
 //	@Router			/v1/api/files [Put]
 func (h *FileController) Update(c echo.Context) error {
 	var req request.UpdateFileRequest
@@ -93,9 +93,9 @@ func (h *FileController) Delete(c echo.Context) error {
 //	@Description	GetOne
 //	@Tags			File
 //	@Accept			json
-//	@Param			Authorization	header		string					true	"authorization token"
-//	@Param			id				path		string					true	"id"
-//	@Success		200				{object}	entity.SimpleResponse	"success"
+//	@Param			Authorization	header		string		true	"authorization token"
+//	@Param			id				path		string		true	"id"
+//	@Success		200				{object}	model.File	"success"
 //	@Router			/v1/api/files/{id} [GET]
 func (h *FileController) GetOne(c echo.Context) error {
 	id := utils.ParseStringIDFromUri(c)

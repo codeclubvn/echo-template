@@ -13,3 +13,7 @@ const (
 	NumberOfPath          = 3
 	NumberOfJWTTokenArray = 2
 )
+
+const (
+	GoogleUserInfoAPI = "https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token="
+)

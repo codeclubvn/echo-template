@@ -26,8 +26,8 @@ func NewUserController(userService usecase.UserService) *UserController {
 //	@Tags			User
 //	@Accept			json
 //	@Produce		json
-//	@Param			Authorization	header		string					true	"authorization token"
-//	@Success		200				{object}	entity.SimpleResponse	"success"
+//	@Param			Authorization	header		string		true	"authorization token"
+//	@Success		200				{object}	model.User	"success"
 //	@Router			/v1/api/users [PUT]
 func (h *UserController) Update(c echo.Context) error {
 	var req request.UpdateUserRequest
@@ -50,8 +50,8 @@ func (h *UserController) Update(c echo.Context) error {
 //	@Tags			User
 //	@Accept			json
 //	@Produce		json
-//	@Param			Authorization	header		string					true	"authorization token"
-//	@Success		200				{object}	entity.SimpleResponse	"success"
+//	@Param			Authorization	header		string			true	"authorization token"
+//	@Success		200				{object}	[]model.User	"success"
 //	@Router			/v1/api/users [GET]
 func (h *UserController) GetList(c echo.Context) error {
 	var req request.GetListUserRequest
@@ -75,6 +75,7 @@ func (h *UserController) GetList(c echo.Context) error {
 //	@Accept			json
 //	@Produce		json
 //	@Param			Authorization	header		string					true	"authorization token"
+//	@Param			id				path		string					true	"id"
 //	@Success		200				{object}	entity.SimpleResponse	"success"
 //	@Router			/v1/api/users/{id} [DELETE]
 func (h *UserController) Delete(c echo.Context) error {
@@ -93,9 +94,9 @@ func (h *UserController) Delete(c echo.Context) error {
 //	@Tags			User
 //	@Accept			json
 //	@Produce		json
-//	@Param			Authorization	header		string					true	"authorization token"
-//	@Param			id				path		string					true	"id"
-//	@Success		200				{object}	entity.SimpleResponse	"success"
+//	@Param			Authorization	header		string		true	"authorization token"
+//	@Param			id				path		string		true	"id"
+//	@Success		200				{object}	model.User	"success"
 //	@Router			/v1/api/users/{id} [GET]
 func (h *UserController) GetOne(c echo.Context) error {
 	id := utils.ParseStringIDFromUri(c)

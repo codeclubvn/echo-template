@@ -28,7 +28,7 @@ func NewPostController(postService usecase.PostService) *PostController {
 //	@Produce		json
 //	@Param			Authorization		header		string						true	"authorization token"
 //	@Param			CreatePostRequest	body		request.CreatePostRequest	true	"CreatePostRequest"
-//	@Success		200					{object}	entity.SimpleResponse		"success"
+//	@Success		200					{object}	model.Post					"success"
 //	@Router			/v1/api/posts [POST]
 func (h *PostController) Create(c echo.Context) error {
 	var req request.CreatePostRequest
@@ -53,7 +53,7 @@ func (h *PostController) Create(c echo.Context) error {
 //	@Produce		json
 //	@Param			Authorization		header		string						true	"authorization token"
 //	@Param			UpdatePostRequest	body		request.UpdatePostRequest	true	"UpdatePostRequest"
-//	@Success		200					{object}	entity.SimpleResponse		"success"
+//	@Success		200					{object}	model.Post					"success"
 //	@Router			/v1/api/posts [PUT]
 func (h *PostController) Update(c echo.Context) error {
 	var req request.UpdatePostRequest
@@ -78,7 +78,7 @@ func (h *PostController) Update(c echo.Context) error {
 //	@Produce		json
 //	@Param			Authorization		header		string						true	"authorization token"
 //	@Param			GetListPostRequest	body		request.GetListPostRequest	true	"GetListPostRequest"
-//	@Success		200					{object}	entity.SimpleResponse		"success"
+//	@Success		200					{object}	[]model.Post				"success"
 //	@Router			/v1/api/posts [GET]
 func (h *PostController) GetList(c echo.Context) error {
 	var req request.GetListPostRequest
@@ -120,9 +120,9 @@ func (h *PostController) Delete(c echo.Context) error {
 //	@Tags			Post
 //	@Accept			json
 //	@Produce		json
-//	@Param			Authorization	header		string					true	"authorization token"
-//	@Success		200				{object}	entity.SimpleResponse	"success"
-//	@Param			id				path		string					true	"id"
+//	@Param			Authorization	header		string		true	"authorization token"
+//	@Success		200				{object}	model.Post	"success"
+//	@Param			id				path		string		true	"id"
 //	@Router			/v1/api/posts/{id} [GET]
 func (h *PostController) GetOne(c echo.Context) error {
 	id := utils.ParseStringIDFromUri(c)

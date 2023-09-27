@@ -10,8 +10,9 @@ import (
 	"golang.org/x/oauth2/google"
 	"net/http"
 	"trail_backend/config"
+	"trail_backend/pkg/constants"
 	"trail_backend/pkg/utils"
-	request2 "trail_backend/presenter/request"
+	"trail_backend/presenter/request"
 	"trail_backend/usecase"
 )
 
@@ -40,19 +41,18 @@ func NewAuthController(authService usecase.AuthService, logger *zap.Logger, conf
 //	@Produce		json
 //	@Param			RegisterRequest	body		request.RegisterRequest	true	"RegisterRequest"
 //	@Success		200				{object}	entity.SimpleResponse	"success"
-//	@Router			/v1/api/auth/register [Post]
+//	@Router			/v1/api/auth/register [POST]
 func (h *AuthController) Register(c echo.Context) error {
-	var req request2.RegisterRequest
-
+	var req request.RegisterRequest
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidationError(c, err)
 	}
 
 	_, err := h.authService.Register(c.Request().Context(), req)
-
 	if err != nil {
 		return h.ResponseError(c, err)
 	}
+
 	return h.Response(c, http.StatusOK, "success", nil)
 }
 
@@ -65,9 +65,9 @@ func (h *AuthController) Register(c echo.Context) error {
 //	@Produce		json
 //	@Param			LoginRequest	body		request.LoginRequest	true	"LoginRequest"
 //	@Success		200				{object}	entity.LoginResponse	"success"
-//	@Router			/v1/api/auth/login [Post]
+//	@Router			/v1/api/auth/login [POST]
 func (h *AuthController) Login(c echo.Context) error {
-	var req request2.LoginRequest
+	var req request.LoginRequest
 
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidationError(c, err)
@@ -89,7 +89,7 @@ func (h *AuthController) Login(c echo.Context) error {
 //	@Accept			json
 //	@Produce		json
 //	@Success		302	{object}	string
-//	@Router			/v1/api/auth/google/login [Post]
+//	@Router			/v1/api/auth/google/login [POST]
 func (h *AuthController) GoogleLogin(c echo.Context) error {
 	authConfig := h.getGoogleOAuthConfig()
 	url := authConfig.AuthCodeURL("", oauth2.AccessTypeOffline)
@@ -114,7 +114,7 @@ func (h *AuthController) getGoogleOAuthConfig() oauth2.Config {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	entity.SimpleResponse	"success"
-//	@Router			/v1/api/auth/call-back [Post]
+//	@Router			/v1/api/auth/call-back [POST]
 func (h *AuthController) GoogleCallback(c echo.Context) error {
 	code := c.QueryParam("code")
 	authConfig := h.getGoogleOAuthConfig()
@@ -126,7 +126,7 @@ func (h *AuthController) GoogleCallback(c echo.Context) error {
 
 	client := authConfig.Client(c.Request().Context(), token)
 
-	userInfo, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token" + token.AccessToken)
+	userInfo, err := client.Get(constants.GoogleUserInfoAPI + token.AccessToken)
 	if err != nil {
 		h.logger.Error(fmt.Sprintf("Cannot register with google: %+v", err))
 		return h.Response(c, http.StatusInternalServerError, "Cannot login by google", nil)
@@ -142,14 +142,14 @@ func (h *AuthController) GoogleCallback(c echo.Context) error {
 		return h.Response(c, http.StatusInternalServerError, "Cannot login by google", nil)
 	}
 	//fmt.Println(data)
-	var response request2.UserGoogleRequest
+	var response request.UserGoogleRequest
 	if err := mapstructure.Decode(data, &response); err != nil {
 		// Handle JSON unmarshaling error
 		h.logger.Error(fmt.Sprintf("Cannot unmarshal JSON response: %+v", err))
 		return h.Response(c, http.StatusInternalServerError, "Cannot login by google", nil)
 	}
 
-	var req request2.UserGoogleRequest
+	var req request.UserGoogleRequest
 
 	err = utils.Copy(&response, &req)
 	if err != nil {
@@ -158,7 +158,7 @@ func (h *AuthController) GoogleCallback(c echo.Context) error {
 	}
 	_, err = h.authService.RegisterByGoogle(c.Request().Context(), req)
 	if err != nil {
-		res, err := h.authService.LoginByGoogle(c.Request().Context(), request2.LoginByGoogleRequest{
+		res, err := h.authService.LoginByGoogle(c.Request().Context(), request.LoginByGoogleRequest{
 			Email:    req.Email,
 			GoogleId: req.GoogleID,
 		})

@@ -28,9 +28,9 @@ func NewImageController(imageService usecase.FileCloudService) *FileCloudControl
 //	@Tags			Image
 //	@Accept			multipart/form-data
 //	@Produce		json
-//	@Param			Authorization		header		string						true	"authorization token"
-//	@Param			UploadFileRequest	formData		file	true	"UploadFileRequest"
-//	@Success		200					{object}	entity.SimpleResponse		"success"
+//	@Param			Authorization		header		string					true	"authorization token"
+//	@Param			UploadFileRequest	formData	file					true	"UploadFileRequest"
+//	@Success		200					{object}	entity.SimpleResponse	"success"
 //	@Router			/v1/api/image/upload [POST]
 func (h *FileCloudController) Upload(c echo.Context) error {
 	var req request.UploadFileRequest

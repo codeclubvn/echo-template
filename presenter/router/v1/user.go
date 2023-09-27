@@ -14,7 +14,7 @@ func NewUserRoutes(handler *lib.ServerGroupV1, c *controller.UserController, mid
 	g := handler.Echo.Group("/users")
 
 	g.PUT("", c.Update, middleware.Auth(true))
-	g.GET("", c.GetList, middleware.Auth(false))
+	//g.GET("", c.GetList, middleware.Auth(true))
 	g.GET("/:id", c.GetOne, middleware.Auth(false))
 	g.DELETE("/:id", c.Delete, middleware.Auth(true))
 

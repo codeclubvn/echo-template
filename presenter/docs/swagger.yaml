@@ -31,6 +31,88 @@ definitions:
       user_name:
         type: string
     type: object
+  model.File:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      domain:
+        description: save domain flexibly
+        type: string
+      file_name:
+        type: string
+      id:
+        type: string
+      path:
+        type: string
+      size:
+        type: integer
+      type:
+        type: string
+      updated_at:
+        type: string
+      updater_id:
+        type: string
+    type: object
+  model.Post:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      files:
+        items:
+          type: string
+        type: array
+      id:
+        type: string
+      image:
+        type: string
+      slug:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      updater_id:
+        type: string
+      user:
+        $ref: '#/definitions/model.User'
+      user_id:
+        type: string
+    type: object
+  model.User:
+    properties:
+      avatar:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      password:
+        type: string
+      post:
+        items:
+          $ref: '#/definitions/model.Post'
+        type: array
+      social:
+        type: string
+      social_id:
+        type: string
+      updated_at:
+        type: string
+      updater_id:
+        type: string
+      user_name:
+        type: string
+    type: object
   request.CreatePostRequest:
     properties:
       content:
@@ -105,7 +187,17 @@ definitions:
         type: string
     type: object
 info:
-  contact: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is Trail Backend API docs
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Trail Backend API
+  version: "2.0"
 paths:
   /v1/api/auth/call-back:
     post:
@@ -224,7 +316,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/entity.SimpleResponse'
+            $ref: '#/definitions/model.File'
       summary: Upload
       tags:
       - File
@@ -247,7 +339,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/entity.SimpleResponse'
+            $ref: '#/definitions/model.File'
       summary: Update
       tags:
       - File
@@ -271,7 +363,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/entity.SimpleResponse'
+            $ref: '#/definitions/model.File'
       summary: GetOne
       tags:
       - File
@@ -363,7 +455,9 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/entity.SimpleResponse'
+            items:
+              $ref: '#/definitions/model.Post'
+            type: array
       summary: GetList
       tags:
       - Post
@@ -389,7 +483,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/entity.SimpleResponse'
+            $ref: '#/definitions/model.Post'
       summary: Create
       tags:
       - Post
@@ -415,7 +509,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/entity.SimpleResponse'
+            $ref: '#/definitions/model.Post'
       summary: Update
       tags:
       - Post
@@ -466,7 +560,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/entity.SimpleResponse'
+            $ref: '#/definitions/model.Post'
       summary: GetOne
       tags:
       - Post
@@ -487,7 +581,9 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/entity.SimpleResponse'
+            items:
+              $ref: '#/definitions/model.User'
+            type: array
       summary: GetList
       tags:
       - User
@@ -507,7 +603,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/entity.SimpleResponse'
+            $ref: '#/definitions/model.User'
       summary: Update
       tags:
       - User
@@ -520,6 +616,11 @@ paths:
       - description: authorization token
         in: header
         name: Authorization
+        required: true
+        type: string
+      - description: id
+        in: path
+        name: id
         required: true
         type: string
       produces:
@@ -553,8 +654,13 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/entity.SimpleResponse'
+            $ref: '#/definitions/model.User'
       summary: GetOne
       tags:
       - User
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

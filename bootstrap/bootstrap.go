@@ -11,7 +11,7 @@ import (
 	"trail_backend/pkg/utils"
 	"trail_backend/presenter/controller"
 	"trail_backend/presenter/middlewares"
-	"trail_backend/router"
+	"trail_backend/presenter/router"
 	"trail_backend/usecase"
 )
 
