@@ -861,7 +861,10 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "example": [
+                        "52bdcd0a-5615-430b-bfc4-89fc40bd6b71"
+                    ]
                 },
                 "image": {
                     "type": "string"
@@ -899,12 +902,14 @@ const docTemplate = `{
             ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "hieuhoccode@gmail.com"
                 },
                 "password": {
                     "type": "string",
                     "maxLength": 20,
-                    "minLength": 6
+                    "minLength": 6,
+                    "example": "hieuhoccode"
                 }
             }
         },
@@ -918,7 +923,10 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "example": [
+                        "52bdcd0a-5615-430b-bfc4-89fc40bd6b71"
+                    ]
                 },
                 "id": {
                     "type": "string"

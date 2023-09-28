@@ -11,7 +11,7 @@ type CreatePostRequest struct {
 	Content string         `json:"content"`
 	Slug    string         `json:"slug"`
 	Image   string         `json:"image"`
-	Files   pq.StringArray `json:"files" swaggertype:"array,string"`
+	Files   pq.StringArray `json:"files" swaggertype:"array,string" example:"52bdcd0a-5615-430b-bfc4-89fc40bd6b71"`
 }
 
 type UpdatePostRequest struct {

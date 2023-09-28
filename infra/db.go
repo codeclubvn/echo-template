@@ -77,6 +77,7 @@ func getDatabaseInstance(config *config.Config) (db *gorm.DB, err error) {
 		}
 
 		db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";")
+		db.Exec("CREATE EXTENSION IF NOT EXISTS pg_trgm;")
 	}
 	return db, nil
 }

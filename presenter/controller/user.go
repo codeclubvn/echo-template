@@ -33,11 +33,11 @@ func NewUserController(userService usecase.UserService) *UserController {
 func (h *UserController) Update(c echo.Context) error {
 	var req request.UpdateUserRequest
 	if err := c.Bind(&req); err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 	userId, err := utils.GetUserUUIDFromContext(c)
 	if err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 	req.Id = userId.String()
 

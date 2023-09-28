@@ -7,6 +7,7 @@ import (
 	"trial_backend/domain/repo/model"
 	"trial_backend/infra"
 	"trial_backend/pkg/api_errors"
+	"trial_backend/pkg/constants"
 	"trial_backend/pkg/utils"
 	"trial_backend/presenter/request"
 )
@@ -56,12 +57,15 @@ func (r *postRepository) GetList(ctx context.Context, req request.GetListPostReq
 
 	query := r.db.Model(&model.Post{})
 	if req.Search != "" {
-		query = query.Where("name like ?", "%"+req.Search+"%")
+		search := "%" + req.Search + "%"
+		query = query.Where(`title ilike ? or SIMILARITY(unaccent(title),?) > 0.25`, search, search)
 	}
 
 	switch req.Sort {
+	case constants.SortCreatedAsc:
+		query = query.Order(constants.SortCreatedAsc)
 	default:
-		query = query.Order(req.Sort)
+		query = query.Order(constants.SortCreatedDesc)
 	}
 
 	if err := utils.QueryPagination(query, req.PageOptions, &res); err != nil {
@@ -75,7 +79,7 @@ func (r *postRepository) GetList(ctx context.Context, req request.GetListPostReq
 }
 
 func (r *postRepository) DeleteById(ctx context.Context, id string) error {
-	if err := r.db.WithContext(ctx).Where("id = ?", id).Delete(&model.File{}).Error; err != nil {
+	if err := r.db.WithContext(ctx).Where("id = ?", id).Delete(&model.Post{}).Error; err != nil {
 		return errors.Wrap(err, "Delete post failed")
 	}
 	return nil

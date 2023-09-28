@@ -45,10 +45,10 @@ func NewAuthController(authService usecase.AuthService, logger *zap.Logger, conf
 func (h *AuthController) Register(c echo.Context) error {
 	var req request.RegisterRequest
 	if err := c.Bind(&req); err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 	if err := c.Validate(req); err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 
 	_, err := h.authService.Register(c.Request().Context(), req)
@@ -73,10 +73,10 @@ func (h *AuthController) Login(c echo.Context) error {
 	var req request.LoginRequest
 
 	if err := c.Bind(&req); err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 	if err := c.Validate(req); err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 
 	res, err := h.authService.Login(c.Request().Context(), req)

@@ -36,7 +36,12 @@ func NewImageController(imageService usecase.FileCloudService) *FileCloudControl
 func (h *FileCloudController) Upload(c echo.Context) error {
 	file, err := c.FormFile("file_request")
 	if err := c.Validate(file); err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
+	}
+
+	// check file is image
+	if err := utils.CheckFileIsImage(file); err != nil {
+		return h.ResponseError(c, err)
 	}
 
 	if _, err := os.Stat(constants.FolderTmp); os.IsNotExist(err) {

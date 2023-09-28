@@ -7,7 +7,7 @@ import (
 
 type Post struct {
 	BaseModel
-	Title   string         `json:"title" gorm:"column:title;type:varchar(250);not null"`
+	Title   string         `json:"title" gorm:"column:title;type:varchar(250);not null;index;"`
 	Content string         `json:"content" gorm:"column:content;type:varchar;"`
 	Slug    string         `json:"slug" gorm:"column:slug;type:varchar(50);not null"`
 	Image   string         `json:"image" gorm:"column:image;type:varchar(250);"`

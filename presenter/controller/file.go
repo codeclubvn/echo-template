@@ -2,7 +2,10 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/pkg/errors"
 	"net/http"
+	"trial_backend/pkg/api_errors"
+	"trial_backend/pkg/constants"
 	"trial_backend/pkg/utils"
 	"trial_backend/presenter/request"
 	"trial_backend/usecase"
@@ -31,13 +34,18 @@ func NewFileController(fileService usecase.FileService) *FileController {
 // @Router			/v1/api/files [POST]
 func (h *FileController) SaveFile(c echo.Context) error {
 	file, err := c.FormFile("file_request")
-	if err := c.Validate(file); err != nil {
-		return h.ResponseValidationError(c, err)
+	if err = c.Validate(file); err != nil {
+		return h.ResponseValidatorError(c, err)
+	}
+
+	// check File size must not exceed 25MB
+	if file.Size > constants.FileSizeLimit {
+		return h.ResponseError(c, errors.New(api_errors.ErrFileTooLarge))
 	}
 
 	userId, err := utils.GetUserUUIDFromContext(c)
 	if err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 
 	req := request.UploadFileRequest{
@@ -66,25 +74,21 @@ func (h *FileController) SaveFile(c echo.Context) error {
 func (h *FileController) Update(c echo.Context) error {
 	var req request.UpdateFileRequest
 	if err := c.Bind(&req); err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 	if err := c.Validate(req); err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 
 	userId, err := utils.GetUserUUIDFromContext(c)
 	if err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 	req.UserId = userId
 
 	file, _ := c.FormFile("file_request")
 	if file != nil {
 		req.File = file
-	}
-
-	if err := c.Validate(req); err != nil {
-		return h.ResponseValidationError(c, err)
 	}
 
 	res, err := h.fileService.Update(c.Request().Context(), req)
@@ -111,7 +115,7 @@ func (h *FileController) Delete(c echo.Context) error {
 
 	userId, err := utils.GetUserUUIDFromContext(c)
 	if err != nil {
-		return h.ResponseValidationError(c, err)
+		return h.ResponseValidatorError(c, err)
 	}
 	req := request.DeleteFileRequest{
 		ID:     id,

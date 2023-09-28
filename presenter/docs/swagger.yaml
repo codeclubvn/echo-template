@@ -120,6 +120,8 @@ definitions:
       content:
         type: string
       files:
+        example:
+        - 52bdcd0a-5615-430b-bfc4-89fc40bd6b71
         items:
           type: string
         type: array
@@ -145,8 +147,10 @@ definitions:
   request.RegisterRequest:
     properties:
       email:
+        example: hieuhoccode@gmail.com
         type: string
       password:
+        example: hieuhoccode
         maxLength: 20
         minLength: 6
         type: string
@@ -159,6 +163,8 @@ definitions:
       content:
         type: string
       files:
+        example:
+        - 52bdcd0a-5615-430b-bfc4-89fc40bd6b71
         items:
           type: string
         type: array

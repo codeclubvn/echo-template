@@ -2,7 +2,6 @@ package controller
 
 import (
 	"fmt"
-	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"net/http"
@@ -26,7 +25,7 @@ func (b *BaseController) Response(c echo.Context, statusCode int, message string
 func (b *BaseController) ResponseList(c echo.Context, message string, total *int64, data interface{}) error {
 	var o request.PageOptions
 	if err := c.Bind(&o); err != nil {
-		return b.ResponseValidationError(c, err)
+		return b.ResponseValidatorError(c, err)
 	}
 
 	if o.Limit == 0 {
@@ -69,19 +68,11 @@ func (b *BaseController) ResponseError(c echo.Context, err error) error {
 	})
 }
 
-func (b *BaseController) ResponseValidationError(c echo.Context, err error) error {
-	var ve validator.ValidationErrors
-	if errors.As(err, &ve) {
-		err = errors.New(utils.StructPascalToSnakeCase(ve[0].Field()) + " is " + ve[0].Tag())
-	}
-
-	message := strings.Split(err.Error(), "Error:")
-	if len(message) > 1 {
-		err = errors.New(message[1])
-	}
+func (b *BaseController) ResponseValidatorError(c echo.Context, err error) error {
+	message := strings.Split(err.Error(), "message=")[0]
 
 	return c.JSON(http.StatusUnprocessableEntity, entity.ResponseError{
 		Code:    api_errors.ErrValidation,
-		Message: err.Error(),
+		Message: message,
 	})
 }
