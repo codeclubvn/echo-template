@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 	"time"
-	"trail_backend/config"
-	"trail_backend/pkg/constants"
+	"trial_backend/config"
+	"trial_backend/pkg/constants"
 )
 
 type _zap struct{}

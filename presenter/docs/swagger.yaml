@@ -147,16 +147,9 @@ definitions:
         maxLength: 20
         minLength: 6
         type: string
-      request_from:
-        enum:
-        - trail/
-        - web
-        - app
-        type: string
     required:
     - email
     - password
-    - request_from
     type: object
   request.RegisterRequest:
     properties:
@@ -201,7 +194,17 @@ definitions:
         type: string
     type: object
 info:
-  contact: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is Trial Backend API docs
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Trial Backend API
+  version: "2.0"
 paths:
   /v1/api/auth/call-back:
     post:
@@ -668,4 +671,9 @@ paths:
       summary: GetOne
       tags:
       - User
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

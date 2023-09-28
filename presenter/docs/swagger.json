@@ -1,7 +1,19 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is Trial Backend API docs",
+        "title": "Swagger Trial Backend API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "2.0"
     },
     "paths": {
         "/v1/api/auth/call-back": {
@@ -923,8 +935,7 @@
             "type": "object",
             "required": [
                 "email",
-                "password",
-                "request_from"
+                "password"
             ],
             "properties": {
                 "email": {
@@ -934,14 +945,6 @@
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 6
-                },
-                "request_from": {
-                    "type": "string",
-                    "enum": [
-                        "trail/",
-                        "web",
-                        "app"
-                    ]
                 }
             }
         },
@@ -1007,6 +1010,13 @@
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

@@ -6,12 +6,12 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 	"log"
-	"trail_backend/config"
-	"trail_backend/domain/entity"
-	"trail_backend/domain/repo/model"
-	"trail_backend/pkg/api_errors"
-	"trail_backend/pkg/constants"
-	"trail_backend/presenter/request"
+	"trial_backend/config"
+	"trial_backend/domain/entity"
+	"trial_backend/domain/repo/model"
+	"trial_backend/pkg/api_errors"
+	"trial_backend/pkg/constants"
+	"trial_backend/presenter/request"
 )
 
 type (

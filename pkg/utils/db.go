@@ -2,8 +2,8 @@ package utils
 
 import (
 	"gorm.io/gorm"
-	"trail_backend/infra"
-	"trail_backend/presenter/request"
+	"trial_backend/infra"
+	"trial_backend/presenter/request"
 )
 
 func ErrNoRows(err error) bool {

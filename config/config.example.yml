@@ -16,7 +16,7 @@ database:
   port: 5432
   username: 'postgres'
   password: 'password'
-  name: 'trail_be'
+  name: 'trial_be'
   sslmode: 'disable'
   timezone: 'Asia/Ho_Chi_Minh'
   maxOpenConnections: 10
@@ -34,7 +34,7 @@ cloudinary:
   cloudName: 'dsr2xnaj7'
   apiKey: 'oZ47iHrgrFQq4fe7ksKKlo7tg4A'
   apiSecret: '991793784142871'
-  publicId: 'trail_be'
+  publicId: 'trial_be'
 
 googleOAuth:
   redirectURL: 'http://localhost:8010/v1/api/auth/google/callback'

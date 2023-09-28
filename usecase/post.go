@@ -3,11 +3,11 @@ package usecase
 import (
 	"context"
 	"github.com/pkg/errors"
-	"trail_backend/config"
-	"trail_backend/domain/repo"
-	"trail_backend/domain/repo/model"
-	"trail_backend/pkg/utils"
-	"trail_backend/presenter/request"
+	"trial_backend/config"
+	"trial_backend/domain/repo"
+	"trial_backend/domain/repo/model"
+	"trial_backend/pkg/utils"
+	"trial_backend/presenter/request"
 )
 
 type (

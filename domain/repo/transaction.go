@@ -2,7 +2,7 @@ package repo
 
 import (
 	"gorm.io/gorm"
-	"trail_backend/infra"
+	"trial_backend/infra"
 )
 
 type TX struct {

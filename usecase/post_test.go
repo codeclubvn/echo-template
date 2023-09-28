@@ -7,13 +7,13 @@ import (
 	"mime/multipart"
 	"reflect"
 	"testing"
-	"trail_backend/config"
-	"trail_backend/domain/entity"
-	"trail_backend/domain/repo"
-	"trail_backend/domain/repo/model"
-	"trail_backend/infra"
-	"trail_backend/pkg/constants"
-	"trail_backend/presenter/request"
+	"trial_backend/config"
+	"trial_backend/domain/entity"
+	"trial_backend/domain/repo"
+	"trial_backend/domain/repo/model"
+	"trial_backend/infra"
+	"trial_backend/pkg/constants"
+	"trial_backend/presenter/request"
 )
 
 func TestNewAuthService(t *testing.T) {

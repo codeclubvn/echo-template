@@ -6,14 +6,14 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"strings"
-	"trail_backend/domain/repo/model"
-	"trail_backend/presenter/middlewares"
+	"trial_backend/domain/repo/model"
+	"trial_backend/presenter/middlewares"
 
 	"go.uber.org/fx"
 	"go.uber.org/zap"
-	"trail_backend/config"
-	"trail_backend/infra"
-	"trail_backend/pkg/constants"
+	"trial_backend/config"
+	"trial_backend/infra"
+	"trial_backend/pkg/constants"
 )
 
 type Server struct {

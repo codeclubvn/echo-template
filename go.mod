@@ -1,4 +1,4 @@
-module trail_backend
+module trial_backend
 
 go 1.21.0
 

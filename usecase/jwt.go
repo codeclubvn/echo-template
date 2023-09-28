@@ -5,10 +5,10 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"time"
-	"trail_backend/config"
-	"trail_backend/pkg/api_errors"
-	"trail_backend/pkg/constants"
-	"trail_backend/presenter/request"
+	"trial_backend/config"
+	"trial_backend/pkg/api_errors"
+	"trial_backend/pkg/constants"
+	"trial_backend/presenter/request"
 )
 
 type JwtService interface {
@@ -35,7 +35,7 @@ func (j *jwtService) GenerateToken(userID string, tokenType constants.TokenType,
 			Subject:   userID,
 			ExpiresAt: time.Now().Add(time.Duration(expiresIn) * time.Second).Unix(),
 			IssuedAt:  time.Now().Unix(),
-			Issuer:    "trail_be",
+			Issuer:    "trial_be",
 		},
 		TokenType: string(tokenType),
 	}
@@ -79,7 +79,7 @@ func (j *jwtService) ValidateToken(token string, tokenType constants.TokenType) 
 		return nil, errors.New(api_errors.ErrTokenExpired)
 	}
 
-	if claims.Issuer != "trail" {
+	if claims.Issuer != "trial" {
 		return nil, errors.New(api_errors.ErrTokenInvalid)
 	}
 

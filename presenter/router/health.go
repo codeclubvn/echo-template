@@ -1,8 +1,8 @@
 package router
 
 import (
-	"trail_backend/pkg/lib"
-	"trail_backend/presenter/controller"
+	"trial_backend/pkg/lib"
+	"trial_backend/presenter/controller"
 )
 
 type HealthRoutes struct {

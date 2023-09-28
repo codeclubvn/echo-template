@@ -8,8 +8,8 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"os"
-	"trail_backend/config"
-	"trail_backend/domain/repo/model"
+	"trial_backend/config"
+	"trial_backend/domain/repo/model"
 )
 
 type Database struct {

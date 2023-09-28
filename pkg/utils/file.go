@@ -4,7 +4,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"io"
 	"os"
-	"trail_backend/presenter/request"
+	"trial_backend/presenter/request"
 )
 
 func GetFile(c echo.Context, req *request.UploadFileRequest, folder string) error {

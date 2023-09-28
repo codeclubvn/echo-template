@@ -3,9 +3,9 @@ package usecase
 import (
 	"context"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
-	"trail_backend/config"
-	"trail_backend/domain/repo"
-	"trail_backend/presenter/request"
+	"trial_backend/config"
+	"trial_backend/domain/repo"
+	"trial_backend/presenter/request"
 )
 
 type (

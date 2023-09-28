@@ -5,7 +5,7 @@ import (
 	"errors"
 	"github.com/labstack/echo/v4"
 	uuid "github.com/satori/go.uuid"
-	"trail_backend/pkg/api_errors"
+	"trial_backend/pkg/api_errors"
 )
 
 func GetUserStringIDFromContext(ctx echo.Context) string {

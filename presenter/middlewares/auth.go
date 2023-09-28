@@ -6,10 +6,10 @@ import (
 	"github.com/pkg/errors"
 	"net/http"
 	"strings"
-	"trail_backend/domain/entity"
-	"trail_backend/pkg/api_errors"
-	"trail_backend/pkg/constants"
-	"trail_backend/presenter/request"
+	"trial_backend/domain/entity"
+	"trial_backend/pkg/api_errors"
+	"trial_backend/pkg/constants"
+	"trial_backend/presenter/request"
 )
 
 func (e *Middleware) Auth(authorization bool) echo.MiddlewareFunc {

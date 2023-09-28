@@ -2,8 +2,8 @@ package middlewares
 
 import (
 	"go.uber.org/zap"
-	"trail_backend/config"
-	"trail_backend/infra"
+	"trial_backend/config"
+	"trial_backend/infra"
 )
 
 type Middleware struct {

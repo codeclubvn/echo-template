@@ -7,10 +7,10 @@ import (
 	"github.com/pkg/errors"
 	"net/http"
 	"strings"
-	"trail_backend/domain/entity"
-	"trail_backend/pkg/api_errors"
-	"trail_backend/pkg/utils"
-	"trail_backend/presenter/request"
+	"trial_backend/domain/entity"
+	"trial_backend/pkg/api_errors"
+	"trial_backend/pkg/utils"
+	"trial_backend/presenter/request"
 )
 
 type BaseController struct {

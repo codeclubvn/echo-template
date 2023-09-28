@@ -4,11 +4,11 @@ import (
 	"context"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-	"trail_backend/domain/repo/model"
-	"trail_backend/infra"
-	"trail_backend/pkg/api_errors"
-	"trail_backend/pkg/utils"
-	"trail_backend/presenter/request"
+	"trial_backend/domain/repo/model"
+	"trial_backend/infra"
+	"trial_backend/pkg/api_errors"
+	"trial_backend/pkg/utils"
+	"trial_backend/presenter/request"
 )
 
 type UserRepository interface {

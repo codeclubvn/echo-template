@@ -7,9 +7,9 @@ import (
 	"github.com/cloudinary/cloudinary-go/v2/api/admin"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"go.uber.org/zap"
-	"trail_backend/config"
-	"trail_backend/infra"
-	"trail_backend/presenter/request"
+	"trial_backend/config"
+	"trial_backend/infra"
+	"trial_backend/presenter/request"
 )
 
 type CloudinaryRepository interface {

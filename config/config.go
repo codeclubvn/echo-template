@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/viper"
 	"os"
 	"reflect"
-	"trail_backend/pkg/constants"
+	"trial_backend/pkg/constants"
 )
 
 var (

@@ -4,10 +4,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"os"
-	"trail_backend/pkg/constants"
-	utils2 "trail_backend/pkg/utils"
-	"trail_backend/presenter/request"
-	"trail_backend/usecase"
+	"trial_backend/pkg/constants"
+	utils2 "trial_backend/pkg/utils"
+	"trial_backend/presenter/request"
+	"trial_backend/usecase"
 )
 
 type FileCloudController struct {
@@ -23,15 +23,15 @@ func NewImageController(imageService usecase.FileCloudService) *FileCloudControl
 
 // Upload
 //
-// @Summary     Upload
-// @Description Upload
-// @Tags        Image
-// @Accept      multipart/form-data
-// @Produce     json
-// @Param       Authorization     header   string                true "authorization token"
-// @Param       UploadFileRequest formData file                  true "UploadFileRequest"
-// @Success     200               {object} entity.SimpleResponse "success"
-// @Router      /v1/api/image/upload [POST]
+//	@Summary		Upload
+//	@Description	Upload
+//	@Tags			Image
+//	@Accept			multipart/form-data
+//	@Produce		json
+//	@Param			Authorization		header		string					true	"authorization token"
+//	@Param			UploadFileRequest	formData	file					true	"UploadFileRequest"
+//	@Success		200					{object}	entity.SimpleResponse	"success"
+//	@Router			/v1/api/image/upload [POST]
 func (h *FileCloudController) Upload(c echo.Context) error {
 	var req request.UploadFileRequest
 	if err := utils2.GetFile(c, &req, constants.FolderTmp); err != nil {
