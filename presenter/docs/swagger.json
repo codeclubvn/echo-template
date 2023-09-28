@@ -211,14 +211,14 @@
                         "Authorization": []
                     }
                 ],
-                "description": "Upload",
+                "description": "SaveFile",
                 "consumes": [
                     "multipart/form-data"
                 ],
                 "tags": [
                     "File"
                 ],
-                "summary": "Upload",
+                "summary": "SaveFile",
                 "parameters": [
                     {
                         "type": "file",
@@ -345,7 +345,7 @@
                         "Authorization": []
                     }
                 ],
-                "description": "Upload",
+                "description": "SaveFile",
                 "consumes": [
                     "multipart/form-data"
                 ],
@@ -355,7 +355,7 @@
                 "tags": [
                     "Image"
                 ],
-                "summary": "Upload",
+                "summary": "SaveFile",
                 "parameters": [
                     {
                         "type": "file",

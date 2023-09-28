@@ -310,7 +310,7 @@ paths:
     post:
       consumes:
       - multipart/form-data
-      description: Upload
+      description: SaveFile
       parameters:
       - description: file_request
         in: formData
@@ -324,7 +324,7 @@ paths:
             $ref: '#/definitions/model.File'
       security:
       - Authorization: []
-      summary: Upload
+      summary: SaveFile
       tags:
       - File
     put:
@@ -405,7 +405,7 @@ paths:
     post:
       consumes:
       - multipart/form-data
-      description: Upload
+      description: SaveFile
       parameters:
       - description: file_request
         in: formData
@@ -421,7 +421,7 @@ paths:
             $ref: '#/definitions/entity.SimpleResponse'
       security:
       - Authorization: []
-      summary: Upload
+      summary: SaveFile
       tags:
       - Image
   /v1/api/posts:
