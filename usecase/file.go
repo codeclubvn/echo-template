@@ -11,6 +11,7 @@ import (
 	"trial_backend/config"
 	"trial_backend/domain/repo"
 	"trial_backend/domain/repo/model"
+	"trial_backend/pkg/api_errors"
 	"trial_backend/pkg/constants"
 	"trial_backend/pkg/utils"
 	"trial_backend/presenter/request"
@@ -18,9 +19,9 @@ import (
 
 type (
 	FileService interface {
-		Upload(ctx context.Context, file *multipart.FileHeader) (*model.File, error)
+		SaveFile(ctx context.Context, req request.UploadFileRequest) (*model.File, error)
 		Update(ctx context.Context, req request.UpdateFileRequest) (*model.File, error)
-		Delete(ctx context.Context, id string) error
+		Delete(ctx context.Context, req request.DeleteFileRequest) error
 		GetOne(ctx context.Context, id string) (*model.File, error)
 		Download(ctx context.Context, id string) (*model.File, error)
 	}
@@ -81,14 +82,17 @@ func getExtensionNameFromFilename(fileName string) string {
 	}
 	return extensionName
 }
+func getFilename(fileName string) string {
+	return strings.Split(fileName, ".")[0]
+}
 
-func (s *fileService) Upload(ctx context.Context, req *multipart.FileHeader) (*model.File, error) {
+func (s *fileService) SaveFile(ctx context.Context, req request.UploadFileRequest) (*model.File, error) {
 	var err error
 	fileId := uuid.NewV4().String()
-	extensionName := getExtensionNameFromFilename(req.Filename)
+	extensionName := getExtensionNameFromFilename(req.File.Filename)
 
 	uploadPath := createFolder(fileId, s.config)
-	if err = saveToFolder(req, uploadPath, fileId, extensionName); err != nil {
+	if err = saveToFolder(req.File, uploadPath, fileId, extensionName); err != nil {
 		return nil, errors.WithStack(err)
 	}
 
@@ -97,9 +101,10 @@ func (s *fileService) Upload(ctx context.Context, req *multipart.FileHeader) (*m
 			ID: uuid.FromStringOrNil(fileId),
 		},
 		Path:          uploadPath,
-		Size:          req.Size,
+		Size:          req.File.Size,
 		ExtensionName: extensionName,
-		FileName:      req.Filename,
+		FileName:      req.File.Filename,
+		UserId:        req.UserId,
 	}
 	if err = s.fileRepository.Create(ctx, file); err != nil {
 		return nil, err
@@ -115,28 +120,41 @@ func (s *fileService) Update(ctx context.Context, req request.UpdateFileRequest)
 		return nil, err
 	}
 
-	// check filePath is not in ./domain/assets
-	if !strings.Contains(file.Path, s.config.Server.UploadPath) {
-		file.Path = createFolder(file.ID.String(), s.config)
-	} else {
-		// delete old file
-		_ = os.Remove(file.Path + file.ID.String() + "." + file.ExtensionName)
+	// check file is belong to user
+	if file.UserId != req.UserId {
+		return nil, errors.New(api_errors.ErrUnauthorizedAccess)
+	}
+
+	if req.File != nil {
+		// check filePath is not in ./domain/assets
+		if !strings.Contains(file.Path, s.config.Server.UploadPath) {
+			file.Path = createFolder(file.ID.String(), s.config)
+		} else {
+			// delete old file
+			_ = os.Remove(file.Path + file.ID.String() + "." + file.ExtensionName)
+		}
+
+		file.ExtensionName = getExtensionNameFromFilename(req.File.Filename)
+		file.Size = req.File.Size
+		file.UpdaterID = req.UserId
+
+		// create folder if not exists
+		if _, err := os.Stat(file.Path); os.IsNotExist(err) {
+			if err := os.MkdirAll(file.Path, 0755); err != nil {
+				panic(err)
+			}
+		}
+		if err := saveToFolder(req.File, file.Path, file.ID.String(), file.ExtensionName); err != nil {
+			return nil, errors.WithStack(err)
+		}
 	}
 
 	if err = utils.Copy(file, req); err != nil {
 		return nil, err
 	}
-	file.ExtensionName = getExtensionNameFromFilename(req.File.Filename)
-	file.Size = req.File.Size
-
-	// create folder if not exists
-	if _, err := os.Stat(file.Path); os.IsNotExist(err) {
-		if err := os.MkdirAll(file.Path, 0755); err != nil {
-			panic(err)
-		}
-	}
-	if err := saveToFolder(req.File, file.Path, file.ID.String(), file.ExtensionName); err != nil {
-		return nil, errors.WithStack(err)
+	if req.FileName != "" {
+		fileName := getFilename(req.FileName)
+		file.FileName = fileName + "." + file.ExtensionName
 	}
 
 	if err = s.fileRepository.Update(ctx, file); err != nil {
@@ -145,8 +163,19 @@ func (s *fileService) Update(ctx context.Context, req request.UpdateFileRequest)
 	return file, err
 }
 
-func (s *fileService) Delete(ctx context.Context, id string) error {
-	return s.fileRepository.DeleteById(ctx, id)
+func (s *fileService) Delete(ctx context.Context, req request.DeleteFileRequest) error {
+	// get one file
+	file, err := s.fileRepository.GetOneById(ctx, req.ID)
+	if err != nil {
+		return err
+	}
+
+	// check file is belong to user
+	if file.UserId != req.UserId {
+		return errors.New(api_errors.ErrUnauthorizedAccess)
+	}
+
+	return s.fileRepository.DeleteById(ctx, req.ID)
 }
 
 func (s *fileService) GetOne(ctx context.Context, id string) (*model.File, error) {

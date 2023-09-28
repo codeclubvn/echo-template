@@ -3,14 +3,14 @@ package usecase
 import (
 	"context"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
+	"mime/multipart"
 	"trial_backend/config"
 	"trial_backend/domain/repo"
-	"trial_backend/presenter/request"
 )
 
 type (
 	FileCloudService interface {
-		Update(ctx context.Context, req request.UploadFileRequest) (*uploader.UploadResult, error)
+		Update(ctx context.Context, file *multipart.FileHeader) (*uploader.UploadResult, error)
 	}
 	imageService struct {
 		imageRepository repo.CloudinaryRepository
@@ -25,8 +25,8 @@ func NewImageService(itemRepo repo.CloudinaryRepository, config *config.Config) 
 	}
 }
 
-func (s *imageService) Update(ctx context.Context, req request.UploadFileRequest) (*uploader.UploadResult, error) {
-	res, err := s.imageRepository.UploadFileCloud(ctx, req)
+func (s *imageService) Update(ctx context.Context, file *multipart.FileHeader) (*uploader.UploadResult, error) {
+	res, err := s.imageRepository.UploadFileCloud(ctx, file)
 	if err != nil {
 		return nil, err
 	}

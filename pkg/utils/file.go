@@ -1,14 +1,12 @@
 package utils
 
 import (
-	"github.com/labstack/echo/v4"
 	"io"
+	"mime/multipart"
 	"os"
-	"trial_backend/presenter/request"
 )
 
-func GetFile(c echo.Context, req *request.UploadFileRequest, folder string) error {
-	file, err := c.FormFile("file")
+func GetFile(file *multipart.FileHeader, folder string) error {
 	// Source
 	src, err := file.Open()
 	if err != nil {
@@ -27,8 +25,5 @@ func GetFile(c echo.Context, req *request.UploadFileRequest, folder string) erro
 	if _, err = io.Copy(dst, src); err != nil {
 		return err
 	}
-
-	req.FileName = folder + file.Filename
-	req.Size = file.Size
 	return nil
 }

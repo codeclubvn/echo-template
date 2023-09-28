@@ -23,7 +23,7 @@ func NewHealthController() *HealthController {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	entity.SimpleResponse	"success"
-//	@Router			/v1/api/health [GET]
+//	@Router			/health [GET]
 func (h *HealthController) Health(c echo.Context) error {
 	return h.Response(c, http.StatusOK, "success", map[string]interface{}{
 		"status": "UP",

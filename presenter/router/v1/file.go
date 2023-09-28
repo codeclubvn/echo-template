@@ -13,7 +13,7 @@ type FileRoutes struct {
 func NewFileRoutes(handler *lib.ServerGroupV1, c *controller.FileController, middleware *middlewares.Middleware) *FileRoutes {
 	g := handler.Echo.Group("/files")
 
-	g.POST("", c.Upload, middleware.Auth(true))
+	g.POST("", c.SaveFile, middleware.Auth(true))
 	g.PUT("", c.Update, middleware.Auth(true))
 	g.GET("/:id", c.GetOne, middleware.Auth(false))
 	g.GET("/download/:id", c.Download, middleware.Auth(true))

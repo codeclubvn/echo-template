@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"context"
 	"errors"
 	"github.com/labstack/echo/v4"
 	uuid "github.com/satori/go.uuid"
@@ -12,8 +11,8 @@ func GetUserStringIDFromContext(ctx echo.Context) string {
 	return ctx.Request().Header.Get("x-user-id")
 }
 
-func GetUserUUIDFromContext(ctx context.Context) (uuid.UUID, error) {
-	sid := ctx.Value("x-user-id").(string)
+func GetUserUUIDFromContext(ctx echo.Context) (uuid.UUID, error) {
+	sid := ctx.Request().Header.Get("x-user-id")
 
 	u, err := uuid.FromString(sid)
 	if err != nil {

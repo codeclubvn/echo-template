@@ -18,14 +18,9 @@ type UpdateUserRequest struct {
 	CreateUserRequest
 }
 
-type UserResponse struct {
-	ID          uuid.UUID `json:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Image       string    `json:"image"`
-	Price       float64   `json:"price"`
-	Status      bool      `json:"status"`
-	NumberUser  int       `json:"number_product"`
+type DeleteUserRequest struct {
+	ID     string    `json:"id"`
+	UserId uuid.UUID `json:"user_id" swaggerignore:"true"`
 }
 
 type GetListUserRequest struct {

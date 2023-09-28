@@ -10,7 +10,6 @@ var (
 	ErrTokenInvalid         = "10004"
 	ErrTokenMalformed       = "10005"
 	ErrUserNotFound         = "10006"
-	ErrProductNotFound      = "10007"
 	ErrRequestTimeout       = "10008"
 	ErrTokenMissing         = "10009"
 	ErrValidation           = "10010"
@@ -21,6 +20,7 @@ var (
 	CannotParseToken        = "10015"
 	ErrPostNotFound         = "10016"
 	ErrFileNotFound         = "10017"
+	ErrEmailExist           = "10018"
 )
 
 type MessageAndStatus struct {
@@ -46,4 +46,5 @@ var MapErrorCodeMessage = map[string]MessageAndStatus{
 	ErrPermissionDenied:     {"Permission Denied", http.StatusForbidden},
 	ErrInvalidPassword:      {"Invalid Password", http.StatusBadRequest},
 	CannotParseToken:        {"Cannot Parse Token", http.StatusUnauthorized},
+	ErrEmailExist:           {"Email is Exist", http.StatusBadRequest},
 }

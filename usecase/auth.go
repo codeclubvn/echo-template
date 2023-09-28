@@ -37,6 +37,15 @@ func NewAuthService(userService UserService, config *config.Config, jwtService J
 }
 
 func (a *authService) Register(ctx context.Context, req request.RegisterRequest) (user *model.User, err error) {
+	// check email exist
+	user, err = a.userService.GetByEmail(ctx, req.Email)
+	if err != nil && err.Error() != api_errors.ErrUserNotFound {
+		return nil, err
+	}
+	if user != nil {
+		return nil, errors.New(api_errors.ErrEmailExist)
+	}
+
 	encryptedPassword, err := bcrypt.GenerateFromPassword(
 		[]byte(req.Password),
 		bcrypt.DefaultCost,
@@ -57,7 +66,6 @@ func (a *authService) Register(ctx context.Context, req request.RegisterRequest)
 
 func (a *authService) Login(ctx context.Context, req request.LoginRequest) (res *entity.LoginResponse, err error) {
 	user, err := a.userService.GetByEmail(ctx, req.Email)
-
 	if err != nil {
 		return nil, err
 	}

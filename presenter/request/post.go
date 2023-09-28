@@ -5,7 +5,7 @@ import (
 )
 
 type CreatePostRequest struct {
-	UserId  string      `json:"user_id" swaggerignore:"true"`
+	UserId  uuid.UUID   `json:"user_id" swaggerignore:"true"`
 	Title   string      `json:"title"`
 	Content string      `json:"content"`
 	Slug    string      `json:"slug"`
@@ -18,6 +18,11 @@ type FileIdSlice []uuid.UUID
 type UpdatePostRequest struct {
 	ID string `json:"id"`
 	CreatePostRequest
+}
+
+type DeletePostRequest struct {
+	ID     string    `json:"id"`
+	UserId uuid.UUID `json:"user_id" swaggerignore:"true"`
 }
 
 type PostResponse struct {

@@ -7,6 +7,7 @@ import (
 	"trial_backend/domain/repo"
 	"trial_backend/domain/repo/model"
 	"trial_backend/infra"
+	"trial_backend/pkg/api_errors"
 	"trial_backend/pkg/utils"
 	"trial_backend/presenter/request"
 )
@@ -53,6 +54,11 @@ func (s *userService) Update(ctx context.Context, req request.UpdateUserRequest)
 	if err != nil {
 		return nil, err
 	}
+	//
+	//// check post is belong to user
+	//if user.ID != req.UserId {
+	//	return errors.New(api_errors.ErrUnauthorizedAccess)
+	//}
 
 	if err = utils.Copy(user, req); err != nil {
 		return nil, err
@@ -68,6 +74,16 @@ func (s *userService) GetList(ctx context.Context, req request.GetListUserReques
 }
 
 func (s *userService) Delete(ctx context.Context, id string) error {
+	user, err := s.GetOne(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	// check post is belong to user
+	if user.ID.String() != id {
+		return errors.New(api_errors.ErrUnauthorizedAccess)
+	}
+
 	return s.userRepository.DeleteById(ctx, id)
 }
 

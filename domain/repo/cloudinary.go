@@ -7,13 +7,14 @@ import (
 	"github.com/cloudinary/cloudinary-go/v2/api/admin"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"go.uber.org/zap"
+	"mime/multipart"
 	"trial_backend/config"
 	"trial_backend/infra"
-	"trial_backend/presenter/request"
+	"trial_backend/pkg/constants"
 )
 
 type CloudinaryRepository interface {
-	UploadFileCloud(ctx context.Context, req request.UploadFileRequest) (resp *uploader.UploadResult, err error)
+	UploadFileCloud(ctx context.Context, file *multipart.FileHeader) (resp *uploader.UploadResult, err error)
 	GetAssetInfo(ctx context.Context)
 	TransformImage(ctx context.Context)
 }
@@ -32,11 +33,11 @@ func NewCloudinaryRepository(cld *infra.Cloudinary, logger *zap.Logger, config *
 	}
 }
 
-func (r *cloudinaryRepository) UploadFileCloud(ctx context.Context, req request.UploadFileRequest) (resp *uploader.UploadResult, err error) {
+func (r *cloudinaryRepository) UploadFileCloud(ctx context.Context, file *multipart.FileHeader) (resp *uploader.UploadResult, err error) {
 
-	// Upload the cloudinary.
+	// SaveFile the cloudinary.
 	// Set the asset's public ID and allow overwriting the asset with new versions
-	resp, err = r.cld.Upload.Upload(ctx, req.FileName, uploader.UploadParams{
+	resp, err = r.cld.Upload.Upload(ctx, constants.FolderTmp+file.Filename, uploader.UploadParams{
 		PublicID:       r.config.Cloudinary.PublicId,
 		UniqueFilename: api.Bool(false),
 		Overwrite:      api.Bool(true)})

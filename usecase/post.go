@@ -6,6 +6,7 @@ import (
 	"trial_backend/config"
 	"trial_backend/domain/repo"
 	"trial_backend/domain/repo/model"
+	"trial_backend/pkg/api_errors"
 	"trial_backend/pkg/utils"
 	"trial_backend/presenter/request"
 )
@@ -14,7 +15,7 @@ type (
 	PostService interface {
 		Create(ctx context.Context, req request.CreatePostRequest) (*model.Post, error)
 		Update(ctx context.Context, req request.UpdatePostRequest) (*model.Post, error)
-		Delete(ctx context.Context, id string) error
+		Delete(ctx context.Context, req request.DeletePostRequest) error
 		GetOne(ctx context.Context, id string) (*model.Post, error)
 		GetList(ctx context.Context, req request.GetListPostRequest) ([]*model.Post, *int64, error)
 	}
@@ -44,7 +45,15 @@ func (s *postService) Create(ctx context.Context, req request.CreatePostRequest)
 }
 
 func (s *postService) Update(ctx context.Context, req request.UpdatePostRequest) (*model.Post, error) {
-	post := &model.Post{}
+	post, err := s.GetOne(ctx, req.ID)
+	if err != nil {
+		return nil, err
+	}
+	// check post is belong to user
+	if post.UserId != req.UserId {
+		return nil, errors.New(api_errors.ErrUnauthorizedAccess)
+	}
+
 	if err := utils.Copy(post, req); err != nil {
 		return nil, err
 	}
@@ -54,8 +63,16 @@ func (s *postService) Update(ctx context.Context, req request.UpdatePostRequest)
 	return post, nil
 }
 
-func (s *postService) Delete(ctx context.Context, id string) error {
-	return s.postRepository.DeleteById(ctx, id)
+func (s *postService) Delete(ctx context.Context, req request.DeletePostRequest) error {
+	post, err := s.GetOne(ctx, req.ID)
+	if err != nil {
+		return err
+	}
+	// check post is belong to user
+	if post.UserId != req.UserId {
+		return errors.New(api_errors.ErrUnauthorizedAccess)
+	}
+	return s.postRepository.DeleteById(ctx, req.ID)
 }
 
 func (s *postService) GetOne(ctx context.Context, id string) (*model.Post, error) {

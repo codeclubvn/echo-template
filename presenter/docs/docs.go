@@ -24,6 +24,29 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/health": {
+            "get": {
+                "description": "Health",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Check health server",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/entity.SimpleResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/api/auth/call-back": {
             "post": {
                 "description": "GoogleCallback",
@@ -140,6 +163,11 @@ const docTemplate = `{
         },
         "/v1/api/files": {
             "put": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Update",
                 "consumes": [
                     "multipart/form-data"
@@ -150,27 +178,30 @@ const docTemplate = `{
                 "summary": "Update",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "data",
+                        "in": "formData"
                     },
                     {
-                        "description": "UpdateFileRequest",
-                        "name": "UpdateFileRequest",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/request.UpdateFileRequest"
-                        }
+                        "type": "string",
+                        "name": "file_name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
                     },
                     {
                         "type": "file",
                         "description": "file_request",
                         "name": "file_request",
-                        "in": "formData",
-                        "required": true
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -183,22 +214,20 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Upload",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "SaveFile",
                 "consumes": [
                     "multipart/form-data"
                 ],
                 "tags": [
                     "File"
                 ],
-                "summary": "Upload",
+                "summary": "SaveFile",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "file",
                         "description": "file_request",
@@ -217,6 +246,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Delete",
                 "consumes": [
                     "application/json"
@@ -226,13 +260,6 @@ const docTemplate = `{
                 ],
                 "summary": "Delete",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "id",
@@ -253,6 +280,11 @@ const docTemplate = `{
         },
         "/v1/api/files/download/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Download",
                 "consumes": [
                     "application/json"
@@ -262,13 +294,6 @@ const docTemplate = `{
                 ],
                 "summary": "Download",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "id",
@@ -289,6 +314,11 @@ const docTemplate = `{
         },
         "/v1/api/files/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "GetOne",
                 "consumes": [
                     "application/json"
@@ -298,13 +328,6 @@ const docTemplate = `{
                 ],
                 "summary": "GetOne",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "id",
@@ -323,32 +346,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/api/health": {
-            "get": {
-                "description": "Health",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Health"
-                ],
-                "summary": "Check health server",
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/entity.SimpleResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/api/image/upload": {
             "post": {
-                "description": "Upload",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "SaveFile",
                 "consumes": [
                     "multipart/form-data"
                 ],
@@ -358,19 +363,12 @@ const docTemplate = `{
                 "tags": [
                     "Image"
                 ],
-                "summary": "Upload",
+                "summary": "SaveFile",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "type": "file",
-                        "description": "UploadFileRequest",
-                        "name": "UploadFileRequest",
+                        "description": "file_request",
+                        "name": "file_request",
                         "in": "formData",
                         "required": true
                     }
@@ -387,6 +385,11 @@ const docTemplate = `{
         },
         "/v1/api/posts": {
             "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "GetList",
                 "consumes": [
                     "application/json"
@@ -399,13 +402,6 @@ const docTemplate = `{
                 ],
                 "summary": "GetList",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "GetListPostRequest",
                         "name": "GetListPostRequest",
@@ -429,6 +425,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Update",
                 "consumes": [
                     "application/json"
@@ -441,13 +442,6 @@ const docTemplate = `{
                 ],
                 "summary": "Update",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "UpdatePostRequest",
                         "name": "UpdatePostRequest",
@@ -468,6 +462,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Create",
                 "consumes": [
                     "application/json"
@@ -480,13 +479,6 @@ const docTemplate = `{
                 ],
                 "summary": "Create",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "CreatePostRequest",
                         "name": "CreatePostRequest",
@@ -509,6 +501,11 @@ const docTemplate = `{
         },
         "/v1/api/posts/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "GetOne",
                 "consumes": [
                     "application/json"
@@ -521,13 +518,6 @@ const docTemplate = `{
                 ],
                 "summary": "GetOne",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "id",
@@ -546,6 +536,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Delete",
                 "consumes": [
                     "application/json"
@@ -558,13 +553,6 @@ const docTemplate = `{
                 ],
                 "summary": "Delete",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "id",
@@ -585,71 +573,11 @@ const docTemplate = `{
         },
         "/v1/api/users": {
             "get": {
-                "description": "GetList",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "GetList",
-                "parameters": [
+                "security": [
                     {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
+                        "Authorization": []
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.User"
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Update",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Update",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/model.User"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/api/users/{id}": {
-            "get": {
                 "description": "GetOne",
                 "consumes": [
                     "application/json"
@@ -661,22 +589,32 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "GetOne",
-                "parameters": [
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
                     {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "Authorization": []
                     }
                 ],
+                "description": "Update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update",
                 "responses": {
                     "200": {
                         "description": "success",
@@ -687,6 +625,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Delete",
                 "consumes": [
                     "application/json"
@@ -698,22 +641,6 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "Delete",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "success",
@@ -807,6 +734,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updater_id": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/model.User"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -973,26 +906,6 @@ const docTemplate = `{
                 }
             }
         },
-        "request.UpdateFileRequest": {
-            "type": "object",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "file_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                }
-            }
-        },
         "request.UpdatePostRequest": {
             "type": "object",
             "properties": {
@@ -1021,7 +934,7 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "ApiKeyAuth": {
+        "Authorization": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

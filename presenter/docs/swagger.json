@@ -16,6 +16,29 @@
         "version": "2.0"
     },
     "paths": {
+        "/health": {
+            "get": {
+                "description": "Health",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Check health server",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/entity.SimpleResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/api/auth/call-back": {
             "post": {
                 "description": "GoogleCallback",
@@ -132,6 +155,11 @@
         },
         "/v1/api/files": {
             "put": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Update",
                 "consumes": [
                     "multipart/form-data"
@@ -142,27 +170,30 @@
                 "summary": "Update",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "data",
+                        "in": "formData"
                     },
                     {
-                        "description": "UpdateFileRequest",
-                        "name": "UpdateFileRequest",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/request.UpdateFileRequest"
-                        }
+                        "type": "string",
+                        "name": "file_name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
                     },
                     {
                         "type": "file",
                         "description": "file_request",
                         "name": "file_request",
-                        "in": "formData",
-                        "required": true
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -175,6 +206,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Upload",
                 "consumes": [
                     "multipart/form-data"
@@ -184,13 +220,6 @@
                 ],
                 "summary": "Upload",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "file",
                         "description": "file_request",
@@ -209,6 +238,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Delete",
                 "consumes": [
                     "application/json"
@@ -218,13 +252,6 @@
                 ],
                 "summary": "Delete",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "id",
@@ -245,6 +272,11 @@
         },
         "/v1/api/files/download/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Download",
                 "consumes": [
                     "application/json"
@@ -254,13 +286,6 @@
                 ],
                 "summary": "Download",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "id",
@@ -281,6 +306,11 @@
         },
         "/v1/api/files/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "GetOne",
                 "consumes": [
                     "application/json"
@@ -290,13 +320,6 @@
                 ],
                 "summary": "GetOne",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "id",
@@ -315,31 +338,13 @@
                 }
             }
         },
-        "/v1/api/health": {
-            "get": {
-                "description": "Health",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Health"
-                ],
-                "summary": "Check health server",
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/entity.SimpleResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/api/image/upload": {
             "post": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Upload",
                 "consumes": [
                     "multipart/form-data"
@@ -353,16 +358,9 @@
                 "summary": "Upload",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "type": "file",
-                        "description": "UploadFileRequest",
-                        "name": "UploadFileRequest",
+                        "description": "file_request",
+                        "name": "file_request",
                         "in": "formData",
                         "required": true
                     }
@@ -379,6 +377,11 @@
         },
         "/v1/api/posts": {
             "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "GetList",
                 "consumes": [
                     "application/json"
@@ -391,13 +394,6 @@
                 ],
                 "summary": "GetList",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "GetListPostRequest",
                         "name": "GetListPostRequest",
@@ -421,6 +417,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Update",
                 "consumes": [
                     "application/json"
@@ -433,13 +434,6 @@
                 ],
                 "summary": "Update",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "UpdatePostRequest",
                         "name": "UpdatePostRequest",
@@ -460,6 +454,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Create",
                 "consumes": [
                     "application/json"
@@ -472,13 +471,6 @@
                 ],
                 "summary": "Create",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "CreatePostRequest",
                         "name": "CreatePostRequest",
@@ -501,6 +493,11 @@
         },
         "/v1/api/posts/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "GetOne",
                 "consumes": [
                     "application/json"
@@ -513,13 +510,6 @@
                 ],
                 "summary": "GetOne",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "id",
@@ -538,6 +528,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Delete",
                 "consumes": [
                     "application/json"
@@ -550,13 +545,6 @@
                 ],
                 "summary": "Delete",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "id",
@@ -577,71 +565,11 @@
         },
         "/v1/api/users": {
             "get": {
-                "description": "GetList",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "GetList",
-                "parameters": [
+                "security": [
                     {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
+                        "Authorization": []
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.User"
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Update",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Update",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "$ref": "#/definitions/model.User"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/api/users/{id}": {
-            "get": {
                 "description": "GetOne",
                 "consumes": [
                     "application/json"
@@ -653,22 +581,32 @@
                     "User"
                 ],
                 "summary": "GetOne",
-                "parameters": [
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
                     {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "Authorization": []
                     }
                 ],
+                "description": "Update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update",
                 "responses": {
                     "200": {
                         "description": "success",
@@ -679,6 +617,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "Delete",
                 "consumes": [
                     "application/json"
@@ -690,22 +633,6 @@
                     "User"
                 ],
                 "summary": "Delete",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "authorization token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "success",
@@ -799,6 +726,12 @@
                     "type": "string"
                 },
                 "updater_id": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/model.User"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -965,26 +898,6 @@
                 }
             }
         },
-        "request.UpdateFileRequest": {
-            "type": "object",
-            "required": [
-                "id"
-            ],
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "file_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                }
-            }
-        },
         "request.UpdatePostRequest": {
             "type": "object",
             "properties": {
@@ -1013,7 +926,7 @@
         }
     },
     "securityDefinitions": {
-        "ApiKeyAuth": {
+        "Authorization": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

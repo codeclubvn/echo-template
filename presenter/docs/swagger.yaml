@@ -54,6 +54,10 @@ definitions:
         type: string
       updater_id:
         type: string
+      user:
+        $ref: '#/definitions/model.User'
+      user_id:
+        type: string
     type: object
   model.Post:
     properties:
@@ -163,19 +167,6 @@ definitions:
     - email
     - password
     type: object
-  request.UpdateFileRequest:
-    properties:
-      data:
-        items:
-          type: string
-        type: array
-      file_name:
-        type: string
-      id:
-        type: string
-    required:
-    - id
-    type: object
   request.UpdatePostRequest:
     properties:
       content:
@@ -206,6 +197,21 @@ info:
   title: Swagger Trial Backend API
   version: "2.0"
 paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Health
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/entity.SimpleResponse'
+      summary: Check health server
+      tags:
+      - Health
   /v1/api/auth/call-back:
     post:
       consumes:
@@ -286,11 +292,6 @@ paths:
       - application/json
       description: Delete
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: id
         in: path
         name: id
@@ -301,6 +302,8 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/entity.SimpleResponse'
+      security:
+      - Authorization: []
       summary: Delete
       tags:
       - File
@@ -309,11 +312,6 @@ paths:
       - multipart/form-data
       description: Upload
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: file_request
         in: formData
         name: file_request
@@ -324,6 +322,8 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/model.File'
+      security:
+      - Authorization: []
       summary: Upload
       tags:
       - File
@@ -332,27 +332,30 @@ paths:
       - multipart/form-data
       description: Update
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
+      - collectionFormat: csv
+        in: formData
+        items:
+          type: string
+        name: data
+        type: array
+      - in: formData
+        name: file_name
+        type: string
+      - in: formData
+        name: id
         required: true
         type: string
-      - description: UpdateFileRequest
-        in: body
-        name: UpdateFileRequest
-        required: true
-        schema:
-          $ref: '#/definitions/request.UpdateFileRequest'
       - description: file_request
         in: formData
         name: file_request
-        required: true
         type: file
       responses:
         "200":
           description: success
           schema:
             $ref: '#/definitions/model.File'
+      security:
+      - Authorization: []
       summary: Update
       tags:
       - File
@@ -362,11 +365,6 @@ paths:
       - application/json
       description: GetOne
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: id
         in: path
         name: id
@@ -377,6 +375,8 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/model.File'
+      security:
+      - Authorization: []
       summary: GetOne
       tags:
       - File
@@ -386,11 +386,6 @@ paths:
       - application/json
       description: Download
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: id
         in: path
         name: id
@@ -401,38 +396,20 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/entity.SimpleResponse'
+      security:
+      - Authorization: []
       summary: Download
       tags:
       - File
-  /v1/api/health:
-    get:
-      consumes:
-      - application/json
-      description: Health
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/entity.SimpleResponse'
-      summary: Check health server
-      tags:
-      - Health
   /v1/api/image/upload:
     post:
       consumes:
       - multipart/form-data
       description: Upload
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: UploadFileRequest
+      - description: file_request
         in: formData
-        name: UploadFileRequest
+        name: file_request
         required: true
         type: file
       produces:
@@ -442,6 +419,8 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/entity.SimpleResponse'
+      security:
+      - Authorization: []
       summary: Upload
       tags:
       - Image
@@ -451,11 +430,6 @@ paths:
       - application/json
       description: GetList
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: GetListPostRequest
         in: body
         name: GetListPostRequest
@@ -471,6 +445,8 @@ paths:
             items:
               $ref: '#/definitions/model.Post'
             type: array
+      security:
+      - Authorization: []
       summary: GetList
       tags:
       - Post
@@ -479,11 +455,6 @@ paths:
       - application/json
       description: Create
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: CreatePostRequest
         in: body
         name: CreatePostRequest
@@ -497,6 +468,8 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/model.Post'
+      security:
+      - Authorization: []
       summary: Create
       tags:
       - Post
@@ -505,11 +478,6 @@ paths:
       - application/json
       description: Update
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: UpdatePostRequest
         in: body
         name: UpdatePostRequest
@@ -523,6 +491,8 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/model.Post'
+      security:
+      - Authorization: []
       summary: Update
       tags:
       - Post
@@ -532,11 +502,6 @@ paths:
       - application/json
       description: Delete
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: id
         in: path
         name: id
@@ -549,6 +514,8 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/entity.SimpleResponse'
+      security:
+      - Authorization: []
       summary: Delete
       tags:
       - Post
@@ -557,11 +524,6 @@ paths:
       - application/json
       description: GetOne
       parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: id
         in: path
         name: id
@@ -574,68 +536,16 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/model.Post'
+      security:
+      - Authorization: []
       summary: GetOne
       tags:
       - Post
   /v1/api/users:
-    get:
-      consumes:
-      - application/json
-      description: GetList
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            items:
-              $ref: '#/definitions/model.User'
-            type: array
-      summary: GetList
-      tags:
-      - User
-    put:
-      consumes:
-      - application/json
-      description: Update
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/model.User'
-      summary: Update
-      tags:
-      - User
-  /v1/api/users/{id}:
     delete:
       consumes:
       - application/json
       description: Delete
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -643,6 +553,8 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/entity.SimpleResponse'
+      security:
+      - Authorization: []
       summary: Delete
       tags:
       - User
@@ -650,17 +562,6 @@ paths:
       consumes:
       - application/json
       description: GetOne
-      parameters:
-      - description: authorization token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -668,11 +569,29 @@ paths:
           description: success
           schema:
             $ref: '#/definitions/model.User'
+      security:
+      - Authorization: []
       summary: GetOne
       tags:
       - User
+    put:
+      consumes:
+      - application/json
+      description: Update
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/model.User'
+      security:
+      - Authorization: []
+      summary: Update
+      tags:
+      - User
 securityDefinitions:
-  ApiKeyAuth:
+  Authorization:
     in: header
     name: Authorization
     type: apiKey

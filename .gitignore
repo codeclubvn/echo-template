@@ -14,4 +14,5 @@ app.env
 /.docker
 config.dev.yml
 config.yml
-/assets/
+/domain/assets/
+/tmp

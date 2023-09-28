@@ -19,23 +19,32 @@ func NewFileController(fileService usecase.FileService) *FileController {
 	}
 }
 
-// Upload
+// SaveFile
 //
-//	@Summary		Upload
-//	@Description	Upload
-//	@Tags			File
-//	@Accept			multipart/form-data
-//	@Param			Authorization	header		string		true	"authorization token"
-//	@Param			file_request	formData	file		true	"file_request"
-//	@Success		200				{object}	model.File	"success"
-//	@Router			/v1/api/files [POST]
-func (h *FileController) Upload(c echo.Context) error {
+// @Security		Authorization
+// @Summary		SaveFile
+// @Description	SaveFile
+// @Tags			File
+// @Accept			multipart/form-data
+// @Param			file_request	formData	file		true	"file_request"
+// @Success		200				{object}	model.File	"success"
+// @Router			/v1/api/files [POST]
+func (h *FileController) SaveFile(c echo.Context) error {
 	file, err := c.FormFile("file_request")
 	if err := c.Validate(file); err != nil {
 		return h.ResponseValidationError(c, err)
 	}
 
-	data, err := h.fileService.Upload(c.Request().Context(), file)
+	userId, err := utils.GetUserUUIDFromContext(c)
+	if err != nil {
+		return h.ResponseValidationError(c, err)
+	}
+
+	req := request.UploadFileRequest{
+		File:   file,
+		UserId: userId,
+	}
+	data, err := h.fileService.SaveFile(c.Request().Context(), req)
 	if err != nil {
 		return h.ResponseError(c, err)
 	}
@@ -45,30 +54,38 @@ func (h *FileController) Upload(c echo.Context) error {
 
 // Update
 //
+//	@Security		Authorization
 //	@Summary		Update
 //	@Description	Update
 //	@Tags			File
 //	@Accept			multipart/form-data
-//	@Param			Authorization		header		string						true	"authorization token"
-//	@Param			UpdateFileRequest	body		request.UpdateFileRequest	true	"UpdateFileRequest"
-//	@Param			file_request		formData	file						true	"file_request"
+//	@Param			UpdateFileRequest	formData	request.UpdateFileRequest	true	"UpdateFileRequest"
+//	@Param			file_request		formData	file						false	"file_request"
 //	@Success		200					{object}	model.File					"success"
-//	@Router			/v1/api/files [Put]
+//	@Router			/v1/api/files [PUT]
 func (h *FileController) Update(c echo.Context) error {
 	var req request.UpdateFileRequest
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidationError(c, err)
 	}
+	if err := c.Validate(req); err != nil {
+		return h.ResponseValidationError(c, err)
+	}
 
-	file, err := c.FormFile("file_request")
+	userId, err := utils.GetUserUUIDFromContext(c)
 	if err != nil {
-		return h.ResponseError(c, err)
+		return h.ResponseValidationError(c, err)
+	}
+	req.UserId = userId
+
+	file, _ := c.FormFile("file_request")
+	if file != nil {
+		req.File = file
 	}
 
 	if err := c.Validate(req); err != nil {
 		return h.ResponseValidationError(c, err)
 	}
-	req.File = file
 
 	res, err := h.fileService.Update(c.Request().Context(), req)
 	if err != nil {
@@ -81,18 +98,27 @@ func (h *FileController) Update(c echo.Context) error {
 
 // Delete
 //
+//	@Security		Authorization
 //	@Summary		Delete
 //	@Description	Delete
 //	@Tags			File
 //	@Accept			json
-//	@Param			Authorization	header		string					true	"authorization token"
-//	@Param			id				path		string					true	"id"
-//	@Success		200				{object}	entity.SimpleResponse	"success"
+//	@Param			id	path		string					true	"id"
+//	@Success		200	{object}	entity.SimpleResponse	"success"
 //	@Router			/v1/api/files [Delete]
 func (h *FileController) Delete(c echo.Context) error {
 	id := utils.ParseStringIDFromUri(c)
-	err := h.fileService.Delete(c.Request().Context(), id)
+
+	userId, err := utils.GetUserUUIDFromContext(c)
 	if err != nil {
+		return h.ResponseValidationError(c, err)
+	}
+	req := request.DeleteFileRequest{
+		ID:     id,
+		UserId: userId,
+	}
+
+	if err := h.fileService.Delete(c.Request().Context(), req); err != nil {
 		return h.ResponseError(c, err)
 	}
 
@@ -101,13 +127,13 @@ func (h *FileController) Delete(c echo.Context) error {
 
 // GetOne
 //
+//	@Security		Authorization
 //	@Summary		GetOne
 //	@Description	GetOne
 //	@Tags			File
 //	@Accept			json
-//	@Param			Authorization	header		string		true	"authorization token"
-//	@Param			id				path		string		true	"id"
-//	@Success		200				{object}	model.File	"success"
+//	@Param			id	path		string		true	"id"
+//	@Success		200	{object}	model.File	"success"
 //	@Router			/v1/api/files/{id} [GET]
 func (h *FileController) GetOne(c echo.Context) error {
 	id := utils.ParseStringIDFromUri(c)
@@ -121,13 +147,13 @@ func (h *FileController) GetOne(c echo.Context) error {
 
 // Download
 //
+//	@Security		Authorization
 //	@Summary		Download
 //	@Description	Download
 //	@Tags			File
 //	@Accept			json
-//	@Param			Authorization	header		string					true	"authorization token"
-//	@Param			id				path		string					true	"id"
-//	@Success		200				{object}	entity.SimpleResponse	"success"
+//	@Param			id	path		string					true	"id"
+//	@Success		200	{object}	entity.SimpleResponse	"success"
 //	@Router			/v1/api/files/download/{id} [GET]
 func (h *FileController) Download(c echo.Context) error {
 	id := utils.ParseStringIDFromUri(c)

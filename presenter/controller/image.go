@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 	"trial_backend/pkg/constants"
-	utils2 "trial_backend/pkg/utils"
+	utils "trial_backend/pkg/utils"
 	"trial_backend/presenter/request"
 	"trial_backend/usecase"
 )
@@ -23,29 +23,39 @@ func NewImageController(imageService usecase.FileCloudService) *FileCloudControl
 
 // Upload
 //
-//	@Summary		Upload
-//	@Description	Upload
+//	@Security		Authorization
+//
+//	@Summary		SaveFile
+//	@Description	SaveFile
 //	@Tags			Image
 //	@Accept			multipart/form-data
 //	@Produce		json
-//	@Param			Authorization		header		string					true	"authorization token"
-//	@Param			UploadFileRequest	formData	file					true	"UploadFileRequest"
-//	@Success		200					{object}	entity.SimpleResponse	"success"
+//	@Param			file_request	formData	file					true	"file_request"
+//	@Success		200				{object}	entity.SimpleResponse	"success"
 //	@Router			/v1/api/image/upload [POST]
 func (h *FileCloudController) Upload(c echo.Context) error {
-	var req request.UploadFileRequest
-	if err := utils2.GetFile(c, &req, constants.FolderTmp); err != nil {
+	file, err := c.FormFile("file_request")
+	if err := c.Validate(file); err != nil {
+		return h.ResponseValidationError(c, err)
+	}
+
+	if _, err := os.Stat(constants.FolderTmp); os.IsNotExist(err) {
+		if err := os.MkdirAll(constants.FolderTmp, 0755); err != nil {
+			panic(err)
+		}
+	}
+	if err := utils.GetFile(file, constants.FolderTmp); err != nil {
 		return h.ResponseError(c, err)
 	}
-	defer os.Remove(req.FileName)
+	defer os.Remove(constants.FolderTmp + file.Filename)
 
-	data, err := h.imageService.Update(c.Request().Context(), req)
+	data, err := h.imageService.Update(c.Request().Context(), file)
 	if err != nil {
 		return h.ResponseError(c, err)
 	}
 
 	var res request.UploadFileResponse
-	if err := utils2.Copy(&res, &data); err != nil {
+	if err := utils.Copy(&res, &data); err != nil {
 		return h.ResponseError(c, err)
 	}
 
