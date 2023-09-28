@@ -83,7 +83,9 @@ func (a *authService) Login(ctx context.Context, req request.LoginRequest) (res 
 
 	return &entity.LoginResponse{
 		User: entity.UserResponse{
-			ID: user.ID.String(),
+			ID:       user.ID.String(),
+			Email:    user.Email,
+			UserName: user.UserName,
 		},
 		Token: entity.TokenResponse{
 			AccessToken:  accessToken,

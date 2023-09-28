@@ -885,12 +885,14 @@ const docTemplate = `{
             ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "hieuhoccode@gmail.com"
                 },
                 "password": {
                     "type": "string",
                     "maxLength": 20,
-                    "minLength": 6
+                    "minLength": 6,
+                    "example": "hieuhoccode"
                 }
             }
         },

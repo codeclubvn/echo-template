@@ -135,8 +135,10 @@ definitions:
   request.LoginRequest:
     properties:
       email:
+        example: hieuhoccode@gmail.com
         type: string
       password:
+        example: hieuhoccode
         maxLength: 20
         minLength: 6
         type: string

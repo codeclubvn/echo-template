@@ -14,7 +14,7 @@ type TokenResponse struct {
 
 type UserResponse struct {
 	ID       string     `json:"id"`
-	UserName string     `json:"user_name"`
-	Email    string     `json:"email"`
+	UserName string     `json:"user_name,omitempty"`
+	Email    string     `json:"email,omitempty"`
 	RoleID   *uuid.UUID `json:"role_id,omitempty"`
 }

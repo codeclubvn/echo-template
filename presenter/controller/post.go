@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"strings"
 	utils "trial_backend/pkg/utils"
 	"trial_backend/presenter/request"
 	"trial_backend/usecase"
@@ -42,6 +43,8 @@ func (h *PostController) Create(c echo.Context) error {
 	}
 	req.UserId = userId
 
+	h.TrimSpace(&req)
+
 	// check files is list uuid
 	if err = utils.CheckListUUID(req.Files); err != nil {
 		return h.ResponseError(c, err)
@@ -53,6 +56,12 @@ func (h *PostController) Create(c echo.Context) error {
 	}
 
 	return h.Response(c, http.StatusCreated, "Success", res)
+}
+
+func (h *PostController) TrimSpace(req *request.CreatePostRequest) {
+	req.Title = strings.TrimSpace(req.Title)
+	req.Content = strings.TrimSpace(req.Content)
+	req.Slug = strings.TrimSpace(req.Slug)
 }
 
 // Update

@@ -58,7 +58,7 @@ func (r *postRepository) GetList(ctx context.Context, req request.GetListPostReq
 	query := r.db.Model(&model.Post{})
 	if req.Search != "" {
 		search := "%" + req.Search + "%"
-		query = query.Where(`title ilike ? or SIMILARITY(unaccent(title),?) > 0.25`, search, search)
+		query = query.Where(`title ilike ? or SIMILARITY(unaccent(title),?) > 0.25`, search, req.Search)
 	}
 
 	switch req.Sort {

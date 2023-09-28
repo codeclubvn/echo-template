@@ -1,8 +1,8 @@
 package request
 
 type PageOptions struct {
-	Page   int64  `form:"page" json:"page"`
-	Limit  int64  `form:"limit" json:"limit"`
-	Sort   string `form:"sort" json:"sort"`
-	Search string `form:"search" json:"search"`
+	Page   int64  `query:"page" json:"page"`
+	Limit  int64  `query:"limit" json:"limit"`
+	Sort   string `query:"sort" json:"sort"`
+	Search string `query:"search" json:"search"`
 }

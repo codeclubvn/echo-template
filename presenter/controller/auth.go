@@ -9,6 +9,7 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"net/http"
+	"strings"
 	"trial_backend/config"
 	"trial_backend/pkg/constants"
 	"trial_backend/pkg/utils"
@@ -47,12 +48,14 @@ func (h *AuthController) Register(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidatorError(c, err)
 	}
+
+	h.TrimSpaceRegister(&req)
+
 	if err := c.Validate(req); err != nil {
 		return h.ResponseValidatorError(c, err)
 	}
 
-	_, err := h.authService.Register(c.Request().Context(), req)
-	if err != nil {
+	if _, err := h.authService.Register(c.Request().Context(), req); err != nil {
 		return h.ResponseError(c, err)
 	}
 
@@ -71,10 +74,10 @@ func (h *AuthController) Register(c echo.Context) error {
 //	@Router			/v1/api/auth/login [POST]
 func (h *AuthController) Login(c echo.Context) error {
 	var req request.LoginRequest
-
 	if err := c.Bind(&req); err != nil {
 		return h.ResponseValidatorError(c, err)
 	}
+	h.TrimSpaceLogin(&req)
 	if err := c.Validate(req); err != nil {
 		return h.ResponseValidatorError(c, err)
 	}
@@ -174,4 +177,42 @@ func (h *AuthController) GoogleCallback(c echo.Context) error {
 		return h.Response(c, http.StatusOK, "success", res)
 	}
 	return h.Response(c, http.StatusOK, "success", nil)
+}
+
+// Logout
+//
+//	@Security		Authorization
+//	@Summary		Logout
+//	@Description	Logout
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Success		200				{object}	entity.LogoutResponse	"success"
+//	@Router			/v1/api/auth/logout [POST]
+func (h *AuthController) Logout(c echo.Context) error {
+	var req request.LoginRequest
+
+	if err := c.Bind(&req); err != nil {
+		return h.ResponseValidatorError(c, err)
+	}
+
+	if err := c.Validate(req); err != nil {
+		return h.ResponseValidatorError(c, err)
+	}
+
+	res, err := h.authService.Login(c.Request().Context(), req)
+	if err != nil {
+		return h.ResponseError(c, err)
+	}
+	return h.Response(c, http.StatusOK, "success", res)
+}
+
+func (h *AuthController) TrimSpaceLogin(req *request.LoginRequest) {
+	req.Email = strings.TrimSpace(req.Email)
+	req.Password = strings.TrimSpace(req.Password)
+}
+
+func (h *AuthController) TrimSpaceRegister(req *request.RegisterRequest) {
+	req.Email = strings.TrimSpace(req.Email)
+	req.Password = strings.TrimSpace(req.Password)
 }
