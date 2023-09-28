@@ -14,8 +14,9 @@ type CreateUserRequest struct {
 }
 
 type UpdateUserRequest struct {
-	Id string `json:"id"`
-	CreateUserRequest
+	Id       string `json:"id" swaggerignore:"true"`
+	UserName string `json:"user_name"`
+	Avatar   string `json:"avatar"`
 }
 
 type DeleteUserRequest struct {

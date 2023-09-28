@@ -1,19 +1,18 @@
 package request
 
 import (
+	"github.com/lib/pq"
 	uuid "github.com/satori/go.uuid"
 )
 
 type CreatePostRequest struct {
-	UserId  uuid.UUID   `json:"user_id" swaggerignore:"true"`
-	Title   string      `json:"title"`
-	Content string      `json:"content"`
-	Slug    string      `json:"slug"`
-	Image   string      `json:"image"`
-	Files   FileIdSlice `json:"files" gorm:"column:files;type:uuid[]"`
+	UserId  uuid.UUID      `json:"user_id" swaggerignore:"true"`
+	Title   string         `json:"title"`
+	Content string         `json:"content"`
+	Slug    string         `json:"slug"`
+	Image   string         `json:"image"`
+	Files   pq.StringArray `json:"files" swaggertype:"array,string"`
 }
-
-type FileIdSlice []uuid.UUID
 
 type UpdatePostRequest struct {
 	ID string `json:"id"`

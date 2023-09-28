@@ -403,13 +403,24 @@ const docTemplate = `{
                 "summary": "GetList",
                 "parameters": [
                     {
-                        "description": "GetListPostRequest",
-                        "name": "GetListPostRequest",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/request.GetListPostRequest"
-                        }
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sort",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -615,6 +626,17 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "Update",
+                "parameters": [
+                    {
+                        "description": "UpdateUserRequest",
+                        "name": "UpdateUserRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdateUserRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "success",
@@ -806,10 +828,7 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "password": {
-                    "type": "string"
-                },
-                "post": {
+                "posts": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Post"
@@ -851,23 +870,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "request.GetListPostRequest": {
-            "type": "object",
-            "properties": {
-                "limit": {
-                    "type": "integer"
-                },
-                "page": {
-                    "type": "integer"
-                },
-                "search": {
-                    "type": "string"
-                },
-                "sort": {
                     "type": "string"
                 }
             }
@@ -928,6 +930,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.UpdateUserRequest": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "user_name": {
                     "type": "string"
                 }
             }

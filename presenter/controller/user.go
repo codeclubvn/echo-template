@@ -27,7 +27,8 @@ func NewUserController(userService usecase.UserService) *UserController {
 //	@Tags			User
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	model.User	"success"
+//	@Param			UpdateUserRequest	body		request.UpdateUserRequest	true	"UpdateUserRequest"
+//	@Success		200					{object}	model.User					"success"
 //	@Router			/v1/api/users [PUT]
 func (h *UserController) Update(c echo.Context) error {
 	var req request.UpdateUserRequest

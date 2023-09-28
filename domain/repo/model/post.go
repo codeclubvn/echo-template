@@ -12,13 +12,11 @@ type Post struct {
 	Slug    string         `json:"slug" gorm:"column:slug;type:varchar(50);not null"`
 	Image   string         `json:"image" gorm:"column:image;type:varchar(250);"`
 	UserId  uuid.UUID      `json:"user_id" gorm:"column:user_id;type:uuid"`
-	User    User           `json:"user" gorm:"foreignKey:UserId; constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 	Files   pq.StringArray `json:"files" gorm:"column:files;type:varchar(500)[]" swaggertype:"array,string"`
+	User    *User          `json:"user,omitempty" gorm:"foreignKey:UserId; constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }
 
 type Posts []Post
-
-type FileIdSlice []string
 
 func (Post) TableName() string {
 	return "posts"

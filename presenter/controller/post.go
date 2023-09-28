@@ -71,7 +71,6 @@ func (h *PostController) Update(c echo.Context) error {
 	}
 
 	req.UserId = userId
-
 	res, err := h.postService.Update(c.Request().Context(), req)
 	if err != nil {
 		return h.ResponseError(c, err)
@@ -88,7 +87,7 @@ func (h *PostController) Update(c echo.Context) error {
 //	@Tags			Post
 //	@Accept			json
 //	@Produce		json
-//	@Param			GetListPostRequest	body		request.GetListPostRequest	true	"GetListPostRequest"
+//	@Param			GetListPostRequest	query		request.GetListPostRequest	true	"GetListPostRequest"
 //	@Success		200					{object}	[]model.Post				"success"
 //	@Router			/v1/api/posts [GET]
 func (h *PostController) GetList(c echo.Context) error {

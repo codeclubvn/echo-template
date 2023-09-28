@@ -100,9 +100,7 @@ definitions:
         type: string
       id:
         type: string
-      password:
-        type: string
-      post:
+      posts:
         items:
           $ref: '#/definitions/model.Post'
         type: array
@@ -130,17 +128,6 @@ definitions:
       slug:
         type: string
       title:
-        type: string
-    type: object
-  request.GetListPostRequest:
-    properties:
-      limit:
-        type: integer
-      page:
-        type: integer
-      search:
-        type: string
-      sort:
         type: string
     type: object
   request.LoginRequest:
@@ -182,6 +169,13 @@ definitions:
       slug:
         type: string
       title:
+        type: string
+    type: object
+  request.UpdateUserRequest:
+    properties:
+      avatar:
+        type: string
+      user_name:
         type: string
     type: object
 info:
@@ -430,12 +424,18 @@ paths:
       - application/json
       description: GetList
       parameters:
-      - description: GetListPostRequest
-        in: body
-        name: GetListPostRequest
-        required: true
-        schema:
-          $ref: '#/definitions/request.GetListPostRequest'
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: search
+        type: string
+      - in: query
+        name: sort
+        type: string
       produces:
       - application/json
       responses:
@@ -578,6 +578,13 @@ paths:
       consumes:
       - application/json
       description: Update
+      parameters:
+      - description: UpdateUserRequest
+        in: body
+        name: UpdateUserRequest
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateUserRequest'
       produces:
       - application/json
       responses:
