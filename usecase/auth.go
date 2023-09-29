@@ -70,9 +70,7 @@ func (a *authService) Login(ctx context.Context, req request.LoginRequest) (res 
 		return nil, err
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
-
-	if err != nil {
+	if err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
 		return nil, errors.New(api_errors.ErrInvalidPassword)
 	}
 

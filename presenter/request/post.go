@@ -15,7 +15,7 @@ type CreatePostRequest struct {
 }
 
 type UpdatePostRequest struct {
-	ID string `json:"id"`
+	ID string `json:"id" validate:"required"`
 	CreatePostRequest
 }
 

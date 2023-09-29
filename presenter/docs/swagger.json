@@ -1,19 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is Trial Backend API docs",
-        "title": "Swagger Trial Backend API",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
-        "version": "2.0"
+        "contact": {}
     },
     "paths": {
         "/health": {
@@ -119,6 +107,34 @@
                 }
             }
         },
+        "/v1/api/auth/logout": {
+            "post": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "Logout",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/api/auth/register": {
             "post": {
                 "description": "Register",
@@ -174,7 +190,6 @@
                         "items": {
                             "type": "string"
                         },
-                        "collectionFormat": "csv",
                         "name": "data",
                         "in": "formData"
                     },
@@ -946,13 +961,6 @@
                     "type": "string"
                 }
             }
-        }
-    },
-    "securityDefinitions": {
-        "Authorization": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
         }
     }
 }

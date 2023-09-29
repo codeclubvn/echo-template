@@ -6,7 +6,6 @@ require (
 	github.com/cloudinary/cloudinary-go/v2 v2.5.1
 	github.com/go-playground/validator/v10 v10.15.4
 	github.com/golang-jwt/jwt v3.2.2+incompatible
-	github.com/golang/mock v1.6.0
 	github.com/jinzhu/copier v0.4.0
 	github.com/labstack/echo/v4 v4.11.1
 	github.com/lib/pq v1.10.9
@@ -64,6 +63,7 @@ require (
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/swaggo/files/v2 v2.0.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

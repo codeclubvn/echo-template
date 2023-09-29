@@ -23,16 +23,16 @@ func NewImageController(imageService usecase.FileCloudService) *FileCloudControl
 
 // Upload
 //
-//	@Security		Authorization
+// @Security    Authorization
 //
-//	@Summary		SaveFile
-//	@Description	SaveFile
-//	@Tags			Image
-//	@Accept			multipart/form-data
-//	@Produce		json
-//	@Param			file_request	formData	file					true	"file_request"
-//	@Success		200				{object}	entity.SimpleResponse	"success"
-//	@Router			/v1/api/image/upload [POST]
+// @Summary     SaveFile
+// @Description SaveFile
+// @Tags        Image
+// @Accept      multipart/form-data
+// @Produce     json
+// @Param       file_request formData file                  true "file_request"
+// @Success     200          {object} entity.SimpleResponse "success"
+// @Router      /v1/api/image/upload [POST]
 func (h *FileCloudController) Upload(c echo.Context) error {
 	file, err := c.FormFile("file_request")
 	if err := c.Validate(file); err != nil {

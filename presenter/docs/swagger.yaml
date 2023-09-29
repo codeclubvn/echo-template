@@ -187,17 +187,7 @@ definitions:
         type: string
     type: object
 info:
-  contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
-  description: This is Trial Backend API docs
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: Swagger Trial Backend API
-  version: "2.0"
+  contact: {}
 paths:
   /health:
     get:
@@ -264,6 +254,23 @@ paths:
           schema:
             $ref: '#/definitions/entity.LoginResponse'
       summary: Login
+      tags:
+      - Auth
+  /v1/api/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            type: string
+      security:
+      - Authorization: []
+      summary: Logout
       tags:
       - Auth
   /v1/api/auth/register:
@@ -334,8 +341,7 @@ paths:
       - multipart/form-data
       description: Update
       parameters:
-      - collectionFormat: csv
-        in: formData
+      - in: formData
         items:
           type: string
         name: data
@@ -605,9 +611,4 @@ paths:
       summary: Update
       tags:
       - User
-securityDefinitions:
-  Authorization:
-    in: header
-    name: Authorization
-    type: apiKey
 swagger: "2.0"

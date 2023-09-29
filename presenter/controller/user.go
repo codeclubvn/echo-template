@@ -21,15 +21,15 @@ func NewUserController(userService usecase.UserService) *UserController {
 
 // Update
 //
-//	@Security		Authorization
-//	@Summary		Update
-//	@Description	Update
-//	@Tags			User
-//	@Accept			json
-//	@Produce		json
-//	@Param			UpdateUserRequest	body		request.UpdateUserRequest	true	"UpdateUserRequest"
-//	@Success		200					{object}	model.User					"success"
-//	@Router			/v1/api/users [PUT]
+// @Security    Authorization
+// @Summary     Update
+// @Description Update
+// @Tags        User
+// @Accept      json
+// @Produce     json
+// @Param       UpdateUserRequest body     request.UpdateUserRequest true "UpdateUserRequest"
+// @Success     200               {object} model.User                "success"
+// @Router      /v1/api/users [PUT]
 func (h *UserController) Update(c echo.Context) error {
 	var req request.UpdateUserRequest
 	if err := c.Bind(&req); err != nil {
@@ -51,14 +51,14 @@ func (h *UserController) Update(c echo.Context) error {
 
 // Delete
 //
-//	@Security		Authorization
-//	@Summary		Delete
-//	@Description	Delete
-//	@Tags			User
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	entity.SimpleResponse	"success"
-//	@Router			/v1/api/users [DELETE]
+// @Security    Authorization
+// @Summary     Delete
+// @Description Delete
+// @Tags        User
+// @Accept      json
+// @Produce     json
+// @Success     200 {object} entity.SimpleResponse "success"
+// @Router      /v1/api/users [DELETE]
 func (h *UserController) Delete(c echo.Context) error {
 	userId := utils.GetUserStringIDFromContext(c)
 	if err := h.userService.Delete(c.Request().Context(), userId); err != nil {
@@ -69,14 +69,14 @@ func (h *UserController) Delete(c echo.Context) error {
 
 // GetOne
 //
-//	@Security		Authorization
-//	@Summary		GetOne
-//	@Description	GetOne
-//	@Tags			User
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	model.User	"success"
-//	@Router			/v1/api/users [GET]
+// @Security    Authorization
+// @Summary     GetOne
+// @Description GetOne
+// @Tags        User
+// @Accept      json
+// @Produce     json
+// @Success     200 {object} model.User "success"
+// @Router      /v1/api/users [GET]
 func (h *UserController) GetOne(c echo.Context) error {
 	userId := utils.GetUserStringIDFromContext(c)
 	res, err := h.userService.GetOne(c.Request().Context(), userId)
