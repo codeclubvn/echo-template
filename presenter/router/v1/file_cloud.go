@@ -1,9 +1,9 @@
 package v1
 
 import (
-	"trial_backend/pkg/lib"
-	"trial_backend/presenter/controller"
-	"trial_backend/presenter/middlewares"
+	"echo_template/pkg/lib"
+	"echo_template/presenter/controller"
+	"echo_template/presenter/middlewares"
 )
 
 type FileCloudRoutes struct {

@@ -1,6 +1,9 @@
 package controller
 
 import (
+	"echo_template/pkg/lib"
+	"echo_template/presenter/request"
+	"echo_template/usecase/mocks"
 	"encoding/json"
 	"github.com/labstack/echo/v4"
 	uuid "github.com/satori/go.uuid"
@@ -10,9 +13,6 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"trial_backend/pkg/lib"
-	"trial_backend/presenter/request"
-	"trial_backend/usecase/mocks"
 )
 
 func TestPostController_Create(t *testing.T) {

@@ -1,15 +1,15 @@
 package middlewares
 
 import (
+	"echo_template/domain/entity"
+	"echo_template/pkg/api_errors"
+	"echo_template/pkg/constants"
+	"echo_template/presenter/request"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"net/http"
 	"strings"
-	"trial_backend/domain/entity"
-	"trial_backend/pkg/api_errors"
-	"trial_backend/pkg/constants"
-	"trial_backend/presenter/request"
 )
 
 func (e *Middleware) Auth(authorization bool) echo.MiddlewareFunc {

@@ -936,6 +936,9 @@ const docTemplate = `{
         },
         "request.UpdatePostRequest": {
             "type": "object",
+            "required": [
+                "id"
+            ],
             "properties": {
                 "content": {
                     "type": "string"

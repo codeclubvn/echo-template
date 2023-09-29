@@ -1,8 +1,8 @@
 package repo
 
 import (
+	"echo_template/infra"
 	"gorm.io/gorm"
-	"trial_backend/infra"
 )
 
 type TX struct {

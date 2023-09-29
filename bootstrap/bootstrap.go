@@ -1,18 +1,18 @@
 package bootstrap
 
 import (
+	"echo_template/config"
+	"echo_template/domain/repo"
+	"echo_template/infra"
+	"echo_template/pkg/lib"
+	"echo_template/pkg/utils"
+	"echo_template/presenter/controller"
+	"echo_template/presenter/middlewares"
+	"echo_template/presenter/router"
+	"echo_template/usecase"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
 	"go.uber.org/zap"
-	"trial_backend/config"
-	"trial_backend/domain/repo"
-	"trial_backend/infra"
-	"trial_backend/pkg/lib"
-	"trial_backend/pkg/utils"
-	"trial_backend/presenter/controller"
-	"trial_backend/presenter/middlewares"
-	"trial_backend/presenter/router"
-	"trial_backend/usecase"
 )
 
 func inject() fx.Option {

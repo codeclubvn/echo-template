@@ -2,10 +2,10 @@ package usecase
 
 import (
 	"context"
+	"echo_template/config"
+	"echo_template/domain/repo"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"mime/multipart"
-	"trial_backend/config"
-	"trial_backend/domain/repo"
 )
 
 type (

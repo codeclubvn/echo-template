@@ -178,6 +178,8 @@ definitions:
         type: string
       title:
         type: string
+    required:
+    - id
     type: object
   request.UpdateUserRequest:
     properties:

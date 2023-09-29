@@ -1,6 +1,9 @@
 package controller
 
 import (
+	"echo_template/pkg/lib"
+	"echo_template/presenter/request"
+	"echo_template/usecase/mocks"
 	"encoding/json"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
@@ -9,9 +12,6 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"trial_backend/pkg/lib"
-	"trial_backend/presenter/request"
-	"trial_backend/usecase/mocks"
 )
 
 func TestAuthController_Login(t *testing.T) {

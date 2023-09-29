@@ -1,15 +1,15 @@
 package controller
 
 import (
+	"echo_template/domain/entity"
+	"echo_template/pkg/api_errors"
+	"echo_template/pkg/utils"
+	"echo_template/presenter/request"
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"net/http"
 	"strings"
-	"trial_backend/domain/entity"
-	"trial_backend/pkg/api_errors"
-	"trial_backend/pkg/utils"
-	"trial_backend/presenter/request"
 )
 
 type BaseController struct {

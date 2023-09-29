@@ -1,11 +1,11 @@
 package config
 
 import (
+	"echo_template/pkg/constants"
 	"fmt"
 	"github.com/spf13/viper"
 	"os"
 	"reflect"
-	"trial_backend/pkg/constants"
 )
 
 var (

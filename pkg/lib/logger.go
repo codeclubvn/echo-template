@@ -1,13 +1,13 @@
 package lib
 
 import (
+	"echo_template/config"
+	"echo_template/pkg/constants"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"log"
 	"os"
 	"time"
-	"trial_backend/config"
-	"trial_backend/pkg/constants"
 )
 
 type _zap struct{}

@@ -1,8 +1,8 @@
 package lib
 
 import (
+	_ "echo_template/presenter/docs"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	_ "trial_backend/presenter/docs"
 )
 
 func NewSwagger(instance *Server) {

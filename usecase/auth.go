@@ -2,16 +2,16 @@ package usecase
 
 import (
 	"context"
+	"echo_template/config"
+	"echo_template/domain/entity"
+	"echo_template/domain/repo/model"
+	"echo_template/pkg/api_errors"
+	"echo_template/pkg/constants"
+	"echo_template/presenter/request"
 	"fmt"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 	"log"
-	"trial_backend/config"
-	"trial_backend/domain/entity"
-	"trial_backend/domain/repo/model"
-	"trial_backend/pkg/api_errors"
-	"trial_backend/pkg/constants"
-	"trial_backend/presenter/request"
 )
 
 type (

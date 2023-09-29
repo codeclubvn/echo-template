@@ -1,4 +1,4 @@
-# Trial backend
+# Echo-Template
 
 ## Tech stack
 
@@ -8,10 +8,16 @@
 - [JWT](https://jwt.io/): version 3.21
 - [PostgreSQL](https://www.postgresql.org/): version 16
 - [Cloudinary](https://cloudinary.com/)
-
+- [Docker](https://www.docker.com/): version 20.10
+- [Docker-compose](https://docs.docker.com/compose/): version 1.29
+- [Makefile](https://www.gnu.org/software/make/manual/make.html): version 4.3
+- [Swagger](https://swagger.io/): version 2.0
+- [mockery]()
+- [assert]()
 ## Architecture
 - Source code base on Domain Driven Design & Clean Architecture
-![Architecture](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
+- Base on [Clean Architecture](https://github.com/amitshekhariitbhu/go-backend-clean-architecture) source code
+  ![Architecture](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg) by Uncle Bob
 
 Clean Architecture is a software development architecture that has become a standard for building easily maintainable, platform-independent, and source code-reusable applications. Below are some important benefits of using Clean Architecture
 -  Use [radix tree](https://en.wikipedia.org/wiki/Radix_tree) to handle save file assets
@@ -61,5 +67,6 @@ Clean Architecture is a software development architecture that has become a stan
 - Create database
 - Create .env & config.yml file in config folder
 - Run ``` make ``` to run project
+- Run ```mockery --dir=domain --output=domain/mocks --outpkg=mocks --all``` to generate mock file
 
 

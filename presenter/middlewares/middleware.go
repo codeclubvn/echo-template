@@ -1,9 +1,9 @@
 package middlewares
 
 import (
+	"echo_template/config"
+	"echo_template/infra"
 	"go.uber.org/zap"
-	"trial_backend/config"
-	"trial_backend/infra"
 )
 
 type Middleware struct {

@@ -2,14 +2,14 @@ package infra
 
 import (
 	"database/sql"
+	"echo_template/config"
+	"echo_template/domain/repo/model"
 	"fmt"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"os"
-	"trial_backend/config"
-	"trial_backend/domain/repo/model"
 )
 
 type Database struct {

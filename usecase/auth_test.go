@@ -2,17 +2,17 @@ package usecase
 
 import (
 	"context"
+	"echo_template/domain/entity"
+	"echo_template/domain/repo/mocks"
+	"echo_template/domain/repo/model"
+	"echo_template/pkg/api_errors"
+	"echo_template/presenter/request"
+	mockjwt "echo_template/usecase/mocks"
 	"github.com/pkg/errors"
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"testing"
-	"trial_backend/domain/entity"
-	"trial_backend/domain/repo/mocks"
-	"trial_backend/domain/repo/model"
-	"trial_backend/pkg/api_errors"
-	"trial_backend/presenter/request"
-	mockjwt "trial_backend/usecase/mocks"
 )
 
 func Test_authService_Login(t *testing.T) {

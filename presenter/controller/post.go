@@ -1,12 +1,12 @@
 package controller
 
 import (
+	"echo_template/pkg/utils"
+	"echo_template/presenter/request"
+	"echo_template/usecase"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"strings"
-	utils "trial_backend/pkg/utils"
-	"trial_backend/presenter/request"
-	"trial_backend/usecase"
 )
 
 type PostController struct {

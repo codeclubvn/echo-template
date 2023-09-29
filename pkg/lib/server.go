@@ -2,18 +2,18 @@ package lib
 
 import (
 	"context"
+	"echo_template/domain/repo/model"
+	"echo_template/presenter/middlewares"
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"strings"
-	"trial_backend/domain/repo/model"
-	"trial_backend/presenter/middlewares"
 
+	"echo_template/config"
+	"echo_template/infra"
+	"echo_template/pkg/constants"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
-	"trial_backend/config"
-	"trial_backend/infra"
-	"trial_backend/pkg/constants"
 )
 
 type Server struct {

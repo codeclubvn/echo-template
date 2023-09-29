@@ -1,12 +1,12 @@
 package main
 
 import (
-	"trial_backend/bootstrap"
+	"echo_template/bootstrap"
 )
 
-//	@title			Swagger Trial Backend API
+//	@title			Swagger Echo-Template Backend API
 //	@version		2.0
-//	@description	This is Trial Backend API docs
+//	@description	This is Echo-Template Backend API docs
 //	@termsOfService	http://swagger.io/terms/
 
 //	@contact.name	API Support

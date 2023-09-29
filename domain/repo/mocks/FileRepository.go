@@ -4,7 +4,7 @@ package mocks
 
 import (
 	context "context"
-	model "trial_backend/domain/repo/model"
+	model "echo_template/domain/repo/model"
 
 	mock "github.com/stretchr/testify/mock"
 )

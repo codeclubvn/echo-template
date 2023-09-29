@@ -1,10 +1,10 @@
 package utils
 
 import (
+	"echo_template/pkg/api_errors"
 	"errors"
 	"github.com/labstack/echo/v4"
 	uuid "github.com/satori/go.uuid"
-	"trial_backend/pkg/api_errors"
 )
 
 func GetUserStringIDFromContext(ctx echo.Context) string {

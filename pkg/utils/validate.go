@@ -1,12 +1,12 @@
 package utils
 
 import (
+	"echo_template/pkg/api_errors"
 	"github.com/lib/pq"
 	"github.com/pkg/errors"
 	uuid "github.com/satori/go.uuid"
 	"mime/multipart"
 	"strings"
-	"trial_backend/pkg/api_errors"
 )
 
 func CheckListUUID(list pq.StringArray) error {

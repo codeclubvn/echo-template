@@ -2,15 +2,15 @@ package repo
 
 import (
 	"context"
+	"echo_template/config"
+	"echo_template/infra"
+	"echo_template/pkg/constants"
 	"fmt"
 	"github.com/cloudinary/cloudinary-go/v2/api"
 	"github.com/cloudinary/cloudinary-go/v2/api/admin"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"go.uber.org/zap"
 	"mime/multipart"
-	"trial_backend/config"
-	"trial_backend/infra"
-	"trial_backend/pkg/constants"
 )
 
 type CloudinaryRepository interface {

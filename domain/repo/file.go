@@ -2,11 +2,11 @@ package repo
 
 import (
 	"context"
+	"echo_template/domain/repo/model"
+	"echo_template/infra"
+	"echo_template/pkg/api_errors"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-	"trial_backend/domain/repo/model"
-	"trial_backend/infra"
-	"trial_backend/pkg/api_errors"
 )
 
 type FileRepository interface {

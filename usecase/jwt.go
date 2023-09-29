@@ -1,14 +1,14 @@
 package usecase
 
 import (
+	"echo_template/config"
+	"echo_template/pkg/api_errors"
+	"echo_template/pkg/constants"
+	"echo_template/presenter/request"
 	"github.com/golang-jwt/jwt"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"time"
-	"trial_backend/config"
-	"trial_backend/pkg/api_errors"
-	"trial_backend/pkg/constants"
-	"trial_backend/presenter/request"
 )
 
 type JwtService interface {
@@ -79,7 +79,7 @@ func (j *jwtService) ValidateToken(token string, tokenType constants.TokenType) 
 		return nil, errors.New(api_errors.ErrTokenExpired)
 	}
 
-	if claims.Issuer != "trial" {
+	if claims.Issuer != "echo-template" {
 		return nil, errors.New(api_errors.ErrTokenInvalid)
 	}
 

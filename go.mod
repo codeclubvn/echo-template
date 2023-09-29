@@ -1,4 +1,4 @@
-module trial_backend
+module echo_template
 
 go 1.21.0
 

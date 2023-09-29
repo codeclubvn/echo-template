@@ -2,14 +2,14 @@ package usecase
 
 import (
 	"context"
+	"echo_template/domain/repo"
+	"echo_template/domain/repo/model"
+	"echo_template/infra"
+	"echo_template/pkg/api_errors"
+	"echo_template/pkg/utils"
+	"echo_template/presenter/request"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-	"trial_backend/domain/repo"
-	"trial_backend/domain/repo/model"
-	"trial_backend/infra"
-	"trial_backend/pkg/api_errors"
-	"trial_backend/pkg/utils"
-	"trial_backend/presenter/request"
 )
 
 type UserService interface {

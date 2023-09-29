@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	constants "trial_backend/pkg/constants"
+	constants "echo_template/pkg/constants"
 
 	mock "github.com/stretchr/testify/mock"
 )

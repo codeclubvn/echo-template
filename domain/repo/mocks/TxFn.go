@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	repo "trial_backend/domain/repo"
+	repo "echo_template/domain/repo"
 
 	mock "github.com/stretchr/testify/mock"
 )
