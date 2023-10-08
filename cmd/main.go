@@ -1,7 +1,10 @@
 package main
 
 import (
-	"echo_template/bootstrap"
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 //	@title			Swagger Echo-Template Backend API
@@ -22,5 +25,20 @@ import (
 // @host						localhost:8010
 // @BasePath					/v1/api
 func main() {
-	bootstrap.Run()
+	//bootstrap.Run()
+
+	fmt.Println("Hello World")
+	// Tạo một kênh để lắng nghe tín hiệu Ctrl+C
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGINT)
+
+	// Sử dụng vòng lặp vô hạn để duy trì chương trình
+	for {
+		select {
+		case <-c:
+			// Nhận tín hiệu Ctrl+C, thoát ra khỏi vòng lặp
+			fmt.Println("\nNhận tín hiệu Ctrl+C. Kết thúc chương trình.")
+			return
+		}
+	}
 }
