@@ -71,5 +71,5 @@ jobs:
             fi
             echo "Installing dependencies";
             docker pull ${{vars.REPOSITORY}}:${{ steps.tag.outputs.new_tag }};
-            docker rm -f erp-dev;
-            docker run -d --name erp-dev -p ${{secrets.EXPORT_PORT}}:${{secrets.CONTAINER_PORT}} ${{vars.REPOSITORY}}:${{ steps.tag.outputs.new_tag }};
+            docker rm -f echo-template;
+            docker run -d --name echo-template -p ${{secrets.EXPORT_PORT}}:${{secrets.CONTAINER_PORT}} ${{vars.REPOSITORY}}:${{ steps.tag.outputs.new_tag }};
