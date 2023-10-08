@@ -71,5 +71,7 @@ jobs:
             fi
             echo "Installing dependencies";
             docker pull ${{vars.REPOSITORY}}:${{ steps.tag.outputs.new_tag }};
-            docker rm -f template-echo;
+            if docker ps -a --format '{{.Names}}' | grep -q "^template-echo"; then
+              docker rm -f template-echo;
+            fi
             docker run -d --name template-echo -p ${{secrets.EXPORT_PORT}}:${{secrets.CONTAINER_PORT}} ${{vars.REPOSITORY}}:${{ steps.tag.outputs.new_tag }};
