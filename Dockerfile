@@ -18,6 +18,6 @@ COPY ./config/config.yml /app/config/config.yml
 
 COPY --from=build-env /app/cmd/main /app/cmd/main
 
-ENTRYPOINT ["/app/main"]
+ENTRYPOINT ["/app/cmd/main"]
 
 
